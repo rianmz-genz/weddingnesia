@@ -1,6 +1,14 @@
 export const contentData = {
-    logoSrc: "",
+    logoSrc: "/images/logo.png",
+    navbar: {
+        homepage: [
+            {
+                href: "#",
+                name: ""
+            },
+        ]  
+    },
     home: {
-
+        
     }
 }
