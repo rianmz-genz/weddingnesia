@@ -33,7 +33,7 @@ export const contentData = {
         ],
         hero: {
             title: 'Website Undangan Pernikahan Online',
-            description: 'Undang orang-orang terdekat dalam momen kebahagiaan pernikahan Anda dengan cara yang unik dan menarik. Coba sekarang juga!',
+            description: 'Undang orang-orang terdekat dalam momen kebahagiaan pernikahan Anda dengan cara yang unik dan menarik. Coba buat undangan pernikahan online gratis sekarang juga!',
             img: '/images/heroimg.png'
         },
         interest: {
