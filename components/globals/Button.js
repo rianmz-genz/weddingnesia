@@ -1,12 +1,14 @@
 import React from "react";
 import { buttonStyle } from "@/utils/enum";
 import { variant } from "@/utils";
-const Button = ({ style,className, ...props }) => {
+const Button = ({ style, className, ...props }) => {
   const button = variant(
-    `rounded-full ${className}`,
+    `rounded-xl ${className}`,
     {
       style: {
-        primary: 'w-full py-2 bg-yellow-700/80 text-white hover:bg-yellow-700/90'
+        primarylarge: 'px-8 py-4 bg-yellow-700/80 text-white font-bold hover:bg-yellow-700/90',
+        outlineprimarylarge: 'px-6 py-3 border-2 font-bold border-yellow-700/90 text-yellow-700/90 hover:text-white hover:bg-yellow-700/90',
+        silverlarge: 'px-8 py-4 bg-slate-50/30 hover:ring-2 font-bold hover:ring-black hover:bg-white text-black'
       },
     }
   );
@@ -18,6 +20,6 @@ const Button = ({ style,className, ...props }) => {
   );
 };
 Button.defaultProps = {
-  style: buttonStyle.primary
+  style: buttonStyle.primarylarge
 };
 export default Button;
