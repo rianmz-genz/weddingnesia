@@ -6,3 +6,5 @@ export { default as Button } from "@/components/globals/Button"
 export { default as AuthPage } from "@/components/layout/AuthPage"
 export { default as InputIcon } from "@/components/globals/InputIcon"
 export { default as Logo } from "@/components/Logo"
+export { default as InterestSection } from '@/components/home/Interest'
+export { default as TutorialSection } from '@/components/home/Tutorial'
