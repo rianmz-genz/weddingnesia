@@ -1,7 +1,13 @@
 export const textStyle = {
     titleQuestion: 'titleQuestion',
-    base: 'base'
+    title: 'title',
+    base: 'base',
+    bigtitle: 'bigtitle',
+    description:'description',
+    smalldescription:'smalldescription',
 }
 export const buttonStyle = {
-    primary: 'primary'
+    primarylarge: 'primarylarge',
+    outlineprimarylarge: 'outlineprimarylarge',
+    silverlarge:'silverlarge'
 }
