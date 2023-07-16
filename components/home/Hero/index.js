@@ -28,7 +28,7 @@ const HeroSection = () => {
         </Button>
           </div>
           </div>
-          <Image className='w-6/12 scale-125 ' src={contentData.home.tutorial.img} alt='WeddingNesia' width={1080} height={1080} />
+          <Image className='w-6/12 scale-110 ' src={contentData.home.tutorial.img} alt='WeddingNesia' width={1080} height={1080} />
     </section>
   )
 }
