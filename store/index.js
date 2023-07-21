@@ -156,6 +156,37 @@ export const contentData = {
                     description: 'Tersedia fitur countdown timer yang dapat berfungsi sebagai pengingat waktu acara'
                 },
             ]
+        },
+        testimonials: {
+            title: "Testimoni",
+            description: "Bukti nyata bahwa datengdong telah menjadi bagian kebahagiaan momen terbaik mereka.",
+            button: {
+                value: "Lihat Portfolio",
+                href: "/portfolio"
+            },
+            items: [
+                {
+                    avatar: "/images/avatar1.svg",
+                    name: "Ucup Permana",
+                    job: "Karyawan Swasta",
+                    comment: "Baru kali ini ada platform undangan online pernikahan yang gratis dan simple. Terimakasih WeddingNesia."
+                },
+                {
+                    avatar: "/images/avatar2.svg",
+                    name: "Hugo Jayana",
+                    job: "Wirausahawan",
+                    comment: "Sangat mudah digunakan, undangan pernikahan langsung bisa dibagikan dengan cepat! Sukses WeddingNesia."
+                },
+                {
+                    avatar: "/images/avatar3.svg",
+                    name: "Suci Hanina",
+                    job: "Perawat",
+                    comment: "Di jaman digital sekarang ini undangan online pernikahan sangat membantu sekali. Thank WeddingNesia."
+                },
+            ]
+        },
+        footer: {
+            whiteLogo: "/images/whitelogo.png"
         }
     }
 }
