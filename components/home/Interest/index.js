@@ -6,8 +6,8 @@ import React from 'react'
 
 const InterestSection = () => {
   return (
-    <div className='w-full min-h-screen space-x-3  flex justify-center items-center my-6'>
-          <div className='w-6/12'>
+    <div className='w-full min-h-screen space-x-3 md:flex-row flex-col flex justify-center items-center my-6'>
+          <div className='md:w-6/12 w-11/12'>
               <Text style={textStyle.bigtitle}>
                 {contentData.home.interest.title}
               </Text>
@@ -33,8 +33,8 @@ const InterestSection = () => {
             ))
           }
         </ul>
-          </div>
-          <Image src={contentData.home.interest.img} alt='Image WeddingNesia' width={1080} height={1080} className='w-6/12'  />
+      </div>
+          <Image src={contentData.home.interest.img} alt='Image WeddingNesia' width={1080} height={1080} className='md:w-6/12 w-11/12 md:mt-0 mt-12'  />
     </div>
   )
 }
