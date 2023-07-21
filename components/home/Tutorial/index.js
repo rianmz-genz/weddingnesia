@@ -9,9 +9,9 @@ const TutrialSection = () => {
     const { tutorial } = contentData.home
   return (
     <section className='w-full flex items-center justify-start min-h-screen my-6'>
-        <div className='w-8/12'>
+        <div className='md:w-8/12 w-11/12'>
               <SectionParagraph title={tutorial.title} description={tutorial.description} />
-              <ol className='grid grid-cols-2 gap-4 mt-8'>
+              <ol className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-8'>
                 {
                     tutorial.items.map((item, idx) => (
                         <li key={idx} className='relative'>
@@ -32,7 +32,7 @@ const TutrialSection = () => {
               </ol>
         
           </div>
-          <div className='w-4/12 relative'>
+          <div className='md:w-4/12 hidden md:block relative'>
                   <Image src={contentData.home.tutorial.img} className='w-full scale-[200%] top-0 left-1/2 absolute' alt='laptop mockup' width={1920} height={1080} />
               </div>
     </section>
