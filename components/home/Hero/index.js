@@ -1,6 +1,6 @@
 import Button from '@/components/globals/Button'
 import Text from '@/components/globals/Text'
-import { contentData } from '@/store'
+import { initialValue } from '@/store'
 import { buttonStyle, textStyle } from '@/utils/enum'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -12,10 +12,10 @@ const HeroSection = () => {
     <section id='#' className='w-full bg-gradient-radial from-yellow-400/50 via-yellow-400/5 to-transparent min-h-screen flex justify-center items-center md:flex-row flex-col gap-3 md:mt-0 mt-6'>
           <div className='md:w-6/12 w-11/12 gap-6 flex flex-col justify-start items-start'>
             <Text style={textStyle.bigtitle}>
-              {contentData.home.hero.title}
+              {initialValue.home.hero.title}
             </Text>
             <Text style={textStyle.description} className={'text-black/70'}>
-              {contentData.home.hero.description}
+              {initialValue.home.hero.description}
             </Text>
             <div className='flex w-full flex-wrap space-y-3 md:space-y-0 md:space-x-3'>
               <Button className={'md:w-fit w-full'}>
@@ -29,7 +29,7 @@ const HeroSection = () => {
               </Button>
             </div>
           </div>
-          <Image className='md:w-6/12 w-11/12 md:scale-110' src={contentData.home.tutorial.img} alt='WeddingNesia' width={1080} height={1080} />
+          <Image className='md:w-6/12 w-11/12 md:scale-110' src={initialValue.home.tutorial.img} alt='WeddingNesia' width={1080} height={1080} />
     </section>
   )
 }
