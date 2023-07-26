@@ -1,13 +1,13 @@
 import Button from '@/components/globals/Button'
 import Text from '@/components/globals/Text'
-import { contentData } from '@/store'
+import { initialValue } from '@/store'
 import { buttonStyle, textStyle } from '@/utils/enum'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 const Testimonial = () => {
-  const {testimonials} = contentData.home
+  const {testimonials} = initialValue.home
   return (
     <section className='w-full bg-gradient-to-t from-yellow-600/80 via-yellow-600/5 to-transparent py-6'>
       <div className='flex w-11/12 min-h-screen mx-auto flex-col md:flex-row justify-center items-center px-4'>
