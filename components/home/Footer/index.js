@@ -1,9 +1,9 @@
-import { contentData } from '@/store'
+import { initialValue } from '@/store'
 import Image from 'next/image'
 import React from 'react'
 
 const Footer = () => {
-    const {footer} = contentData.home
+    const {footer} = initialValue.home
   return (
     <footer className='w-full bg-slate-900 py-24'>
         <div className='w-11/12 flex mx-auto'>

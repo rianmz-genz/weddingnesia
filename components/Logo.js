@@ -1,10 +1,10 @@
-import { contentData } from '@/store'
+import { initialValue } from '@/store'
 import Image from 'next/image'
 import React from 'react'
 
 const Logo = ({className}) => {
   return (
-    <Image width={1920} height={1080} src={contentData.logoSrc} alt='Logo WeddingNesia' className={className} />
+    <Image width={1920} height={1080} src={initialValue.logoSrc} alt='Logo WeddingNesia' className={className} />
   )
 }
 

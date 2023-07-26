@@ -1,11 +1,11 @@
 import SectionParagraph from '@/components/globals/SectionParagraph'
 import Text from '@/components/globals/Text'
-import { contentData } from '@/store'
+import { initialValue } from '@/store'
 import { textStyle } from '@/utils/enum'
 import React from 'react'
 
 const FeatureSection = () => {
-    const {feature} = contentData.home
+    const {feature} = initialValue.home
   return (
     <section id='feature' className='w-full py-12 my-12 min-h-screen bg-gradient-to-t from-yellow-600/80 via-yellow-600/20 to-transparent'>
           <SectionParagraph className={'w-8/12 text-center mx-auto'} title={feature.title} description={feature.description} />
