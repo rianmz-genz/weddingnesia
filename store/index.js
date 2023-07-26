@@ -5,12 +5,12 @@ import { FaAffiliatetheme } from 'react-icons/fa'
 import { IoStatsChart } from 'react-icons/io5'
 import { CiGlobe } from 'react-icons/ci'
 import { FaPeopleGroup } from 'react-icons/fa6'
-import { FiEdit } from 'react-icons/fi'
+import { FiEdit, FiHome, FiMail } from 'react-icons/fi'
 import { RxDashboard } from 'react-icons/rx'
 import { BsChatLeftQuoteFill, BsMusicNoteBeamed } from 'react-icons/bs'
 import { BiMessageAltDots, BiTimeFive } from 'react-icons/bi'
 import { MdOutlinePayment } from 'react-icons/md'
-export const contentData = {
+export const initialValue = {
     logoSrc: "/images/logo.png",
     home: {
         navbar: [
@@ -187,6 +187,28 @@ export const contentData = {
         },
         footer: {
             whiteLogo: "/images/whitelogo.png"
+        }
+    },
+    dashboard: {
+        user: {
+            navbar: [
+                {
+                    icon: <FiHome />,
+                    label: "Beranda",
+                    href: '/dashboard'
+                },
+                {
+                    icon: <FiMail />,
+                    label: "Undangan",
+                    href: '/dashboard/invitations'
+                },
+            ],
+            title: "50K+",
+            description: 'Undangan Telah Disebar',
+            src: "/images/beranda.svg",
+            greeting: 'Selamat Datang Di',
+            bold: 'WeddingNesia!',
+            caption: 'Platform pembuatan undangan pernikahan online gratis terbesar di Indonesia.'
         }
     }
 }
