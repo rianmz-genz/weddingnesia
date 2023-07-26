@@ -1,12 +1,12 @@
 import SectionParagraph from '@/components/globals/SectionParagraph'
 import Text from '@/components/globals/Text'
-import { contentData } from '@/store'
+import { initialValue } from '@/store'
 import { textStyle } from '@/utils/enum'
 import Image from 'next/image'
 import React from 'react'
 
 const TutrialSection = () => {
-    const { tutorial } = contentData.home
+    const { tutorial } = initialValue.home
   return (
     <section className='w-full flex items-center justify-start min-h-screen my-6'>
         <div className='md:w-8/12 w-11/12'>
@@ -33,7 +33,7 @@ const TutrialSection = () => {
         
           </div>
           <div className='md:w-4/12 hidden md:block relative'>
-                  <Image src={contentData.home.tutorial.img} className='w-full scale-[200%] top-0 left-1/2 absolute' alt='laptop mockup' width={1920} height={1080} />
+                  <Image src={initialValue.home.tutorial.img} className='w-full scale-[200%] top-0 left-1/2 absolute' alt='laptop mockup' width={1920} height={1080} />
               </div>
     </section>
   )
