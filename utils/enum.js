@@ -9,5 +9,6 @@ export const textStyle = {
 export const buttonStyle = {
     primarylarge: 'primarylarge',
     outlineprimarylarge: 'outlineprimarylarge',
-    silverlarge:'silverlarge'
+    silverlarge: 'silverlarge',
+    blackLarge: 'blackLarge'
 }
