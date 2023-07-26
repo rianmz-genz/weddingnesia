@@ -1,6 +1,6 @@
 import Logo from "@/components/Logo";
 import Button from "@/components/globals/Button";
-import { contentData } from "@/store";
+import { initialValue } from "@/store";
 import { buttonStyle } from "@/utils/enum";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -18,7 +18,7 @@ const NavbarLandingpage = () => {
         </button>
         </div>
         <ul className={`lg:flex lg:flex-row flex-col w-full lg:justify-evenly justify-center items-center bg-white max-lg:shadow px-8 py-8 lg:px-0 lg:py-0 space-y-3 lg:space-y-0 ${isOpen ? "" : "hidden"}`}>
-          {contentData.home.navbar.map((item, idx) => (
+          {initialValue.home.navbar.map((item, idx) => (
             <li key={idx}>
               <a href={item.path} className="font-semibold text-black/80">
                 {item.value}
