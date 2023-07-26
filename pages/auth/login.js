@@ -26,7 +26,7 @@ const LoginView = () => {
                                 <FiKey className="text-black mr-2" />
                             }
                         />
-                        <Button className={"mt-6"}>Masuk</Button>
+                        <Button className={"mt-6 w-full"}>Masuk</Button>
                         <Text className={"text-center mt-3"}>Belum memiliki akun? <Link href={"/auth/register"} className='font-semibold underline text-yellow-700/80'>Daftar</Link></Text>
                     </div>
     </AuthPage>
