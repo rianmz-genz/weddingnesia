@@ -6,7 +6,7 @@ import { AiFillSetting } from 'react-icons/ai'
 
 const ProfileCard = () => {
   return (
-    <div className='w-10/12 mx-auto px-8 py-4 bg-white rounded-full flex items-center justify-between'>
+    <div className='w-11/12 mx-auto px-8 py-4 bg-white rounded-full flex items-center justify-between'>
           <div className='flex items-center space-x-4'>
             <Image src={'/images/kuncungboy.png'} alt='kuncung boy' width={1080} height={1080} className='w-16' />
             <div>

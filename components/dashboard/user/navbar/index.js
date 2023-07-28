@@ -10,7 +10,7 @@ const NavbarUser = () => {
     const router = useRouter()
     const { pathname } = router
   return (
-    <nav className='w-full max-w-[275px] flex flex-col items-center py-12 fixed left-0 top-0 h-screen bg-white'>
+    <nav className='w-2/12 flex flex-col items-center py-12 fixed left-0 top-0 h-screen bg-white'>
         <div className='flex justify-center items-center'><Logo className={'w-9/12'} /></div>
         <ul className='w-8/12 mt-24 mb-12 flex flex-col space-y-4'>
             {
