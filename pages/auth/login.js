@@ -1,13 +1,19 @@
 import { AuthPage, Button, InputIcon, Logo, Text } from '@/components'
 import { textStyle } from '@/utils/enum'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { BiUser } from 'react-icons/bi'
 import {FiKey} from "react-icons/fi"
 
 const LoginView = () => {
+    const router = useRouter()
+    const handleLogin = (e) => {
+        e.preventDefault();
+        router.push("/dashboard")
+    }
     return (
-        <AuthPage>
+        <AuthPage onSubmit={handleLogin}>
             <Logo className={"w-8/12"} />
                     <div className='w-full mt-6'>
                         <Text className={"mb-1"} style={textStyle.titleQuestion}>Email</Text>
@@ -25,8 +31,8 @@ const LoginView = () => {
                             icon={
                                 <FiKey className="text-black mr-2" />
                             }
-                        />
-                        <Button className={"mt-6"}>Masuk</Button>
+                />
+                        <Button className={"mt-6 w-full"}>Masuk</Button>
                         <Text className={"text-center mt-3"}>Belum memiliki akun? <Link href={"/auth/register"} className='font-semibold underline text-yellow-700/80'>Daftar</Link></Text>
                     </div>
     </AuthPage>

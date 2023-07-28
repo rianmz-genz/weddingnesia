@@ -43,7 +43,7 @@ const Register = () => {
                                 <FiKey className="text-black mr-2" />
                             }
                         />
-                        <Button className={"mt-6"}>Daftar</Button>
+                        <Button className={"mt-6 w-full"}>Daftar</Button>
                         <Text className={"text-center mt-3"}>Sudah memiliki akun? <Link href={"/auth/login"} className='font-semibold underline text-yellow-700/80'>Masuk</Link></Text>
                     </div>
     </AuthPage>

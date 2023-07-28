@@ -5,12 +5,12 @@ import { FaAffiliatetheme } from 'react-icons/fa'
 import { IoStatsChart } from 'react-icons/io5'
 import { CiGlobe } from 'react-icons/ci'
 import { FaPeopleGroup } from 'react-icons/fa6'
-import { FiEdit } from 'react-icons/fi'
+import { FiEdit, FiHome, FiMail } from 'react-icons/fi'
 import { RxDashboard } from 'react-icons/rx'
 import { BsChatLeftQuoteFill, BsMusicNoteBeamed } from 'react-icons/bs'
 import { BiMessageAltDots, BiTimeFive } from 'react-icons/bi'
 import { MdOutlinePayment } from 'react-icons/md'
-export const contentData = {
+export const initialValue = {
     logoSrc: "/images/logo.png",
     home: {
         navbar: [
@@ -156,6 +156,59 @@ export const contentData = {
                     description: 'Tersedia fitur countdown timer yang dapat berfungsi sebagai pengingat waktu acara'
                 },
             ]
+        },
+        testimonials: {
+            title: "Testimoni",
+            description: "Bukti nyata bahwa datengdong telah menjadi bagian kebahagiaan momen terbaik mereka.",
+            button: {
+                value: "Lihat Portfolio",
+                href: "/portfolio"
+            },
+            items: [
+                {
+                    avatar: "/images/avatar1.svg",
+                    name: "Ucup Permana",
+                    job: "Karyawan Swasta",
+                    comment: "Baru kali ini ada platform undangan online pernikahan yang gratis dan simple. Terimakasih WeddingNesia."
+                },
+                {
+                    avatar: "/images/avatar2.svg",
+                    name: "Hugo Jayana",
+                    job: "Wirausahawan",
+                    comment: "Sangat mudah digunakan, undangan pernikahan langsung bisa dibagikan dengan cepat! Sukses WeddingNesia."
+                },
+                {
+                    avatar: "/images/avatar3.svg",
+                    name: "Suci Hanina",
+                    job: "Perawat",
+                    comment: "Di jaman digital sekarang ini undangan online pernikahan sangat membantu sekali. Thank WeddingNesia."
+                },
+            ]
+        },
+        footer: {
+            whiteLogo: "/images/whitelogo.png"
+        }
+    },
+    dashboard: {
+        user: {
+            navbar: [
+                {
+                    icon: <FiHome />,
+                    label: "Beranda",
+                    href: '/dashboard'
+                },
+                {
+                    icon: <FiMail />,
+                    label: "Undangan",
+                    href: '/dashboard/invitations'
+                },
+            ],
+            title: "50K+",
+            description: 'Undangan Telah Disebar',
+            src: "/images/beranda.svg",
+            greeting: 'Selamat Datang Di',
+            bold: 'WeddingNesia!',
+            caption: 'Platform pembuatan undangan pernikahan online gratis terbesar di Indonesia.'
         }
     }
 }

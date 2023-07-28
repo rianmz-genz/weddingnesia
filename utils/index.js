@@ -1,3 +1,5 @@
+import { Text } from "@/components";
+
 // joining class tailwind
 export function cn(...cns) {
   return cns.join(" ");
@@ -14,4 +16,10 @@ export function variant(base, variants) {
     // console.log(...variantClasses, base)
     return cn(base, ...variantClasses);
   };
+}
+
+export function getBadgeInvitation() {
+  return <div className='px-4 py-2 bg-green-400/20 text-green-400 rounded-md'>
+                <Text>Aktif</Text>
+              </div>
 }

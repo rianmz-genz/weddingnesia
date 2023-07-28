@@ -1,4 +1,4 @@
-import { Container, InterestSection, NavbarLandingpage, TutorialSection } from "@/components";
+import { Container, Footer, InterestSection, NavbarLandingpage, Testimonial, TutorialSection } from "@/components";
 import FeatureSection from "@/components/home/Feature";
 import HeroSection from "@/components/home/Hero";
 import Head from "next/head";
@@ -39,6 +39,8 @@ export default function Home() {
         <Container>
           <TutorialSection />
         </Container>
+        <Testimonial />
+        <Footer />
       </main>
     </>
   )
