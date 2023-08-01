@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import DataTable from "react-data-table-component";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function InvitationsDetail() {
   const router = useRouter();
@@ -243,10 +244,14 @@ export default function InvitationsDetail() {
       </div>
       <div className="px-4 my-12">
         <DataTable
+          className="scrollbar"
           selectableRows
           pagination={datas.length > 10}
           title={"Daftar Tamu Undangan"}
           progressPending={false}
+          progressComponent={
+            <AiOutlineLoading3Quarters className="text-xl text-black animate-spin" />
+          }
           columns={columns}
           data={datas}
           onSelectedRowsChange={(row) => console.log(row.selectedRows)}
