@@ -2,6 +2,7 @@ import { Button, DashboardUser, NavbarUser, Text } from "@/components";
 import { initialValue } from "@/store";
 import { buttonStyle, textStyle } from "@/utils/enum";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const DashboardUserView = () => {
@@ -31,10 +32,14 @@ const DashboardUserView = () => {
             {bold}
           </Text>
         </div>
-        <Text style={textStyle.description}>{caption}</Text>
-        <Button style={buttonStyle.blackLarge} className={"mt-6"}>
-          Buat Undangan
-        </Button>
+        <Text style={textStyle.description} className={"text-center"}>
+          {caption}
+        </Text>
+        <Link href={"/create"}>
+          <Button style={buttonStyle.blackLarge} className={"mt-6"}>
+            Buat Undangan
+          </Button>
+        </Link>
       </div>
     </DashboardUser>
   );
