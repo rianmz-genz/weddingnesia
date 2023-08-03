@@ -1,6 +1,7 @@
 import { variant } from "@/utils";
 import React from "react";
 import { FiSearch } from "react-icons/fi";
+import Text from "./Text";
 
 const Input = ({ style, className, ...props }) => {
   const inputVariant = variant(
@@ -30,6 +31,15 @@ export const InputSearch = ({ className, ...props }) => {
         className="text-sm focus:outline-none bg-transparent"
         type="search"
       />
+    </div>
+  );
+};
+
+export const InputTitle = ({ label, ...props }) => {
+  return (
+    <div className="w-full">
+      <Text>{label}</Text>
+      <input className="px-4 py-2 rounded border border-black/40" {...props} />
     </div>
   );
 };
