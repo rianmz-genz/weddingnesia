@@ -17,6 +17,8 @@ import { BiMessageAltDots, BiTimeFive } from "react-icons/bi";
 import { MdOutlinePayment } from "react-icons/md";
 export const initialValue = {
   logoSrc: "/images/logo.png",
+  man: "/images/lanang.svg",
+  woman: "/images/wadon.svg",
   home: {
     navbar: [
       {
