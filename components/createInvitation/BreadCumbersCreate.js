@@ -12,7 +12,7 @@ export default function BreadCumbersCreate({
 
   return (
     <ul
-      className={`w-full flex justify-center space-x-6 items-center ${className}`}
+      className={`w-full flex justify-center flex-wrap space-x-3 md:space-x-6 items-center ${className}`}
     >
       <Text style={textStyle.title}>{current.label}</Text>
       <p>|</p>
