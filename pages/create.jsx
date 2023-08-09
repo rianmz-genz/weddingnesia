@@ -40,15 +40,20 @@ export default function Create() {
   const getCurrentMenu = () => {
     const current = Cookies.get("currentMenu");
     setCurrentMenu(current ? JSON.parse(current) : cucumbersItem[0]);
+    setIsLoading(false);
   };
   const handleClickMenu = (idx) => {
     setIsLoading(true);
-    const selectedMenu = cucumbersItem.find((item, i) => i == idx);
-    setCurrentMenu(selectedMenu);
-    Cookies.set("currentMenu", JSON.stringify(selectedMenu));
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 300);
+    try {
+      const selectedMenu = cucumbersItem.find((item, i) => i == idx);
+      setCurrentMenu(selectedMenu);
+      Cookies.set("currentMenu", JSON.stringify(selectedMenu));
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+    } catch (e) {
+      console.log(e);
+    }
   };
   function getComponentView() {
     switch (currentMenu.value) {
