@@ -48,15 +48,16 @@ export const InputTitle = ({ label, className, ...props }) => {
   );
 };
 
-export const InputIgWithTitle = ({ label, className, ...props }) => {
+export const InputLeftWithTitle = ({ label, className, left, ...props }) => {
   return (
     <div className={`w-full ${className}`}>
       <Text style={textStyle.smalldescription}>{label}</Text>
       <div className=" flex mt-1 items-center w-full rounded border border-black/40 focus-within:ring-1 ring-yellow-800">
-        <div className="bg-slate-200 rounded-l p-2">
-          <VscMention className="text-xl" />
-        </div>
-        <input className="bg-transparent focus:outline-none px-3" {...props} />
+        <div className="bg-slate-200 rounded-l p-2">{left}</div>
+        <input
+          className="bg-transparent focus:outline-none px-3 w-full"
+          {...props}
+        />
       </div>
     </div>
   );
