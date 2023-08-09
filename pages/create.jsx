@@ -5,6 +5,7 @@ import ConfigureDomain from "@/components/createInvitation/ConfigureDomain";
 import LocationInformation from "@/components/createInvitation/LocationInformation";
 import Payment from "@/components/createInvitation/Payment";
 import ProfileCard from "@/components/dashboard/user/profilecard";
+import Loader from "@/components/globals/Loader";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 
@@ -32,17 +33,27 @@ export default function Create() {
     },
   ];
   const [currentMenu, setCurrentMenu] = useState({});
+  const [isLoading, setIsLoading] = useState({});
   useEffect(() => {
     getCurrentMenu();
   }, []);
   const getCurrentMenu = () => {
     const current = Cookies.get("currentMenu");
     setCurrentMenu(current ? JSON.parse(current) : cucumbersItem[0]);
+    setIsLoading(false);
   };
   const handleClickMenu = (idx) => {
-    const selectedMenu = cucumbersItem.find((item, i) => i == idx);
-    setCurrentMenu(selectedMenu);
-    Cookies.set("currentMenu", JSON.stringify(selectedMenu));
+    setIsLoading(true);
+    try {
+      const selectedMenu = cucumbersItem.find((item, i) => i == idx);
+      setCurrentMenu(selectedMenu);
+      Cookies.set("currentMenu", JSON.stringify(selectedMenu));
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+    } catch (e) {
+      console.log(e);
+    }
   };
   function getComponentView() {
     switch (currentMenu.value) {
@@ -68,7 +79,11 @@ export default function Create() {
           className={"my-6"}
           onClick={(idx) => handleClickMenu(idx)}
         />
-        {getComponentView()}
+        {isLoading ? (
+          <Loader className={"mx-auto text-2xl"} />
+        ) : (
+          getComponentView()
+        )}
       </div>
     </div>
   );

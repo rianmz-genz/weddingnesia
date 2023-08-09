@@ -1,11 +1,11 @@
 import { Text } from "@/components";
+import GetBadgeInvitation from "@/components/globals/GetBadge";
 import { InputSearch } from "@/components/globals/Input";
 import DashboardUser from "@/components/layout/DashboardUser";
-import { GetBadgeInvitation } from "@/utils";
 import { textStyle } from "@/utils/enum";
 import Link from "next/link";
 import React from "react";
-import { FiEdit, FiEye, FiPlus, FiSearch } from "react-icons/fi";
+import { FiEdit, FiEye, FiPlus } from "react-icons/fi";
 
 const DashboardInvitations = () => {
   return (
