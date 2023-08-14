@@ -6,6 +6,7 @@ const Text = ({ style, className, ...props }) => {
     style: {
       bigtitle: "lg:text-4xl leading-relaxed text-2xl font-bold",
       title: "lg:text-2xl text-xl",
+      smalltitle: "lg:text-xl text-lg",
       description: "lg:text-lg text-md",
       smalldescription: "lg:text-md text-base",
       titleQuestion: "text-sm font-semibold",
