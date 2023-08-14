@@ -19,7 +19,7 @@ const NavbarUser = () => {
         onClick={() => setIsOpened(!isOpened)}
       />
       <nav
-        className={`w-full md:w-2/12 flex flex-col md:left-0 items-center py-12 z-30 fixed transition-all duration-500 top-0 h-screen bg-white ${
+        className={`w-full md:w-2/12 flex flex-col md:left-0 items-center py-12 z-30 fixed transition-all duration-500 top-0 h-screen shadow shadow-black/5 bg-white ${
           isOpened ? "max-md:right-0" : "max-md:-right-full"
         }`}
       >
