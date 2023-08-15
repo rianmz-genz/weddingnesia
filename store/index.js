@@ -251,4 +251,13 @@ export const initialValue = {
         "Platform pembuatan undangan pernikahan online gratis terbesar di Indonesia.",
     },
   },
+  create: {
+    templates: [
+      {
+        name: "Black Javanese",
+        tier: "Free",
+        cover: "/images/coverinvitation.svg",
+      },
+    ],
+  },
 };
