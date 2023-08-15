@@ -9,7 +9,7 @@ const Input = ({ style, className, ...props }) => {
     `rounded-md focus:outline-none transition-all duration-300 ${className}`,
     {
       style: {
-        base: "w-full px-4 py-2 border border-black/10 ring-0 focus:border focus:border-yellow-700",
+        base: "w-full px-4 py-2 ring-1 ring-black/10  focus:ring-2 focus:ring-yellow-700",
       },
     }
   );
