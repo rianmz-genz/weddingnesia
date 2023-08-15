@@ -11,7 +11,7 @@ const Button = ({ style, className, ...props }) => {
         "px-6 py-3 border-2 font-bold border-yellow-700/90 text-yellow-700/90 hover:text-white hover:bg-yellow-700/90",
       silverlarge: `${large} bg-slate-50/30 hover:ring-2 hover:ring-black hover:bg-white text-black`,
       blackLarge: `${large} bg-black/95 text-yellow-600 hover:bg-black`,
-      blackMedium: `${md} bg-black/95 text-sm text-yellow-600 hover:bg-black`,
+      blackMedium: `${md} bg-black/90 text-sm text-yellow-600 hover:bg-black`,
     },
   });
   return (
