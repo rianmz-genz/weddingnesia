@@ -6,7 +6,7 @@ import { buttonStyle, textStyle } from "@/utils/enum";
 export default function UploadGallery() {
   return (
     <div className="w-6/12">
-      <Text style={textStyle.smalltitle} className={"font-bold mb-3"}>
+      <Text style={textStyle.description} className={"mb-3"}>
         Upload Gallery Foto
       </Text>
       <Button style={buttonStyle.blackMedium}>Pilih File</Button>
