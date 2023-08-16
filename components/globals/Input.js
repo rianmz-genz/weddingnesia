@@ -9,7 +9,7 @@ const Input = ({ style, className, ...props }) => {
     `rounded-md focus:outline-none transition-all duration-300 ${className}`,
     {
       style: {
-        base: "w-full px-4 py-2 ring-1 ring-black/10  focus:ring-2 focus:ring-yellow-700",
+        base: "w-full px-4 py-2 ring-1 ring-black/10  focus:ring-2 focus:ring-yellow-800",
       },
     }
   );
@@ -39,15 +39,26 @@ export const InputSearch = ({ className, ...props }) => {
 export const InputTitle = ({ label, className, ...props }) => {
   return (
     <div className={`w-full ${className}`}>
-      <Text style={textStyle.smalldescription}>{label}</Text>
+      <Text style={textStyle.description}>{label}</Text>
       <input
-        className="px-4 py-2 mt-1 w-full rounded border border-black/40 focus:outline-none focus:ring-1 ring-yellow-800"
+        className="px-4 py-2 mt-1 w-full rounded border border-black/10 focus:outline-none focus:ring-2 ring-yellow-800 transition-all duration-300"
         {...props}
       />
     </div>
   );
 };
 
+export const TextareaTitle = ({ label, className, ...props }) => {
+  return (
+    <div className={`w-full ${className}`}>
+      <Text style={textStyle.description}>{label}</Text>
+      <textarea
+        className="px-4 py-2 mt-1 w-full rounded border border-black/10 focus:outline-none focus:ring-2 ring-yellow-800 transition-all duration-300"
+        {...props}
+      />
+    </div>
+  );
+};
 export const InputLeftWithTitle = ({ label, className, left, ...props }) => {
   return (
     <div className={`w-full ${className}`}>

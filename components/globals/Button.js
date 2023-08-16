@@ -12,6 +12,7 @@ const Button = ({ style, className, ...props }) => {
       silverlarge: `${large} bg-slate-50/30 hover:ring-2 hover:ring-black hover:bg-white text-black`,
       blackLarge: `${large} bg-black/95 text-yellow-600 hover:bg-black`,
       blackMedium: `${md} bg-black/90 text-sm text-yellow-600 hover:bg-black`,
+      silverMedium: `${md} bg-slate-50/30 text-sm`,
     },
   });
   return (

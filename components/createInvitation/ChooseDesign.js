@@ -7,14 +7,18 @@ import Button from "../globals/Button";
 import CoverButton from "./CoverButton";
 import InvitationCard from "./InvitationCard";
 import { initialValue } from "@/store";
-import Input from "../globals/Input";
+import Input, { InputTitle, TextareaTitle } from "../globals/Input";
 import UploadGallery from "./UploadGallery";
+import DropDown from "../globals/Dropdown";
 
 export default function ChooseDesign() {
   const { templates } = initialValue.create;
   return (
     <TemplateCreate>
-      <Text style={textStyle.smalltitle} className={"font-bold mb-3"}>
+      <Text
+        style={textStyle.smalltitle}
+        className={"font-bold mb-3 py-3 border-y"}
+      >
         Pilih Cover
       </Text>
       <CoverButton
@@ -26,23 +30,28 @@ export default function ChooseDesign() {
         title={"Secondary Cover"}
         description={"Digunakan untuk bacgkround cover undangan bagian bawah"}
       />
-      <Text style={textStyle.smalltitle} className={"font-bold mt-6 mb-3"}>
-        Pilih Desain
+      <Text
+        style={textStyle.smalltitle}
+        className={"font-bold mt-8 py-3 border-y"}
+      >
+        Data Undangan
       </Text>
-      <ul className="grid grid-cols-3">
-        {templates.map(({ name, cover, tier }, i) => (
-          <InvitationCard key={i} name={name} cover={cover} tier={tier} />
-        ))}
-      </ul>
-      <div className="flex items-center gap-4 justify-center mt-6">
-        <div className="w-6/12">
-          <Text style={textStyle.smalltitle} className={"font-bold  mb-3"}>
-            Link Background Musik
-          </Text>
-          <Input placeholder="Link Background Musik" />
-        </div>
-        <UploadGallery />
+      <div className="flex items-center gap-4 justify-center mt-3">
+        <InputTitle
+          label={"Link Background Music"}
+          placeholder="Link Background Music"
+        />
+        <InputTitle
+          label={"Judul Pada Cover"}
+          placeholder="We Are Getting Married"
+        />
       </div>
+      <DropDown className={"w-full mt-3"} />
+      <div className="flex items-center gap-4 justify-center my-3">
+        <InputTitle label={"Salam Pembuka"} placeholder="Salam Pembuka" />
+        <DropDown className={"w-6/12"} />
+      </div>
+      <TextareaTitle label={"Ucapan Pembuka"} placeholder="Ucapan Pembuka" />
     </TemplateCreate>
   );
 }
