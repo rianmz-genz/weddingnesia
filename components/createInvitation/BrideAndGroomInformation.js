@@ -18,7 +18,7 @@ export default function BrideAndGroomInformation() {
       <div className="flex justify-center gap-6 md:flex-row flex-col">
         <ContainerPart>
           <InputProfile isMan img={imgMan} />
-          <div className="flex flex-col space-y-3 my-1 md:my-3 py-3 md:py-6 border-b border-black/40">
+          <div className="flex flex-col space-y-3 my-1 md:my-3 py-3 md:py-6 border-b border-black/10">
             <InputTitle
               label="Nama Lengkap Pria*"
               placeholder="Nama Lengkap Pria"
@@ -28,12 +28,12 @@ export default function BrideAndGroomInformation() {
               placeholder="Nama Panggilan Pria"
             />
           </div>
-          <div className="flex flex-col space-y-3 my-1 md:my-3 pb-3 md:pb-6 pt-3 border-b border-black/40">
+          <div className="flex flex-col space-y-3 my-1 md:my-3 pb-3 md:pb-6 pt-3 border-b border-black/10">
             <InputTitle label="Nama Ayah Pria*" placeholder="Nama Ayah Pria" />
             <InputTitle label="Nama Ibu Pria*" placeholder="Nama Ibu Pria" />
           </div>
 
-          <div className="md:pb-6 pb-3 mb-3 pt-3 md:mb-6 border-b border-black/40">
+          <div className="md:pb-6 pb-3 mb-3 pt-3 md:mb-6 border-b border-black/10">
             <InputTitle
               label="Urutan Anak Pria*"
               placeholder="Nama Lengkap Pria"
@@ -48,7 +48,7 @@ export default function BrideAndGroomInformation() {
 
         <ContainerPart>
           <InputProfile img={imgMan} />
-          <div className="flex flex-col space-y-3 my-1 md:my-3 py-3 md:py-6 border-b border-black/40">
+          <div className="flex flex-col space-y-3 my-1 md:my-3 py-3 md:py-6 border-b border-black/10">
             <InputTitle
               label="Nama Lengkap Wanita*"
               placeholder="Nama Lengkap Wanita"
@@ -58,7 +58,7 @@ export default function BrideAndGroomInformation() {
               placeholder="Nama Panggilan Wanita"
             />
           </div>
-          <div className="flex flex-col space-y-3 my-1 md:my-3 pb-3 md:pb-6 pt-3 border-b border-black/40">
+          <div className="flex flex-col space-y-3 my-1 md:my-3 pb-3 md:pb-6 pt-3 border-b border-black/10">
             <InputTitle
               label="Nama Ayah Wanita*"
               placeholder="Nama Ayah Wanita"
@@ -69,7 +69,7 @@ export default function BrideAndGroomInformation() {
             />
           </div>
 
-          <div className="md:pb-6 pb-3 mb-3 pt-3 md:mb-6 border-b border-black/40">
+          <div className="md:pb-6 pb-3 mb-3 pt-3 md:mb-6 border-b border-black/10">
             <InputTitle
               label="Urutan Anak Wanita*"
               placeholder="Nama Lengkap Wanita"
