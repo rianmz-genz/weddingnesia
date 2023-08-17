@@ -3,7 +3,6 @@ import BrideAndGroomInformation from "@/components/createInvitation/BrideAndGroo
 import ChooseDesign from "@/components/createInvitation/ChooseDesign";
 import ConfigureDomain from "@/components/createInvitation/ConfigureDomain";
 import LocationInformation from "@/components/createInvitation/LocationInformation";
-import Payment from "@/components/createInvitation/Payment";
 import ProfileCard from "@/components/dashboard/user/profilecard";
 import Loader from "@/components/globals/Loader";
 import Cookies from "js-cookie";
@@ -26,10 +25,6 @@ export default function Create() {
     {
       label: "Atur Domain",
       value: "Domain",
-    },
-    {
-      label: "Pembayaran",
-      value: "Pembayaran",
     },
   ];
   const [currentMenu, setCurrentMenu] = useState({});
@@ -65,8 +60,6 @@ export default function Create() {
         return <ChooseDesign />;
       case "Domain":
         return <ConfigureDomain />;
-      case "Pembayaran":
-        return <Payment />;
     }
   }
   return (

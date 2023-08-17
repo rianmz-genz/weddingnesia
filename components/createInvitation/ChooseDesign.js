@@ -10,9 +10,15 @@ import { initialValue } from "@/store";
 import Input, { InputTitle, TextareaTitle } from "../globals/Input";
 import UploadGallery from "./UploadGallery";
 import DropDown from "../globals/Dropdown";
+import { useState } from "react";
 
 export default function ChooseDesign() {
   const { templates } = initialValue.create;
+  const queueOptions = ["Pria - Wanita", "Wanita - Pria"];
+  const openingOptions = ["Muslim", "General"];
+  const [queueSelected, setQueueSelected] = useState("Pilih salah satu");
+  const [openingSelected, setOpeningSelected] = useState("Pilih salah satu");
+
   return (
     <TemplateCreate>
       <Text
@@ -36,7 +42,7 @@ export default function ChooseDesign() {
       >
         Data Undangan
       </Text>
-      <div className="flex items-center gap-4 justify-center mt-3">
+      <div className="flex items-center gap-4 justify-center mt-3 md:flex-row flex-col">
         <InputTitle
           label={"Link Background Music"}
           placeholder="Link Background Music"
@@ -46,12 +52,26 @@ export default function ChooseDesign() {
           placeholder="We Are Getting Married"
         />
       </div>
-      <DropDown className={"w-full mt-3"} />
-      <div className="flex items-center gap-4 justify-center my-3">
+      <DropDown
+        title={"Urutan Mempelai"}
+        options={queueOptions}
+        onSelect={(e) => setQueueSelected(e)}
+        className={"w-full mt-3"}
+        selectedOption={queueSelected}
+      />
+      <div className="flex md:items-center gap-4 justify-center my-3 md:flex-row flex-col-reverse">
         <InputTitle label={"Salam Pembuka"} placeholder="Salam Pembuka" />
-        <DropDown className={"w-6/12"} />
+        <DropDown
+          title={"Template Pembukaan"}
+          options={openingOptions}
+          selectedOption={openingSelected}
+          onSelect={(e) => setOpeningSelected(e)}
+          className={"md:w-6/12"}
+        />
       </div>
       <TextareaTitle label={"Ucapan Pembuka"} placeholder="Ucapan Pembuka" />
+      <TextareaTitle label={"Quotes"} placeholder="Mengarungi Ombak Bersama" />
+      <InputTitle label={"Sumber Quotes"} placeholder="Sutan Syahrir" />
     </TemplateCreate>
   );
 }
