@@ -2,24 +2,21 @@ import { useState } from "react";
 import Text from "./Text";
 import { textStyle } from "@/utils/enum";
 
-const DropDown = ({ className }) => {
+const DropDown = ({ className, title, options, onSelect, selectedOption }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Pilih salah satu");
-
-  const options = ["Pria - Wanita", "Wanita - Pria"];
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const selectOption = (option) => {
-    setSelectedOption(option);
+    onSelect(option);
     setIsOpen(false);
   };
 
   return (
     <div className={`${className}`}>
-      <Text style={textStyle.description}>Urutan Mempelai</Text>
+      <Text style={textStyle.description}>{title}</Text>
       <div className={`relative inline-block text-left w-full mt-1`}>
         <div>
           <span className="rounded-md shadow-sm">
@@ -49,7 +46,7 @@ const DropDown = ({ className }) => {
           </span>
         </div>
         {isOpen && (
-          <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+          <div className="origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
             <div
               className="py-1"
               role="menu"
