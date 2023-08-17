@@ -5,7 +5,7 @@ import Text from "../globals/Text";
 
 export default function ConfigureDomain() {
   return (
-    <TemplateCreate>
+    <TemplateCreate isLast>
       <InputLeftWithTitle
         left={"weddingnesia.id/"}
         label={"Domain*"}
