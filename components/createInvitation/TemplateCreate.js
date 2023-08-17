@@ -18,7 +18,7 @@ export default function TemplateCreate({
         style={buttonStyle.blackLarge}
         className={"w-full mt-6"}
       >
-        {isLast ? "Simpan" : "Simpaan & Lanjutkan"}
+        {isLast ? "Selesaikan" : "Simpaan & Lanjutkan"}
       </Button>
     </div>
   );
