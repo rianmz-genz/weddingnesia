@@ -15,6 +15,7 @@ import { RxDashboard } from "react-icons/rx";
 import { BsChatLeftQuoteFill, BsMusicNoteBeamed } from "react-icons/bs";
 import { BiMessageAltDots, BiTimeFive } from "react-icons/bi";
 import { MdOutlinePayment } from "react-icons/md";
+import BlackJavanese from "@/components/invitations/blackjavanese";
 export const initialValue = {
   logoSrc: "/images/logo.png",
   man: "/images/lanang.svg",
@@ -260,4 +261,10 @@ export const initialValue = {
       },
     ],
   },
+  demoInvitations: [
+    {
+      slug: "blackjavanese",
+      component: <BlackJavanese />,
+    },
+  ],
 };
