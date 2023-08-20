@@ -11,6 +11,10 @@ const Text = ({ style, className, ...props }) => {
       smalldescription: "lg:text-md text-base",
       titleQuestion: "text-sm font-semibold",
       base: "text-sm",
+      heroTitleAllura: "font-allura md:text-[5rem] text-5xl",
+      smallTitleAllura: "font-allura text-5xl",
+      descriptionAllura: "font-allura text-3xl",
+      smallDescriptionAllura: "font-allura text-2xl",
     },
   });
   return <p className={text({ style })} {...props} />;
