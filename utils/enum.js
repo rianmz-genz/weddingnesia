@@ -6,6 +6,10 @@ export const textStyle = {
   bigtitle: "bigtitle",
   description: "description",
   smalldescription: "smalldescription",
+  heroTitleAllura: "heroTitleAllura",
+  smallTitleAllura: "smallTitleAllura",
+  descriptionAllura: "descriptionAllura",
+  smallDescriptionAllura: "smallDescriptionAllura",
 };
 export const buttonStyle = {
   primarylarge: "primarylarge",
