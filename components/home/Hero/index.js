@@ -10,7 +10,7 @@ import { AiFillPlayCircle } from "react-icons/ai";
 const HeroSection = () => {
   return (
     <section
-      id="#"
+      id="hero"
       className="w-full bg-gradient-radial from-yellow-400/50 via-yellow-400/5 to-transparent min-h-screen flex justify-center items-center md:flex-row flex-col gap-3 md:mt-0 mt-6"
     >
       <div className="md:w-6/12 w-11/12 gap-6 flex flex-col justify-start items-start">

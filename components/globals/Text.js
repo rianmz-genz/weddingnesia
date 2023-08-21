@@ -5,6 +5,7 @@ const Text = ({ style, className, ...props }) => {
   const text = variant(`${className}`, {
     style: {
       bigtitle: "lg:text-4xl leading-relaxed text-2xl font-bold",
+      mdtitle: "lg:text-3xl leading-relaxed text-2xl font-bold",
       title: "lg:text-2xl text-xl",
       smalltitle: "lg:text-xl text-lg",
       description: "lg:text-lg text-md",
