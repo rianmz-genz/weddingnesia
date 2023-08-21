@@ -7,6 +7,16 @@ const DemoInvitationData = [
   {
     slug: "blackjavanese",
     component: <BlackJavanese />,
+    cover: "/images/coverblackjavanese.svg",
+    bride: "Adrian & Vinka",
+    comment: "Bagus dan simple!",
+  },
+];
+
+export const ThemeData = [
+  {
+    label: "Black Javanese",
+    slug: "blackjavanese",
   },
 ];
 
@@ -29,19 +39,18 @@ export const HealthyInformation = [
   {
     src: "/images/nojabat.svg",
     text: "Menggunakan Salam Namaste Sebagai Ganti Berjabat Tangan",
-    w: "w-20",
+    w: "w-24",
   },
   {
     src: "/images/masker.svg",
     text: "Wajib Menggunakan Masker",
-    w: "w-20",
+    w: "w-24",
   },
   {
     src: "/images/jagajarak.svg",
     text: "Saling Menjaga Jarak Dalam Acara",
-    w: "w-28",
+    w: "w-24",
   },
-
   {
     src: "/images/cuci.svg",
     text: "Jaga Kebersihan dengan Mencuci Tangan atau Handsanitizer",
