@@ -4,6 +4,7 @@ export const textStyle = {
   smalltitle: "smalltitle",
   base: "base",
   bigtitle: "bigtitle",
+  mdtitle: "mdtitle",
   description: "description",
   smalldescription: "smalldescription",
   heroTitleAllura: "heroTitleAllura",
