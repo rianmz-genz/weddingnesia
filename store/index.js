@@ -23,19 +23,19 @@ export const initialValue = {
   home: {
     navbar: [
       {
-        path: "/#",
+        path: "/#hero",
         value: "Home",
       },
       {
-        path: "#feature",
+        path: "/#feature",
         value: "Fitur",
       },
       {
-        path: "#theme",
+        path: "/#theme",
         value: "Tema",
       },
       {
-        path: "#price",
+        path: "/#price",
         value: "Harga",
       },
       {
