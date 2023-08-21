@@ -8,7 +8,9 @@ export default function NavbarBlackJavanese() {
       <ul className="flex justify-around items-center w-full text-white text-xl">
         {NavbarInvitation.map(({ icon, href }, i) => (
           <li key={i}>
-            <Link href={href}>{icon}</Link>
+            <Link href={href} scroll={true}>
+              {icon}
+            </Link>
           </li>
         ))}
       </ul>
