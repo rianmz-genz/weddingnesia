@@ -15,8 +15,11 @@ import { RxDashboard } from "react-icons/rx";
 import { BsChatLeftQuoteFill, BsMusicNoteBeamed } from "react-icons/bs";
 import { BiMessageAltDots, BiTimeFive } from "react-icons/bi";
 import { MdOutlinePayment } from "react-icons/md";
+import BlackJavanese from "@/components/invitations/blackjavanese";
 export const initialValue = {
   logoSrc: "/images/logo.png",
+  man: "/images/lanang.svg",
+  woman: "/images/wadon.svg",
   home: {
     navbar: [
       {
@@ -249,4 +252,19 @@ export const initialValue = {
         "Platform pembuatan undangan pernikahan online gratis terbesar di Indonesia.",
     },
   },
+  create: {
+    templates: [
+      {
+        name: "Black Javanese",
+        tier: "Free",
+        cover: "/images/coverinvitation.svg",
+      },
+    ],
+  },
+  demoInvitations: [
+    {
+      slug: "blackjavanese",
+      component: <BlackJavanese />,
+    },
+  ],
 };
