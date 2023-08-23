@@ -1,12 +1,17 @@
 import { AuthPage, Button, InputIcon, Logo, Text } from "@/components";
 import { textStyle } from "@/utils/enum";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { BiUser } from "react-icons/bi";
 import { FiKey } from "react-icons/fi";
+import GoogleIcon from "@/public/images/google.png";
+import FacebookIcon from "@/public/images/Facebook.png";
+import InstagramIcon from "@/public/images/instagram.png";
 
 const LoginView = () => {
+  const thirdProviderClass = 'flex flex-row p-4 shadow-md rounded-xl w-16 h-16';
   const router = useRouter();
   const handleLogin = (e) => {
     e.preventDefault();
@@ -42,6 +47,17 @@ const LoginView = () => {
             Daftar
           </Link>
         </Text>
+        <div className="flex flex-row justify-center gap-4 mt-4">
+          <button className={thirdProviderClass}>
+            <Image src={GoogleIcon} alt="google icon" />
+          </button>
+          <button className={thirdProviderClass}>
+            <Image src={FacebookIcon} alt="facebook icon" />  
+          </button>
+          <button className={thirdProviderClass}>
+            <Image src={InstagramIcon} alt="instagram icon" />
+          </button>
+        </div>
       </div>
     </AuthPage>
   );
