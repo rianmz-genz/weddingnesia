@@ -7,6 +7,7 @@ export const authOptions = {
   pages: {
     signIn: '/auth/signin',
   },
+  secret: process.env.SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
