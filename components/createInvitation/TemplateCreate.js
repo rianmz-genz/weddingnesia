@@ -42,7 +42,7 @@ export default function TemplateCreate({
       <Button
         onClick={onCancel}
         style={buttonStyle.dangerlarge}
-        className={"w-full mt-6"}
+        className={"w-full mt-3"}
       >
         {isCanceling ? (
           <AiOutlineLoading3Quarters className="text-red-500 mx-auto text-lg animate-spin" />
