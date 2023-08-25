@@ -33,3 +33,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+server.js
+
+.env
+auth.puml
+next-env.d.ts

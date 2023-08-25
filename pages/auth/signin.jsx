@@ -1,8 +1,11 @@
+import { useRouter } from "next/router";
+import { getProviders, signIn } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../api/auth/[...nextauth]";
 import { AuthPage, Button, InputIcon, Logo, Text } from "@/components";
 import { textStyle } from "@/utils/enum";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 import { BiUser } from "react-icons/bi";
 import { FiKey } from "react-icons/fi";
@@ -10,8 +13,35 @@ import GoogleIcon from "@/public/images/google.png";
 import FacebookIcon from "@/public/images/Facebook.png";
 import InstagramIcon from "@/public/images/instagram.png";
 
-const LoginView = () => {
-  const thirdProviderClass = 'flex flex-row p-4 shadow-md rounded-xl w-16 h-16';
+function ProviderButton(provider) {
+  let icon;
+  switch (provider.name) {
+    case 'Google':
+      icon = GoogleIcon;
+      break;
+    case 'Facebook':
+      icon = FacebookIcon;
+      break;
+    case 'Instagram':
+      icon = InstagramIcon;
+      break;
+    default:
+      icon = GoogleIcon;
+      break;
+  }
+  return (
+    <div key={provider.name} className="w-full flex flex-row justify-center rounded-lg py-3 shadow-md">
+      <button className="flex flex-row justify-start gap-4" onClick={() => signIn(provider.id)}>
+        <Image src={icon} alt="icon" className="w-8 h-8" />
+        <span>Sign in with {provider.name}</span>
+      </button>
+    </div>
+  )
+}
+
+export default function SignIn({
+  providers,
+}) {
   const router = useRouter();
   const handleLogin = (e) => {
     e.preventDefault();
@@ -47,20 +77,24 @@ const LoginView = () => {
             Daftar
           </Link>
         </Text>
-        <div className="flex flex-row justify-center gap-4 mt-4">
-          <button className={thirdProviderClass}>
-            <Image src={GoogleIcon} alt="google icon" />
-          </button>
-          <button className={thirdProviderClass}>
-            <Image src={FacebookIcon} alt="facebook icon" />  
-          </button>
-          <button className={thirdProviderClass}>
-            <Image src={InstagramIcon} alt="instagram icon" />
-          </button>
+        <div className="flex flex-col justify-center gap-4 mt-4">
+          {Object.values(providers).map((provider) => ProviderButton(provider))}
         </div>
       </div>
     </AuthPage>
   );
-};
+}
 
-export default LoginView;
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (session) {
+    return { redirect: { destination: "/" } };
+  }
+
+  const providers = await getProviders();
+
+  return {
+    props: { providers: providers ?? [] },
+  };
+}
