@@ -12,6 +12,9 @@ const NavbarUser = () => {
   const router = useRouter();
   const { pathname } = router;
   const [isOpened, setIsOpened] = useState(false);
+  const onLogout = () => {
+    router.push("/auth/login");
+  };
   return (
     <>
       <ToggleButton
@@ -43,7 +46,7 @@ const NavbarUser = () => {
             <p className={` text-xl`}>
               <BiLogOut />
             </p>
-            <button>Logout</button>
+            <button onClick={onLogout}>Logout</button>
           </li>
         </div>
       </nav>

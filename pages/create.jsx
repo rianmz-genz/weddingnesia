@@ -45,7 +45,7 @@ export default function Create() {
       Cookies.set("currentMenu", JSON.stringify(selectedMenu));
       setTimeout(() => {
         setIsLoading(false);
-      }, 300);
+      }, 100);
     } catch (e) {
       console.log(e);
     }

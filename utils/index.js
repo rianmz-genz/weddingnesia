@@ -1,5 +1,3 @@
-import { Text } from "@/components";
-
 // joining class tailwind
 export function cn(...cns) {
   return cns.join(" ");
