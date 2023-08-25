@@ -19,7 +19,7 @@ export default function Portfolio() {
         </div>
       </Container>
       <div className="flex my-6"></div>
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-11/12 mx-auto">
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:max-w-lg lg:max-w-7xl mx-auto px-7">
         {DemoInvitationData.map(({ bride, comment, cover, slug }, i) => (
           <InvitationCard
             key={i}
@@ -38,7 +38,7 @@ function InvitationCard({ slug, cover, bride, comment }) {
   return (
     <Link
       href={`/demo/invitation?sl=${slug}`}
-      className="w-full rounded-md shadow hover:shadow-xl"
+      className="w-full rounded-xl transition-all duration-500 shadow hover:shadow-xl"
     >
       <Image
         src={cover}
