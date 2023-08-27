@@ -14,6 +14,7 @@ export const textStyle = {
 };
 export const buttonStyle = {
   primarylarge: "primarylarge",
+  whitelarge: "whitelarge",
   outlineprimarylarge: "outlineprimarylarge",
   silverlarge: "silverlarge",
   blackLarge: "blackLarge",
