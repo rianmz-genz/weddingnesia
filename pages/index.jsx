@@ -1,4 +1,4 @@
-import GetAllPackage from "@/api/integrations/package/GetAllPackage";
+import GetPackagesApi from "@/api/package/GetPackages";
 import {
   ActionSection,
   Container,
@@ -12,7 +12,34 @@ import {
 import FeatureSection from "@/components/home/Feature";
 import HeroSection from "@/components/home/Hero";
 import Head from "next/head";
-import { useEffect } from "react";
+
+export async function getServerSideProps() {
+  try {
+    const res = await GetPackagesApi();
+    if (res.status == 1) {
+      const packages = res.data?.packages;
+      console.log(packages);
+      return {
+        props: {
+          packages,
+        },
+      };
+    } else if (res.status == 0) {
+      return {
+        props: {
+          packages: [],
+        },
+      };
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        packages: [],
+      },
+    };
+  }
+}
 
 export default function Home() {
   useEffect(() => {
