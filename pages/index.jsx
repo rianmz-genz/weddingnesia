@@ -12,12 +12,8 @@ import {
 import FeatureSection from "@/components/home/Feature";
 import HeroSection from "@/components/home/Hero";
 import Head from "next/head";
-import { useEffect } from "react";
 
-export default function Home() {
-  useEffect(() => {
-    GetAllPackage().then((res) => console.log(res));
-  }, []);
+export default function Home({ pageProps }) {
   return (
     <>
       <Head>
@@ -68,7 +64,7 @@ export default function Home() {
           <TutorialSection />
         </Container>
         <Testimonial />
-        <PriceSection />
+        <PriceSection packages={pageProps.packages} />
         <ActionSection />
         <Footer />
       </main>
@@ -76,21 +72,32 @@ export default function Home() {
   );
 }
 
-// export async function getServerSideProps() {
-//   try {
-//     const packages = await GetAllPackage();
-
-//     return {
-//       props: {
-//         packages,
-//       },
-//     };
-//   } catch (error) {
-//     console.error("Error fetching packages:", error.message);
-//     return {
-//       props: {
-//         packages: [],
-//       },
-//     };
-//   }
-// }
+export async function getServerSideProps() {
+  try {
+    const hit = await GetAllPackage();
+    // Misalnya, jika Anda ingin mengurutkan berdasarkan urutan: Freemium, Premium, Eksklusif, Pro, Elegant
+    if (!hit)
+      return {
+        props: {
+          packages: [],
+        },
+      };
+    // Misalnya, jika Anda ingin mengurutkan berdasarkan urutan: Freemium, Premium, Eksklusif, Pro, Elegant
+    const packages = hit.sort((a, b) => {
+      const order = ["Freemium", "Premium", "Eksklusif", "Pro", "Elegant"];
+      return order.indexOf(a.name) - order.indexOf(b.name);
+    });
+    return {
+      props: {
+        packages,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching packages:", error.message);
+    return {
+      props: {
+        packages: [],
+      },
+    };
+  }
+}
