@@ -13,15 +13,15 @@ const FeatureSection = () => {
       className="w-full py-32 h-fit bg-gradient-to-t from-yellow-600/80 via-yellow-600/20 to-transparent"
     >
       <SectionParagraph
-        className={"w-8/12 text-center mx-auto"}
+        className={"lg:w-8/12 lg:px-0 px-7 text-center mx-auto"}
         title={feature.title}
         description={feature.description}
       />
-      <ul className="grid grid-cols-1 md:grid-cols-3 sm:max-w-lg lg:max-w-5xl 2xl:max-w-7xl mx-auto gap-4 mt-8">
+      <ul className="grid grid-cols-1 lg:grid-cols-3 sm:max-w-lg lg:max-w-5xl 2xl:max-w-7xl mx-auto gap-4 mt-8 px-7">
         {feature.items.map((item, idx) => (
           <li
             key={idx}
-            className="rounded-md p-6 bg-white hover:shadow-2xl transition-all duration-300 shadow-xl space-y-4 flex flex-col justify-center items-start"
+            className="rounded-lg p-6 bg-white hover:shadow-2xl transition-all duration-300 shadow-xl space-y-4 flex flex-col justify-center items-start"
           >
             <div className="bg-yellow-600/10 text-yellow-600 rounded-full p-3 text-xl">
               {item.icon}
