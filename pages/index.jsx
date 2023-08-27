@@ -1,4 +1,5 @@
 import {
+  ActionSection,
   Container,
   Footer,
   InterestSection,
@@ -63,6 +64,7 @@ export default function Home() {
         </Container>
         <Testimonial />
         <PriceSection />
+        <ActionSection />
         <Footer />
       </main>
     </>
