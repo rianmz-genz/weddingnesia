@@ -6,8 +6,8 @@ import React from "react";
 
 const InterestSection = () => {
   return (
-    <div className="w-full h-fit py-32 space-x-3 md:flex-row flex-col flex justify-center items-center my-6">
-      <div className="md:w-6/12 w-11/12">
+    <div className="w-full h-fit my-28 space-x-3 lg:flex-row flex-col flex justify-center items-center">
+      <div className="lg:w-6/12 w-11/12">
         <Text style={textStyle.bigtitle}>
           {initialValue.home.interest.title}
         </Text>
@@ -44,7 +44,7 @@ const InterestSection = () => {
         alt="Image WeddingNesia"
         width={1080}
         height={1080}
-        className="md:w-6/12 w-11/12 md:mt-0 mt-12"
+        className="lg:w-6/12 w-11/12 lg:mt-0 mt-12"
       />
     </div>
   );
