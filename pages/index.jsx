@@ -1,8 +1,36 @@
+import GetPackagesApi from "@/api/package/GetPackages";
 import { Container, Footer, InterestSection, NavbarLandingpage, Testimonial, TutorialSection } from "@/components";
 import FeatureSection from "@/components/home/Feature";
 import HeroSection from "@/components/home/Hero";
 import Head from "next/head";
 
+export async function getServerSideProps() {
+  try {
+    const res = await GetPackagesApi();
+    if (res.status == 1) {
+      const packages = res.data?.packages;
+      console.log(packages);
+      return {
+        props: {
+          packages,
+        },
+      };
+    } else if (res.status == 0) {
+      return {
+        props: {
+          packages: [],
+        },
+      };
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        packages: [],
+      },
+    };
+  }
+}
 
 export default function Home() {
   return (
