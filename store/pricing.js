@@ -5,8 +5,10 @@ const baseBenefit = [
   "Jumlah Tamu Unlimited",
   "Buku Tamu",
 ];
+const discrimination = ["Quote", "Countdown Timer"];
 const premiumBenefit = [
   ...baseBenefit,
+  ...discrimination,
   "Album Maximal 3",
   "Costum Slug",
   "Durasi 1 Tahun",
@@ -19,6 +21,7 @@ const freemiumBenefit = [
 ];
 const elegantBenefit = [
   ...baseBenefit,
+  ...discrimination,
   "Album Maximal 9",
   "Grup Tamu",
   "Video Prewedding",
@@ -28,6 +31,7 @@ const elegantBenefit = [
 ];
 const proBenefit = [
   ...baseBenefit,
+  ...discrimination,
   "Album Maximal 12",
   "Grup Tamu",
   "Video Prewedding",
@@ -42,13 +46,14 @@ const proBenefit = [
 ];
 const eksklusifBenefit = [
   ...baseBenefit,
+  ...discrimination,
   "Album Maximal 15",
   "Grup Tamu",
   "Video Prewedding",
   "Costum Section",
   "Costum Tema",
   "Kirim Undangan Via Wa",
-  "Kirim Undangan Via Email Serentak",
+  "Kirim Email Serentak",
   "Tema Eksklusif",
   "Durasi Selamanya",
   "Costum Subdomain",
@@ -73,6 +78,39 @@ const premiumData = {
   src: "/images/premium.svg",
 };
 
-const benefits = [{ data: freemiumData }, { data: premiumData }];
+const priceElegant = 210000;
+const elegantData = {
+  price: priceElegant,
+  benefits: elegantBenefit,
+  slug: "elegant",
+  name: "Elegant",
+  src: "/images/elegant.svg",
+};
+
+const pricePro = 445000;
+const proData = {
+  price: pricePro,
+  benefits: proBenefit,
+  slug: "pro",
+  name: "Pro",
+  src: "/images/pro.svg",
+};
+
+const priceEksklusif = 849000;
+const eksklusifData = {
+  price: priceEksklusif,
+  benefits: eksklusifBenefit,
+  slug: "eksklusif",
+  name: "Eksklusif",
+  src: "/images/eksklusif.svg",
+};
+
+const benefits = [
+  { data: freemiumData },
+  { data: premiumData },
+  { data: eksklusifData },
+  { data: proData },
+  { data: elegantData },
+];
 
 export default benefits;
