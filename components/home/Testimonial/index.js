@@ -10,9 +10,9 @@ import React from "react";
 const Testimonial = () => {
   const { testimonials } = initialValue.home;
   return (
-    <section className="w-full mt-32 mb-28">
-      <div className="flex mx-auto flex-col sm:max-w-lg lg:max-w-5xl 2xl:max-w-7xl md:flex-row justify-center items-center">
-        <div className="md:w-6/12 w-full">
+    <section className="w-full py-24 bg-gradient-to-t from-yellow-600 via-transparent to-transparent">
+      <div className="flex mx-auto flex-col px-7 sm:max-w-lg lg:max-w-5xl 2xl:max-w-7xl lg:flex-row justify-center items-center">
+        <div className="lg:w-6/12 w-full">
           <Text style={textStyle.bigtitle}>{testimonials.title}</Text>
           <Text
             className={"mt-3 mb-6 pr-6 text-black/80"}
@@ -26,7 +26,7 @@ const Testimonial = () => {
             </Button>
           </Link>
         </div>
-        <ul className="md:w-6/12 w-full mt-6 md:mt-0 flex space-y-6 flex-col justify-center items-center">
+        <ul className="lg:w-6/12 w-full mt-6 lg:mt-0 flex space-y-6 flex-col justify-center items-center">
           {testimonials.items.map((item, idx) => (
             <li
               key={idx}
@@ -37,7 +37,7 @@ const Testimonial = () => {
                 alt={`Testimonial ${item.name}`}
                 width={1080}
                 height={1080}
-                className="rounded-full w-24 hidden md:block"
+                className="rounded-full w-24 hidden lg:block"
               />
               <div className="w-full pl-8">
                 <Text
