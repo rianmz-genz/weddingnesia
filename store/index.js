@@ -230,7 +230,7 @@ export const initialValue = {
     pricing: {
       title: "Pilih Paket Undangan Digitalmu Sekarang",
       description:
-        "Silakan tentukan harga paket sesuai kebutuhan Anda. Kami memberikan harga termurah dan fitur terlengkap. Lihat perbandingan masing-masing paket disini.",
+        "Silakan tentukan harga paket sesuai kebutuhan Anda. Kami memberikan harga termurah dan fitur terlengkap.",
     },
     footer: {
       whiteLogo: "/images/whitelogo.png",
