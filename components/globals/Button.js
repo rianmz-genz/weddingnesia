@@ -7,6 +7,7 @@ const Button = ({ style, className, ...props }) => {
   const button = variant(`rounded-xl ${className}`, {
     style: {
       primarylarge: `${large} bg-yellow-700/80 text-white hover:bg-yellow-700/90`,
+      whitelarge: `${large} bg-white text-black hover:bg-white/90`,
       dangerlarge: `${large} bg-red-500/10 text-red-500 hover:ring-2 hover:ring-red-500`,
       outlineprimarylarge:
         "px-6 py-3 border-2 font-bold border-yellow-700/90 text-yellow-700/90 hover:text-white hover:bg-yellow-700/90",
