@@ -1,3 +1,4 @@
+import GetAllPackage from "@/api/integrations/package/GetAllPackage";
 import {
   ActionSection,
   Container,
@@ -11,8 +12,12 @@ import {
 import FeatureSection from "@/components/home/Feature";
 import HeroSection from "@/components/home/Hero";
 import Head from "next/head";
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect(() => {
+    GetAllPackage().then((res) => console.log(res));
+  }, []);
   return (
     <>
       <Head>
@@ -70,3 +75,22 @@ export default function Home() {
     </>
   );
 }
+
+// export async function getServerSideProps() {
+//   try {
+//     const packages = await GetAllPackage();
+
+//     return {
+//       props: {
+//         packages,
+//       },
+//     };
+//   } catch (error) {
+//     console.error("Error fetching packages:", error.message);
+//     return {
+//       props: {
+//         packages: [],
+//       },
+//     };
+//   }
+// }
