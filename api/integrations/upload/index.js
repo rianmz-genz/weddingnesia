@@ -1,14 +1,14 @@
+const { default: makeApiRequest } = require("@/api/helpers/MakeApi");
 const { default: axios } = require("axios");
 
 const handleUpload = async ({ file }) => {
-  const formData = new FormData();
+  const data = new FormData();
   formData.append("image", file);
-
   try {
-    const response = await axios.post("/api/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+    const response = await makeApiRequest({
+      baseUrl: "/api/upload",
+      data,
+      type: "multipart/form-data",
     });
     return response.data;
   } catch (error) {
