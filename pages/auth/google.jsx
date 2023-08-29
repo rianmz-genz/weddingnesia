@@ -1,23 +1,18 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
-const baseUrl = process.env.BACKEND_BASE_URL;
+import Cookies from "js-cookie";
 
 function GoogleCallback() {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState({});
-  const [user, setUser] = useState(null);
   let isCalled = false;
 
   const router = useRouter();
   const path = router.asPath;
   const params = path.substring(12, path.length - 1);
 
-  const apiUrl = useMemo(
-    () => `${baseUrl}/auth/callback/google${params}`,
-    [params]
-  );
+  const apiUrl = `http://localhost:8000/api/auth/callback/google${params}`;
+  console.log(apiUrl);
 
   useEffect(() => {
     if (isCalled) return;
@@ -33,56 +28,21 @@ function GoogleCallback() {
       .then((response) => {
         return response.json();
       })
-      .then((data) => {
+      .then((jsonData) => {
         setLoading(false);
-        setData(data);
+        Cookies.set("token", jsonData.data.access_token, { expires: 2 });
       });
   }, []);
-
-  function fetchUserData() {
-    fetch(`http://localhost:8000/api/user`, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: "Bearer " + data.access_token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setUser(data);
-      });
-  }
 
   if (loading) {
     return <DisplayLoading />;
   } else {
-    if (user != null) {
-      return <DisplayData data={user} />;
-    } else {
-      return (
-        <div>
-          <DisplayData data={data} />
-          <div style={{ marginTop: 10 }}>
-            <button onClick={fetchUserData}>Fetch User</button>
-          </div>
-        </div>
-      );
-    }
+    router.push('/dashboard')
   }
 }
 
 function DisplayLoading() {
   return <div>Loading....</div>;
-}
-
-function DisplayData(data) {
-  return (
-    <div>
-      <samp>{JSON.stringify(data, null, 2)}</samp>
-    </div>
-  );
 }
 
 export default GoogleCallback;
