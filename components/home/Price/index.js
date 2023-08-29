@@ -11,7 +11,7 @@ import { BiRefresh } from "react-icons/bi";
 
 export default function PriceSection({ packages }) {
   const { pricing } = initialValue.home;
-
+  console.log(packages);
   return (
     <section
       id="price"
@@ -22,18 +22,18 @@ export default function PriceSection({ packages }) {
         title={pricing.title}
         description={pricing.description}
       />
-      {/* {packages.length == 0 && (
+      {/* {packages?.length == 0 && (
         <button className="mt-12 bg-slate-100 mx-auto p-2 rounded-md">
           <BiRefresh />
         </button>
       )} */}
       <ul
         className={`grid grid-cols-1 lg:grid-cols-5 ${
-          packages.length == 0 ? "mt-3" : "mt-12"
+          packages?.length == 0 ? "mt-3" : "mt-12"
         } gap-3 place-items-center`}
       >
-        {packages.length != 0
-          ? packages.map(({ icon, features, name, price, id }, i) => (
+        {packages?.length != 0
+          ? packages?.map(({ icon, features, name, price, id }, i) => (
               <PriceCard
                 key={i}
                 src={icon}
