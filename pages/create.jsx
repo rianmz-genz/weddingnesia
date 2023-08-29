@@ -31,9 +31,19 @@ export default function Create() {
   const data = {
     owner_id: "",
     audio: "",
-    audio: "",
+    timezone: "",
+    bride_name: "",
+    bride_avatar: "",
+    bride_fullname: "",
+    bride_info: "",
+    bride_instagram: "",
+    groom_name: "",
+    groom_avatar: "",
+    groom_fullname: "",
+    groom_info: "",
+    groom_instagram: "",
   };
-  const [initialData, setinitialData] = useState({});
+  const [initialData, setinitialData] = useState(data);
   useEffect(() => {
     getCurrentMenu();
   }, []);
@@ -55,10 +65,19 @@ export default function Create() {
       console.log(e);
     }
   };
+  const onNext = () => {
+    console.log(initialData);
+  };
   function getComponentView() {
     switch (currentMenu.value) {
       case "Mempelai":
-        return <BrideAndGroomInformation />;
+        return (
+          <BrideAndGroomInformation
+            onNext={onNext}
+            {...initialData}
+            setValue={setValue}
+          />
+        );
       case "Lokasi":
         return <LocationInformation />;
       case "Desain":
@@ -67,6 +86,14 @@ export default function Create() {
         return <ConfigureDomain />;
     }
   }
+  const setValue = (fields) => {
+    setinitialData((prev) => {
+      return {
+        ...prev,
+        ...fields,
+      };
+    });
+  };
   return (
     <div className="w-full min-h-screen bg-slate-50 py-12">
       <div className="w-11/12 mx-auto">
