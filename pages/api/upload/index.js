@@ -38,9 +38,13 @@ export default async function handler(req, res) {
     const filenya = files.image[0].newFilename;
     res.status(200).json({
       message: "File uploaded successfully",
-      path: `http://${req.headers.host}/assets/${filenya}`,
+      data: "/assets/" + filenya,
+      status: true,
     });
   } else {
-    res.status(400).json({ error: "No image file found" });
+    res.status(400).json({
+      error: "No image file found",
+      status: false,
+    });
   }
 }
