@@ -13,7 +13,7 @@ import FeatureSection from "@/components/home/Feature";
 import HeroSection from "@/components/home/Hero";
 import Head from "next/head";
 
-export default function Home({ pageProps }) {
+export default function Home({ packages }) {
   return (
     <>
       <Head>
@@ -64,7 +64,7 @@ export default function Home({ pageProps }) {
           <TutorialSection />
         </Container>
         <Testimonial />
-        <PriceSection packages={pageProps.packages} />
+        <PriceSection packages={packages} />
         <ActionSection />
         <Footer />
       </main>
@@ -87,6 +87,8 @@ export async function getServerSideProps() {
       const order = ["Freemium", "Premium", "Eksklusif", "Pro", "Elegant"];
       return order.indexOf(a.name) - order.indexOf(b.name);
     });
+    console.log("hit", packages);
+
     return {
       props: {
         packages,
