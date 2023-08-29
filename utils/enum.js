@@ -21,4 +21,6 @@ export const buttonStyle = {
   blackMedium: "blackMedium",
   silverMedium: "silverMedium",
   dangerlarge: "dangerlarge",
+  dangersmall: "dangersmall",
+  greensmall: "greensmall",
 };
