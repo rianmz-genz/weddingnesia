@@ -28,12 +28,13 @@ export default function TemplateCreate({
     }
   };
   return (
-    <div
-      className={`${className} bg-white w-full rounded-md p-4 md:p-8 shadow`}
+    <form
+      onSubmit={onNext}
+      className={`${className} bg-white w-full rounded-md p-4 md:p-8`}
     >
       {children}
       <Button
-        onClick={onNext}
+        type="submit"
         style={buttonStyle.blackLarge}
         className={"w-full mt-6"}
       >
@@ -50,6 +51,6 @@ export default function TemplateCreate({
           "Batalkan"
         )}
       </Button>
-    </div>
+    </form>
   );
 }
