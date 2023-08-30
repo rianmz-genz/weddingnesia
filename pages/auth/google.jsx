@@ -2,17 +2,18 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
+import { urlGoogleCallback } from "@ApiRoutes/auth";
 
 function GoogleCallback() {
   const [loading, setLoading] = useState(true);
+  const [resError, setResError] = useState(true);
   let isCalled = false;
 
   const router = useRouter();
   const path = router.asPath;
   const params = path.substring(12, path.length - 1);
 
-  const apiUrl = `http://localhost:8000/api/auth/callback/google${params}`;
-  console.log(apiUrl);
+  const apiUrl = urlGoogleCallback + params;
 
   useEffect(() => {
     if (isCalled) return;
@@ -29,15 +30,22 @@ function GoogleCallback() {
         return response.json();
       })
       .then((jsonData) => {
+        if (jsonData.status) {
+          Cookies.set("token", jsonData.data.access_token, { expires: 2 });
+        } else {
+          setResError(jsonData.message);
+        }
         setLoading(false);
-        Cookies.set("token", jsonData.data.access_token, { expires: 2 });
       });
   }, []);
 
   if (loading) {
     return <DisplayLoading />;
   } else {
-    router.push('/dashboard')
+    if (resError != null) {
+      router.push("/auth/login");
+    }
+    router.push("/dashboard");
   }
 }
 
