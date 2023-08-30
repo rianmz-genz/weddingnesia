@@ -1,7 +1,9 @@
+import { urlLogin } from "@ApiRoutes/auth";
+
 const LoginApi = async ({ email, password }) => {
   const data = { email, password };
     
-  const response = await fetch('http://localhost:8000/api/login', {
+  const response = await fetch(urlLogin, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -12,7 +14,7 @@ const LoginApi = async ({ email, password }) => {
     return response.json()
   })
   
-  return response.data
+  return response
 };
 
 export default LoginApi;
