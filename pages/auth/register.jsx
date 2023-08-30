@@ -8,6 +8,7 @@ import RegisterApi from "@/api/auth/RegisterApi";
 
 const Register = () => {
   const [name, setName] = useState("");
+  const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -51,16 +52,22 @@ const Register = () => {
         if (data.errors != null) {
           setErrorEmail(data.errors.email)
         } else {
-          console.log('success');
+          setSuccess(true)
         }
-      }); 
+      });
     }
   };
+
+  const successRegister = () => {
+    return <>
+      <span className="text-green-500 text-center">Registration Successful!</span>
+      <span className="text-xs text-center">Please check your email for further instructions to validate your account.</span>
+    </>
+  }
   return (
     <AuthPage onSubmit={handleRegister}>
       <Logo className={"w-8/12"} />
-      <span className="text-green-500 text-center">Registration Successful!</span>
-      <span className="text-xs text-center">Please check your email for further instructions to validate your account.</span>
+      {success ? successRegister() : <></>}
       <div className="w-full mt-6">
         <Text className={"mb-1"} style={textStyle.titleQuestion}>
           Name
