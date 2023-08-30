@@ -1,17 +1,27 @@
-import Logo from "@/components/Logo";
 import { initialValue } from "@/store";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { BiLogOut, BiMenuAltRight } from "react-icons/bi";
-import { FiX } from "react-icons/fi";
+import { BiLogOut } from "react-icons/bi";
 import ToggleButton from "./ToggleButton";
+import LogoutApi from "@/api/auth/LogoutApi";
+import Cookies from "js-cookie";
 
 const NavbarUser = () => {
   const { navbar } = initialValue.dashboard.user;
   const router = useRouter();
   const { pathname } = router;
   const [isOpened, setIsOpened] = useState(false);
+
+  const handleLogout = () => {
+    LogoutApi().then((res) => {
+      Cookies.remove('token')
+      if (res.status === true) {
+        router.push('/')
+      }
+    })
+  }
+
   return (
     <>
       <ToggleButton
@@ -43,7 +53,7 @@ const NavbarUser = () => {
             <p className={` text-xl`}>
               <BiLogOut />
             </p>
-            <button>Logout</button>
+            <button onClick={handleLogout}>Logout</button>
           </li>
         </div>
       </nav>
