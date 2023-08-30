@@ -1,7 +1,9 @@
+import { urlRegister } from "@ApiRoutes/auth";
+
 const RegisterApi = async ({ name, email, password }) => {
     const data = { fullName: name, email, password };
       
-    const response = await fetch('http://localhost:8000/api/register', {
+    const response = await fetch(urlRegister, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -12,7 +14,7 @@ const RegisterApi = async ({ name, email, password }) => {
       return response.json()
     })
     
-    return response.data
+    return response
   };
   
   export default RegisterApi;

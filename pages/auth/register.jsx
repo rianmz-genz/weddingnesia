@@ -16,9 +16,10 @@ const Register = () => {
     e.preventDefault();
     setErrorEmail(null)
     RegisterApi({ name, email, password }).then((res) => {
-      if (res.errors != null) {
+      const data = res.data;
+      if (data.errors != null) {
         console.log('error');
-        setErrorEmail(res.errors.email)
+        setErrorEmail(data.errors.email)
       } else {
         console.log('success');
       }
