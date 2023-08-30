@@ -43,23 +43,48 @@ const LoginView = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [errorEmail, setErrorEmail] = useState("");
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    LoginApi({email, password}).then((res) => {
-      if (res.errors != null) {
-        console.log('error');
-        setErrorEmail(res.errors.email)
-      } else {
-        Cookies.set("token", res.access_token, { expires: 2 });
-      }
-    })
-
-    //router.push("/dashboard");
-  };
+  const [errorAuthenticate, setErrorAuthenticate] = useState("");
   const [loginUrl, setLoginUrl] = useState(null);
-
   const [facebookUrl, setFacebookUrl] = useState(null);
+
+  function formValidator() {
+    let result = true
+    setErrorEmail(null)
+    setErrorAuthenticate(null)
+    if (email.length < 1) {
+      setErrorEmail("The email field is required")
+      result = false
+    }
+    return result
+  }
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const validation = formValidator()
+
+    if (validation) {
+      LoginApi({email, password}).then((res) => {
+        if (res.status == 0) {
+          if (res.code == 404) {
+            setErrorEmail(res.message)
+          }
+          if (res.code == 422) {
+            setErrorEmail(res.data.errors.email ?? "")
+          }
+          if (res.code == 401) {
+            setErrorAuthenticate(res.message)
+          }
+          if (res.code == 400) {
+            setErrorAuthenticate(res.message)
+          }
+        }
+        if (res.code == 200) {
+          Cookies.set("token", res.access_token, { expires: 2 });
+          router.push("/dashboard");
+        }
+      })
+    }
+  };
 
   useEffect(() => {
       fetch('http://localhost:8000/api/auth/google', {
@@ -75,7 +100,6 @@ const LoginView = () => {
               throw new Error('Something went wrong!');
           })
           .then((data) => setLoginUrl( data.url ))
-          .catch((error) => console.error(error));
   }, []);
 
   useEffect(() => {
@@ -92,7 +116,6 @@ const LoginView = () => {
               throw new Error('Something went wrong!');
           })
           .then((data) => setFacebookUrl( data.url ))
-          .catch((error) => console.error(error));
   }, []);
 
   const providers = [
@@ -109,6 +132,7 @@ const LoginView = () => {
   return (
     <AuthPage onSubmit={handleLogin}>
       <Logo className={"w-8/12"} />
+      {errorAuthenticate ? <div className="text-sm text-red-500">{errorAuthenticate}</div> : ''}
       <div className="w-full mt-6">
         <Text className={"mb-1"} style={textStyle.titleQuestion}>
           Email
