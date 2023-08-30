@@ -11,6 +11,7 @@ import FacebookIcon from "@/public/images/Facebook.png";
 import InstagramIcon from "@/public/images/instagram.png";
 import LoginApi from "@/api/auth/LoginApi";
 import Cookies from "js-cookie";
+import { urlAuthFacebook, urlAuthGoogle } from "@ApiRoutes/auth";
 
 function ProviderButton(provider) {
   let icon;
@@ -64,22 +65,22 @@ const LoginView = () => {
 
     if (validation) {
       LoginApi({email, password}).then((res) => {
-        if (res.status == 0) {
-          if (res.code == 404) {
+        if (res.status === false) {
+          if (res.code === 404) {
             setErrorEmail(res.message)
           }
-          if (res.code == 422) {
+          if (res.code === 422) {
             setErrorEmail(res.data.errors.email ?? "")
           }
-          if (res.code == 401) {
+          if (res.code === 401) {
             setErrorAuthenticate(res.message)
           }
-          if (res.code == 400) {
+          if (res.code === 400) {
             setErrorAuthenticate(res.message)
           }
         }
-        if (res.code == 200) {
-          Cookies.set("token", res.access_token, { expires: 2 });
+        if (res.code === 200) {
+          Cookies.set("token", res.data.access_token, { expires: 2 });
           router.push("/dashboard");
         }
       })
@@ -87,7 +88,7 @@ const LoginView = () => {
   };
 
   useEffect(() => {
-      fetch('http://localhost:8000/api/auth/google', {
+      fetch(urlAuthGoogle, {
           headers : {
               'Content-Type': 'application/json',
               'Accept': 'application/json'
@@ -103,7 +104,7 @@ const LoginView = () => {
   }, []);
 
   useEffect(() => {
-      fetch('http://localhost:8000/api/auth/facebook', {
+      fetch(urlAuthFacebook, {
           headers : {
               'Content-Type': 'application/json',
               'Accept': 'application/json'
