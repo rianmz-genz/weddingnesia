@@ -23,7 +23,7 @@ const makeApiRequest = async ({
       return false;
     }
   } catch (error) {
-    return false;
+    return error;
   }
 };
 
