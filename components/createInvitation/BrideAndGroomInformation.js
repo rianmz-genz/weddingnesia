@@ -44,12 +44,12 @@ export default function BrideAndGroomInformation({
   }, []);
   useEffect(() => {
     setValue({
-      groom_info: `${orderGroom} dari Bapak ${fatherGroom} dan Ibu ${motherGroom}`,
+      groom_info: `${orderGroom} dari Bapak ${fatherGroom} & Ibu ${motherGroom}`,
     });
   }, [fatherGroom, motherGroom, orderGroom]);
   useEffect(() => {
     setValue({
-      bride_info: `${orderBride} dari Bapak ${fatherBride} dan Ibu ${motherBride}`,
+      bride_info: `${orderBride} dari Bapak ${fatherBride} & Ibu ${motherBride}`,
     });
   }, [fatherBride, motherBride, orderBride]);
   async function partOfInfo(info) {
@@ -59,7 +59,7 @@ export default function BrideAndGroomInformation({
     res.push(parts[0].trim()); // Push the first part
     // Find "Bapak" and "dan" indexes
     const startIndex = info.indexOf("Bapak") + "Bapak".length;
-    const endIndex = info.indexOf("dan");
+    const endIndex = info.indexOf("&");
     // Extract the part between "Bapak" and "dan"
     const bapak = info.substring(startIndex, endIndex).trim();
     res.push(bapak);
