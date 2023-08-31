@@ -17,6 +17,7 @@ export default function TemplateCreate({
     return;
   }
   const [isCanceling, setIsCanceling] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
   const onCancel = () => {
     try {
@@ -27,9 +28,14 @@ export default function TemplateCreate({
       console.log(err);
     }
   };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setisLoading(true);
+    onNext().then((res) => setisLoading((prev) => false));
+  };
   return (
     <form
-      onSubmit={onNext}
+      onSubmit={onSubmit}
       className={`${className} bg-white w-full rounded-md p-4 md:p-8`}
     >
       {children}
@@ -38,7 +44,13 @@ export default function TemplateCreate({
         style={buttonStyle.blackLarge}
         className={"w-full mt-6"}
       >
-        {isLast ? "Selesaikan" : "Simpan & Lanjutkan"}
+        {isLoading ? (
+          <AiOutlineLoading3Quarters className="text-red-500 mx-auto text-lg animate-spin" />
+        ) : isLast ? (
+          "Selesaikan"
+        ) : (
+          "Simpan & Lanjutkan"
+        )}
       </Button>
       <Button
         onClick={onCancel}
