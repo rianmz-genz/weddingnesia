@@ -4,6 +4,7 @@ import PackageRoute from "@/api/routes/package";
 const GetAllPackage = async () => {
   try {
     const res = await makeApiRequest({ baseUrl: PackageRoute });
+    // console.log("res", res);
     if (!res) return false;
     return res.packages;
   } catch (error) {
