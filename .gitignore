@@ -36,6 +36,8 @@ next-env.d.ts
 
 server.js
 
+.idea
+
 .env
 auth.puml
 next-env.d.ts
