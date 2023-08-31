@@ -11,6 +11,7 @@ import Input, { InputTitle, TextareaTitle } from "../globals/Input";
 import UploadGallery from "./UploadGallery";
 import DropDown from "../globals/Dropdown";
 import { useState } from "react";
+import TitleBorder from "../globals/TitleBorder";
 
 export default function ChooseDesign() {
   const { templates } = initialValue.create;
@@ -21,12 +22,7 @@ export default function ChooseDesign() {
 
   return (
     <TemplateCreate>
-      <Text
-        style={textStyle.smalltitle}
-        className={"font-bold mb-3 py-3 border-y"}
-      >
-        Pilih Cover
-      </Text>
+      <TitleBorder>Pilih Cover</TitleBorder>
       <CoverButton
         title={"Primary Cover"}
         description={"Digunakan untuk bacgkround cover undangan bagian atas."}
@@ -36,12 +32,7 @@ export default function ChooseDesign() {
         title={"Secondary Cover"}
         description={"Digunakan untuk bacgkround cover undangan bagian bawah"}
       />
-      <Text
-        style={textStyle.smalltitle}
-        className={"font-bold mt-8 py-3 border-y"}
-      >
-        Data Undangan
-      </Text>
+      <TitleBorder className={"mt-6"}>Data Undangan</TitleBorder>
       <div className="flex items-center gap-4 justify-center mt-3 md:flex-row flex-col">
         <InputTitle
           label={"Link Background Music"}

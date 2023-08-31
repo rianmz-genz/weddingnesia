@@ -3,7 +3,6 @@ import BrideAndGroomInformation from "@/components/createInvitation/BrideAndGroo
 import ChooseDesign from "@/components/createInvitation/ChooseDesign";
 import ConfigureDomain from "@/components/createInvitation/ConfigureDomain";
 import LocationInformation from "@/components/createInvitation/LocationInformation";
-import ProfileCard from "@/components/dashboard/user/profilecard";
 import Loader from "@/components/globals/Loader";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
@@ -19,7 +18,7 @@ export default function Create() {
       value: "Lokasi",
     },
     {
-      label: "Desain Undangan",
+      label: "Data Undangan",
       value: "Desain",
     },
     {
@@ -29,6 +28,12 @@ export default function Create() {
   ];
   const [currentMenu, setCurrentMenu] = useState({});
   const [isLoading, setIsLoading] = useState({});
+  const data = {
+    owner_id: "",
+    audio: "",
+    audio: "",
+  };
+  const [initialData, setinitialData] = useState({});
   useEffect(() => {
     getCurrentMenu();
   }, []);
@@ -45,7 +50,7 @@ export default function Create() {
       Cookies.set("currentMenu", JSON.stringify(selectedMenu));
       setTimeout(() => {
         setIsLoading(false);
-      }, 300);
+      }, 50);
     } catch (e) {
       console.log(e);
     }
@@ -64,7 +69,6 @@ export default function Create() {
   }
   return (
     <div className="w-full min-h-screen bg-slate-50 py-12">
-      <ProfileCard />
       <div className="w-11/12 mx-auto">
         <BreadCumbersCreate
           current={currentMenu}

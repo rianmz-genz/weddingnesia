@@ -40,6 +40,7 @@ function ProviderButton(provider) {
 }
 
 const LoginView = () => {
+  const thirdProviderClass = 'flex flex-row p-4 shadow-md rounded-xl w-16 h-16';
   const router = useRouter();
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")

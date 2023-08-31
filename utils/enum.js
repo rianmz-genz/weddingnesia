@@ -4,14 +4,21 @@ export const textStyle = {
   smalltitle: "smalltitle",
   base: "base",
   bigtitle: "bigtitle",
+  mdtitle: "mdtitle",
   description: "description",
   smalldescription: "smalldescription",
+  heroTitleAllura: "heroTitleAllura",
+  smallTitleAllura: "smallTitleAllura",
+  descriptionAllura: "descriptionAllura",
+  smallDescriptionAllura: "smallDescriptionAllura",
 };
 export const buttonStyle = {
   primarylarge: "primarylarge",
+  whitelarge: "whitelarge",
   outlineprimarylarge: "outlineprimarylarge",
   silverlarge: "silverlarge",
   blackLarge: "blackLarge",
   blackMedium: "blackMedium",
   silverMedium: "silverMedium",
+  dangerlarge: "dangerlarge",
 };

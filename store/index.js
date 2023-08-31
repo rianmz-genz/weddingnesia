@@ -16,6 +16,7 @@ import { BsChatLeftQuoteFill, BsMusicNoteBeamed } from "react-icons/bs";
 import { BiMessageAltDots, BiTimeFive } from "react-icons/bi";
 import { MdOutlinePayment } from "react-icons/md";
 import BlackJavanese from "@/components/invitations/blackjavanese";
+
 export const initialValue = {
   logoSrc: "/images/logo.png",
   man: "/images/lanang.svg",
@@ -23,19 +24,19 @@ export const initialValue = {
   home: {
     navbar: [
       {
-        path: "/#",
+        path: "/#hero",
         value: "Home",
       },
       {
-        path: "#feature",
+        path: "/#feature",
         value: "Fitur",
       },
       {
-        path: "#theme",
+        path: "/#theme",
         value: "Tema",
       },
       {
-        path: "#price",
+        path: "/#price",
         value: "Harga",
       },
       {
@@ -193,6 +194,7 @@ export const initialValue = {
         },
       ],
     },
+
     testimonials: {
       title: "Testimoni",
       description:
@@ -224,6 +226,11 @@ export const initialValue = {
             "Di jaman digital sekarang ini undangan online pernikahan sangat membantu sekali. Thank WeddingNesia.",
         },
       ],
+    },
+    pricing: {
+      title: "Pilih Paket Undangan Digitalmu Sekarang",
+      description:
+        "Silakan tentukan harga paket sesuai kebutuhan Anda. Kami memberikan harga termurah dan fitur terlengkap.",
     },
     footer: {
       whiteLogo: "/images/whitelogo.png",

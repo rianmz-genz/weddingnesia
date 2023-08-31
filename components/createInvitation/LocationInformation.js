@@ -3,6 +3,7 @@ import TemplateCreate from "./TemplateCreate";
 import TitleLocation from "./TitleLocation";
 import { InputTitle } from "../globals/Input";
 import GoogleMapEmbed from "./GoogleMapEmbed";
+import TitleBorder from "../globals/TitleBorder";
 
 export default function LocationInformation() {
   const [gmaps, setGmaps] = useState("");
@@ -23,7 +24,7 @@ export default function LocationInformation() {
 
   return (
     <TemplateCreate>
-      <TitleLocation isImportant>Akad</TitleLocation>
+      <TitleBorder>Resepsi</TitleBorder>
       <InputTitle
         className={"my-3"}
         label={"Embed Google Maps*"}
@@ -52,9 +53,7 @@ export default function LocationInformation() {
           </label>
         </div>
       </div>
-
-      <hr className=" my-6" />
-      <TitleLocation>Resepsi</TitleLocation>
+      <TitleBorder className={"mt-6"}>Akad</TitleBorder>
       <InputTitle
         className={"my-3"}
         label={"Embed Google Maps*"}

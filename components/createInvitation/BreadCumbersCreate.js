@@ -14,9 +14,9 @@ export default function BreadCumbersCreate({
     <ul
       className={`w-full flex justify-center flex-wrap space-x-3 md:space-x-6 items-center ${className}`}
     >
-      <Text style={textStyle.title}>{current.label}</Text>
+      <Text style={textStyle.title}>Buat Undangan</Text>
       <p>|</p>
-      {items.map(({ value }, idx) => {
+      {items.map(({ label }, idx) => {
         return (
           <div
             key={idx}
@@ -25,7 +25,7 @@ export default function BreadCumbersCreate({
             } flex space-x-3`}
           >
             <li onClick={() => onClick(idx)} className="cursor-pointer">
-              {value}
+              {label}
             </li>
             {idx != items.length - 1 && <li>&gt;</li>}
           </div>
