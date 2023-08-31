@@ -80,8 +80,7 @@ export default function Create({ init }) {
     const data = JSON.stringify(initialData);
     Cookies.set("dataInvitation", data);
   };
-  const onNext = (e) => {
-    e.preventDefault();
+  const onNext = async () => {
     if (currentMenu.value != "Domain") {
       saveData();
     }
@@ -98,11 +97,25 @@ export default function Create({ init }) {
           />
         );
       case "Lokasi":
-        return <LocationInformation />;
+        return (
+          <LocationInformation
+            onNext={onNext}
+            {...initialData}
+            setValue={setValue}
+          />
+        );
       case "Desain":
-        return <ChooseDesign />;
+        return (
+          <ChooseDesign onNext={onNext} {...initialData} setValue={setValue} />
+        );
       case "Domain":
-        return <ConfigureDomain />;
+        return (
+          <ConfigureDomain
+            onNext={onNext}
+            {...initialData}
+            setValue={setValue}
+          />
+        );
     }
   }
   const setValue = (fields) => {
@@ -115,7 +128,7 @@ export default function Create({ init }) {
   };
   return (
     <div className="w-full min-h-screen bg-slate-50 py-12">
-      <div className="w-11/12 mx-auto">
+      <div className=" sm:max-w-lg lg:max-w-5xl 2xl:max-w-7xl px-7 mx-auto">
         <BreadCumbersCreate
           current={currentMenu}
           items={cucumbersItem}
