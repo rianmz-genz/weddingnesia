@@ -87,8 +87,6 @@ export async function getServerSideProps() {
       const order = ["Freemium", "Premium", "Eksklusif", "Pro", "Elegant"];
       return order.indexOf(a.name) - order.indexOf(b.name);
     });
-    console.log("hit", packages);
-
     return {
       props: {
         packages,
