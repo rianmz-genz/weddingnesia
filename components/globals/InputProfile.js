@@ -13,6 +13,7 @@ export default function InputProfile({
   setValue,
   bride_avatar,
   groom_avatar,
+  saveData,
 }) {
   const { man, woman } = initialValue;
   const [src, setSrc] = useState(
@@ -26,6 +27,7 @@ export default function InputProfile({
   );
   const [imgFile, setImgFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [hitted, setHitted] = useState(null);
   const [isHit, setIsHit] = useState(false);
   const onPick = (file) => {
     setImgFile(file);
@@ -42,11 +44,15 @@ export default function InputProfile({
     setPreview(null);
   };
   const uploadImage = () => {
+    if (hitted) return;
+    const key = isMan ? "groom_avatar" : "bride_avatar";
     setIsHit(true);
     handleUploadApi({ file: imgFile })
       .then((res) => {
         console.log(res);
+        setValue({ [key]: res });
         setIsHit(false);
+        setHitted(true);
       })
       .catch((err) => {
         console.log(err);
@@ -59,6 +65,7 @@ export default function InputProfile({
       <div className="relative group">
         <Image
           src={src}
+          loading="lazy"
           alt={`Mempelai ${isMan ? "Laki-Laki" : "Perempuan"}`}
           width={1080}
           height={1080}
@@ -79,18 +86,22 @@ export default function InputProfile({
       <div>
         {imgFile ? (
           <div className="flex gap-2">
+            {!hitted && (
+              <Button
+                type="button"
+                onClick={handleTrash}
+                style={buttonStyle.dangersmall}
+              >
+                <FiTrash />
+              </Button>
+            )}
             <Button
               type="button"
-              onClick={handleTrash}
-              style={buttonStyle.dangersmall}
-            >
-              <FiTrash />
-            </Button>
-            <Button
-              type="button"
+              className={"flex items-center gap-1"}
               onClick={uploadImage}
               style={buttonStyle.greensmall}
             >
+              {hitted && "Tersimpan"}
               {isHit ? <Loader /> : <FiCheckCircle />}
             </Button>
           </div>

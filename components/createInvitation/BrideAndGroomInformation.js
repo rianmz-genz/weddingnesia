@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import TemplateCreate from "./TemplateCreate";
-import Image from "next/image";
-import { FiFile, FiFolder } from "react-icons/fi";
 import { InputLeftWithTitle, InputTitle } from "../globals/Input";
 import InputProfile from "../globals/InputProfile";
 import ContainerPart from "./ContainerPart";
-import Button from "../globals/Button";
-import { buttonStyle } from "@/utils/enum";
 import { VscMention } from "react-icons/vsc";
 
 export default function BrideAndGroomInformation({
@@ -18,8 +14,11 @@ export default function BrideAndGroomInformation({
   bride_name,
   bride_fullname,
   bride_instagram,
+  bride_info,
+  groom_info,
   setValue,
   onNext,
+  saveData,
 }) {
   const [fatherGroom, setFatherGroom] = useState("");
   const [motherGroom, setMotherGroom] = useState("");
@@ -27,6 +26,22 @@ export default function BrideAndGroomInformation({
   const [motherBride, setMotherBride] = useState("");
   const [orderGroom, setOrderGroom] = useState("");
   const [orderBride, setOrderBride] = useState("");
+  useEffect(() => {
+    if (groom_info) {
+      partOfInfo(groom_info).then((res) => {
+        setOrderGroom(res[0]);
+        setFatherGroom(res[1]);
+        setMotherGroom(res[2]);
+      });
+    }
+    if (bride_info) {
+      partOfInfo(bride_info).then((res) => {
+        setOrderBride(res[0]);
+        setFatherBride(res[1]);
+        setMotherBride(res[2]);
+      });
+    }
+  }, []);
   useEffect(() => {
     setValue({
       groom_info: `${orderGroom} dari Bapak ${fatherGroom} dan Ibu ${motherGroom}`,
@@ -37,11 +52,31 @@ export default function BrideAndGroomInformation({
       bride_info: `${orderBride} dari Bapak ${fatherBride} dan Ibu ${motherBride}`,
     });
   }, [fatherBride, motherBride, orderBride]);
+  async function partOfInfo(info) {
+    const res = [];
+    // Split the input by "dari"
+    const parts = info.split("dari");
+    res.push(parts[0].trim()); // Push the first part
+    // Find "Bapak" and "dan" indexes
+    const startIndex = info.indexOf("Bapak") + "Bapak".length;
+    const endIndex = info.indexOf("dan");
+    // Extract the part between "Bapak" and "dan"
+    const bapak = info.substring(startIndex, endIndex).trim();
+    res.push(bapak);
+    // Split the input by "Ibu" and get the second part
+    res.push(parts[1].split("Ibu")[1].trim());
+    return res;
+  }
   return (
     <TemplateCreate onNext={onNext}>
       <div className="flex justify-center gap-6 md:flex-row flex-col">
         <ContainerPart>
-          <InputProfile groom_avatar={groom_avatar} setValue={setValue} isMan />
+          <InputProfile
+            saveData={saveData}
+            groom_avatar={groom_avatar}
+            setValue={setValue}
+            isMan
+          />
           <div className="flex flex-col space-y-3 my-1 md:my-3 py-3 md:py-6 border-b border-black/10">
             <InputTitle
               required
@@ -95,7 +130,11 @@ export default function BrideAndGroomInformation({
         </ContainerPart>
 
         <ContainerPart>
-          <InputProfile bride_avatar={bride_avatar} setValue={setValue} />
+          <InputProfile
+            saveData={saveData}
+            bride_avatar={bride_avatar}
+            setValue={setValue}
+          />
           <div className="flex flex-col space-y-3 my-1 md:my-3 py-3 md:py-6 border-b border-black/10">
             <InputTitle
               required

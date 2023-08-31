@@ -7,43 +7,54 @@ import Loader from "@/components/globals/Loader";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 
-export default function Create() {
-  const cucumbersItem = [
-    {
-      label: "Informasi Mempelai",
-      value: "Mempelai",
-    },
-    {
-      label: "Informasi Lokasi",
-      value: "Lokasi",
-    },
-    {
-      label: "Data Undangan",
-      value: "Desain",
-    },
-    {
-      label: "Atur Domain",
-      value: "Domain",
-    },
-  ];
+const cucumbersItem = [
+  {
+    label: "Informasi Mempelai",
+    value: "Mempelai",
+  },
+  {
+    label: "Informasi Lokasi",
+    value: "Lokasi",
+  },
+  {
+    label: "Data Undangan",
+    value: "Desain",
+  },
+  {
+    label: "Atur Domain",
+    value: "Domain",
+  },
+];
+const data = {
+  owner_id: "",
+  audio: "",
+  timezone: "",
+  bride_name: "",
+  bride_avatar: "",
+  bride_fullname: "",
+  bride_info: "",
+  bride_instagram: "",
+  groom_name: "",
+  groom_avatar: "",
+  groom_fullname: "",
+  groom_info: "",
+  groom_instagram: "",
+  wedding_date: "",
+  wedding_time_start: "",
+  wedding_time_end: "",
+  wedding_address: "",
+  wedding_map: "",
+  reception_date: "",
+  reception_time_start: "",
+  reception_time_end: "",
+  reception_address: "",
+  reception_map: "",
+  albums: [],
+};
+export default function Create({ init }) {
   const [currentMenu, setCurrentMenu] = useState({});
   const [isLoading, setIsLoading] = useState({});
-  const data = {
-    owner_id: "",
-    audio: "",
-    timezone: "",
-    bride_name: "",
-    bride_avatar: "",
-    bride_fullname: "",
-    bride_info: "",
-    bride_instagram: "",
-    groom_name: "",
-    groom_avatar: "",
-    groom_fullname: "",
-    groom_info: "",
-    groom_instagram: "",
-  };
-  const [initialData, setinitialData] = useState(data);
+  const [initialData, setinitialData] = useState(init ?? data);
   useEffect(() => {
     getCurrentMenu();
   }, []);
@@ -65,8 +76,15 @@ export default function Create() {
       console.log(e);
     }
   };
-  const onNext = () => {
-    console.log(initialData);
+  const saveData = () => {
+    const data = JSON.stringify(initialData);
+    Cookies.set("dataInvitation", data);
+  };
+  const onNext = (e) => {
+    e.preventDefault();
+    if (currentMenu.value != "Domain") {
+      saveData();
+    }
   };
   function getComponentView() {
     switch (currentMenu.value) {
@@ -76,6 +94,7 @@ export default function Create() {
             onNext={onNext}
             {...initialData}
             setValue={setValue}
+            saveData={saveData}
           />
         );
       case "Lokasi":
@@ -111,4 +130,30 @@ export default function Create() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  try {
+    const init = req.cookies.dataInvitation;
+    console.log(init);
+    if (!init)
+      return {
+        props: {
+          init: null,
+        },
+      };
+    // Misalnya, jika Anda ingin mengurutkan berdasarkan urutan: Freemium, Premium, Eksklusif, Pro, Elegant
+    return {
+      props: {
+        init: JSON.parse(init),
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching packages:", error.message);
+    return {
+      props: {
+        init: undefined,
+      },
+    };
+  }
 }

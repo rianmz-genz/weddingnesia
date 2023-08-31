@@ -39,3 +39,4 @@ server.js
 .env
 auth.puml
 next-env.d.ts
+public/assets
