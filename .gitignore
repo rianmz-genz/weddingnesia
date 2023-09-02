@@ -36,5 +36,14 @@ next-env.d.ts
 
 server.js
 
+.idea
+
 .env
 auth.puml
+
+# Sentry Auth Token
+.sentryclirc
+
+
+next-env.d.ts
+public/assets

@@ -37,7 +37,7 @@ export default function Portfolio() {
 function InvitationCard({ slug, cover, bride, comment }) {
   return (
     <Link
-      href={`/demo/invitation?sl=${slug}`}
+      href={`/theme/invitation?sl=${slug}`}
       className="w-full rounded-xl transition-all duration-500 shadow hover:shadow-xl"
     >
       <Image

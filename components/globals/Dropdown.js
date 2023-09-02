@@ -2,7 +2,11 @@ import { useState } from "react";
 import Text from "./Text";
 import { textStyle } from "@/utils/enum";
 
-const DropDown = ({ className, title, options, onSelect, selectedOption }) => {
+const DropDown = ({ className, title, options, is_groom_first, setValue }) => {
+  const [groom_bride, bride_groom] = options;
+  const [selected, setSelected] = useState(
+    is_groom_first ? groom_bride : bride_groom
+  );
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -10,7 +14,9 @@ const DropDown = ({ className, title, options, onSelect, selectedOption }) => {
   };
 
   const selectOption = (option) => {
-    onSelect(option);
+    setSelected(option);
+    setValue({ is_groom_first: option == groom_bride });
+    console.log(option == groom_bride);
     setIsOpen(false);
   };
 
@@ -28,7 +34,7 @@ const DropDown = ({ className, title, options, onSelect, selectedOption }) => {
               aria-expanded="true"
               aria-haspopup="true"
             >
-              {selectedOption}
+              {selected}
               <svg
                 className="-mr-1 ml-2 h-5 w-5"
                 xmlns="http://www.w3.org/2000/svg"
@@ -56,6 +62,7 @@ const DropDown = ({ className, title, options, onSelect, selectedOption }) => {
               {options.map((option, index) => (
                 <button
                   key={index}
+                  type="button"
                   onClick={() => selectOption(option)}
                   className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                   role="menuitem"

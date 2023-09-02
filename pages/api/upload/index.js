@@ -1,54 +1,49 @@
-import formidable from "formidable";
-import fs from "fs";
-import path from "path";
-
+import path, { resolve } from "path";
+import fs from "fs/promises";
 export const config = {
   api: {
-    bodyParser: false, // Disable built-in body parsing
+    bodyParser: false,
   },
 };
-
+const readfile = (req, saveLocally) => {
+  const options = {};
+  if (saveLocally) {
+    options.uploadDir = path.join(process.cwd(), "/public/assets");
+    options.filename = (name, ext, path, form) => {
+      return (
+        Date.now().toString() + "_" + path.originalFilename.replace(/ /g, "_")
+      );
+    };
+  }
+  const form = formidable(options);
+  return new Promise((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      if (err) reject(err);
+      resolve({ fields, files });
+    });
+  });
+};
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).end(); // Method Not Allowed
   }
-
   try {
-    const form = new formidable.IncomingForm();
-    form.uploadDir = path.join(process.cwd(), "public/assets");
-    form.keepExtensions = true;
-
-    form.parse(req, (err, fields, files) => {
-      if (err) {
-        console.error("Error parsing form data:", err);
-        return res.status(500).json({ error: "Error parsing form data" });
-      }
-
-      // Assuming the input field name is "image"
-      const image = files.image;
-
-      if (!image) {
-        return res.status(400).json({ error: "No image file found" });
-      }
-
-      // Generate a unique filename to prevent overwriting
-      const uniqueFilename = `${Date.now()}-${image.name}`;
-      const newPath = path.join(form.uploadDir, uniqueFilename);
-
-      fs.rename(image.path, newPath, (renameErr) => {
-        if (renameErr) {
-          console.error("Error renaming file:", renameErr);
-          return res.status(500).json({ error: "Error renaming file" });
-        }
-
-        const publicPath = `/assets/${uniqueFilename}`;
-        res
-          .status(200)
-          .json({ message: "File uploaded successfully", path: publicPath });
-      });
+    await fs.readdir(path.join(process.cwd() + "/public", "/assets"));
+  } catch (error) {
+    await fs.mkdir(path.join(process.cwd() + "/public", "/assets"));
+  }
+  const { files } = await readfile(req, true);
+  if (files && files.image) {
+    const filenya = files.image[0].newFilename;
+    res.status(200).json({
+      message: "File uploaded successfully",
+      data: "/assets/" + filenya,
+      status: true,
     });
-  } catch (err) {
-    console.error("Error handling upload:", err);
-    res.status(500).json({ error: "Error handling upload" });
+  } else {
+    res.status(400).json({
+      error: "No image file found",
+      status: false,
+    });
   }
 }

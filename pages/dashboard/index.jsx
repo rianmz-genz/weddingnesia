@@ -1,9 +1,25 @@
-import { Button, DashboardUser, NavbarUser, Text } from "@/components";
+import { Button, DashboardUser, Text } from "@/components";
 import { initialValue } from "@/store";
 import { buttonStyle, textStyle } from "@/utils/enum";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+
+export async function getServerSideProps(context) {
+  const token = context.req.cookies.token;
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/auth/login", 
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
 
 const DashboardUserView = () => {
   const { src, bold, caption, description, greeting, title } =

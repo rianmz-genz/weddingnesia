@@ -9,6 +9,7 @@ import {
   Testimonial,
   TutorialSection,
 } from "@/components";
+import ScrollToTopButton from "@/components/globals/ScrollToTopButton";
 import FeatureSection from "@/components/home/Feature";
 import HeroSection from "@/components/home/Hero";
 import Head from "next/head";
@@ -41,10 +42,7 @@ export async function getServerSideProps() {
   }
 }
 
-export default function Home() {
-  useEffect(() => {
-    GetAllPackage().then((res) => console.log(res));
-  }, []);
+export default function Home({ packages }) {
   return (
     <>
       <Head>
@@ -95,29 +93,41 @@ export default function Home() {
           <TutorialSection />
         </Container>
         <Testimonial />
-        <PriceSection />
+        <PriceSection packages={packages} />
         <ActionSection />
         <Footer />
+        <ScrollToTopButton />
       </main>
     </>
   );
 }
 
-// export async function getServerSideProps() {
-//   try {
-//     const packages = await GetAllPackage();
-
-//     return {
-//       props: {
-//         packages,
-//       },
-//     };
-//   } catch (error) {
-//     console.error("Error fetching packages:", error.message);
-//     return {
-//       props: {
-//         packages: [],
-//       },
-//     };
-//   }
-// }
+export async function getServerSideProps() {
+  try {
+    const hit = await GetAllPackage();
+    // Misalnya, jika Anda ingin mengurutkan berdasarkan urutan: Freemium, Premium, Eksklusif, Pro, Elegant
+    if (!hit)
+      return {
+        props: {
+          packages: [],
+        },
+      };
+    // Misalnya, jika Anda ingin mengurutkan berdasarkan urutan: Freemium, Premium, Eksklusif, Pro, Elegant
+    const packages = hit.sort((a, b) => {
+      const order = ["Freemium", "Premium", "Eksklusif", "Pro", "Elegant"];
+      return order.indexOf(a.name) - order.indexOf(b.name);
+    });
+    return {
+      props: {
+        packages,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching packages:", error.message);
+    return {
+      props: {
+        packages: [],
+      },
+    };
+  }
+}
