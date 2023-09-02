@@ -40,3 +40,9 @@ server.js
 
 .env
 auth.puml
+
+# Sentry Auth Token
+.sentryclirc
+
+# Sentry Auth Token
+.sentryclirc
