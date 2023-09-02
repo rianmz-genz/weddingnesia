@@ -1,5 +1,4 @@
 import path, { resolve } from "path";
-import formidable from "formidable";
 import fs from "fs/promises";
 export const config = {
   api: {
