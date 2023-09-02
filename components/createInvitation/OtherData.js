@@ -13,7 +13,19 @@ import DropDown from "../globals/Dropdown";
 import { useState } from "react";
 import TitleBorder from "../globals/TitleBorder";
 
-export default function ChooseDesign() {
+export default function OtherData({
+  primary_cover,
+  secondary_cover,
+  title,
+  is_groom_first,
+  greeting,
+  opening_remarks,
+  quotes,
+  source_quotes,
+  audio,
+  setValue,
+  onNext,
+}) {
   const { templates } = initialValue.create;
   const queueOptions = ["Pria - Wanita", "Wanita - Pria"];
   const openingOptions = ["Muslim", "General"];
@@ -21,48 +33,74 @@ export default function ChooseDesign() {
   const [openingSelected, setOpeningSelected] = useState("Pilih salah satu");
 
   return (
-    <TemplateCreate>
+    <TemplateCreate onNext={onNext}>
       <TitleBorder>Pilih Cover</TitleBorder>
       <CoverButton
+        primary_cover={primary_cover}
+        setValue={setValue}
         title={"Primary Cover"}
+        isPrimary={true}
         description={"Digunakan untuk bacgkround cover undangan bagian atas."}
       />
       <CoverButton
-        className={"mt-3"}
+        className={"mt-6"}
         title={"Secondary Cover"}
+        isPrimary={false}
+        secondary_cover={secondary_cover}
+        setValue={setValue}
         description={"Digunakan untuk bacgkround cover undangan bagian bawah"}
       />
       <TitleBorder className={"mt-6"}>Data Undangan</TitleBorder>
       <div className="flex items-center gap-4 justify-center mt-3 md:flex-row flex-col">
         <InputTitle
+          required
           label={"Link Background Music"}
           placeholder="Link Background Music"
+          value={audio}
+          onChange={(e) => setValue({ audio: e.target.value })}
         />
         <InputTitle
+          required
           label={"Judul Pada Cover"}
           placeholder="We Are Getting Married"
+          value={title}
+          onChange={(e) => setValue({ title: e.target.value })}
         />
       </div>
       <DropDown
         title={"Urutan Mempelai"}
         options={queueOptions}
-        onSelect={(e) => setQueueSelected(e)}
         className={"w-full mt-3"}
-        selectedOption={queueSelected}
+        is_groom_first={is_groom_first}
+        setValue={setValue}
       />
-      <div className="flex md:items-center gap-4 justify-center my-3 md:flex-row flex-col-reverse">
-        <InputTitle label={"Salam Pembuka"} placeholder="Salam Pembuka" />
-        <DropDown
-          title={"Template Pembukaan"}
-          options={openingOptions}
-          selectedOption={openingSelected}
-          onSelect={(e) => setOpeningSelected(e)}
-          className={"md:w-6/12"}
-        />
-      </div>
-      <TextareaTitle label={"Ucapan Pembuka"} placeholder="Ucapan Pembuka" />
-      <TextareaTitle label={"Quotes"} placeholder="Mengarungi Ombak Bersama" />
-      <InputTitle label={"Sumber Quotes"} placeholder="Sutan Syahrir" />
+      <InputTitle
+        required
+        className={"my-3"}
+        label={"Salam Pembuka"}
+        placeholder="Salam Pembuka"
+        value={greeting}
+        onChange={(e) => setValue({ greeting: e.target.value })}
+      />
+      <TextareaTitle
+        label={"Ucapan Pembuka"}
+        placeholder="Ucapan Pembuka"
+        value={opening_remarks}
+        onChange={(e) => setValue({ opening_remarks: e.target.value })}
+      />
+      <TextareaTitle
+        label={"Quotes"}
+        placeholder="Mengarungi Ombak Bersama"
+        value={quotes}
+        onChange={(e) => setValue({ quotes: e.target.value })}
+      />
+      <InputTitle
+        required
+        label={"Sumber Quotes"}
+        placeholder="Sutan Syahrir"
+        value={source_quotes}
+        onChange={(e) => setValue({ source_quotes: e.target.value })}
+      />
     </TemplateCreate>
   );
 }

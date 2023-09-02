@@ -4,6 +4,7 @@ import { InputLeftWithTitle, InputTitle } from "../globals/Input";
 import InputProfile from "../globals/InputProfile";
 import ContainerPart from "./ContainerPart";
 import { VscMention } from "react-icons/vsc";
+import TitleBorder from "../globals/TitleBorder";
 
 export default function BrideAndGroomInformation({
   groom_name,
@@ -69,8 +70,10 @@ export default function BrideAndGroomInformation({
   }
   return (
     <TemplateCreate onNext={onNext}>
-      <div className="flex justify-center gap-6 md:flex-row flex-col">
+      <div className="flex justify-center gap-6 flex-col">
         <ContainerPart>
+          <TitleBorder>Mempelai Pria</TitleBorder>
+
           <InputProfile
             saveData={saveData}
             groom_avatar={groom_avatar}
@@ -129,7 +132,9 @@ export default function BrideAndGroomInformation({
           />
         </ContainerPart>
 
-        <ContainerPart>
+        <ContainerPart className={"mt-6"}>
+          <TitleBorder>Mempelai Wanita</TitleBorder>
+
           <InputProfile
             saveData={saveData}
             bride_avatar={bride_avatar}
