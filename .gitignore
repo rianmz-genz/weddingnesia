@@ -40,5 +40,10 @@ server.js
 
 .env
 auth.puml
+
+# Sentry Auth Token
+.sentryclirc
+
+
 next-env.d.ts
 public/assets
