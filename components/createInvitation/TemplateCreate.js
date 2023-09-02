@@ -5,12 +5,14 @@ import { removeCookie } from "@/utils";
 import { useRouter } from "next/router";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Cookies from "js-cookie";
+import ScrollToTopButton from "../globals/ScrollToTopButton";
 
 export default function TemplateCreate({
   className,
   children,
   onNext,
   isLast,
+  isNoSave,
 }) {
   function removeCookie(key) {
     Cookies.remove(key);
@@ -39,30 +41,35 @@ export default function TemplateCreate({
       className={`${className} bg-white w-full rounded-md p-4 md:p-8`}
     >
       {children}
-      <Button
-        type="submit"
-        style={buttonStyle.blackLarge}
-        className={"w-full mt-6"}
-      >
-        {isLoading ? (
-          <AiOutlineLoading3Quarters className="text-red-500 mx-auto text-lg animate-spin" />
-        ) : isLast ? (
-          "Selesaikan"
-        ) : (
-          "Simpan & Lanjutkan"
-        )}
-      </Button>
-      <Button
-        onClick={onCancel}
-        style={buttonStyle.dangerlarge}
-        className={"w-full mt-3"}
-      >
-        {isCanceling ? (
-          <AiOutlineLoading3Quarters className="text-red-500 mx-auto text-lg animate-spin" />
-        ) : (
-          "Batalkan"
-        )}
-      </Button>
+      {!isNoSave && (
+        <>
+          <Button
+            type="submit"
+            style={buttonStyle.blackLarge}
+            className={"w-full mt-6"}
+          >
+            {isLoading ? (
+              <AiOutlineLoading3Quarters className="text-red-500 mx-auto text-lg animate-spin" />
+            ) : isLast ? (
+              "Simpan Data"
+            ) : (
+              "Simpan & Lanjutkan"
+            )}
+          </Button>
+          <Button
+            onClick={onCancel}
+            style={buttonStyle.dangerlarge}
+            className={"w-full mt-3"}
+          >
+            {isCanceling ? (
+              <AiOutlineLoading3Quarters className="text-red-500 mx-auto text-lg animate-spin" />
+            ) : (
+              "Batalkan"
+            )}
+          </Button>
+        </>
+      )}
+      <ScrollToTopButton />
     </form>
   );
 }
