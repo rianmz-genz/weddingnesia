@@ -7,9 +7,11 @@ import { buttonStyle, textStyle } from "@/utils/enum";
 import Image from "next/image";
 import React from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { BiRefresh } from "react-icons/bi";
 
-export default function PriceSection() {
+export default function PriceSection({ packages }) {
   const { pricing } = initialValue.home;
+  console.log(packages);
   return (
     <section
       id="price"
@@ -20,29 +22,46 @@ export default function PriceSection() {
         title={pricing.title}
         description={pricing.description}
       />
-      <ul className="grid grid-cols-1 lg:grid-cols-5 mt-12 gap-3 place-items-center">
-        {benefits.map(({ data }, i) => (
-          <PriceCard
-            key={i}
-            src={data.src}
-            benefits={data.benefits}
-            name={data.name}
-            price={data.price}
-            slug={data.slug}
-          />
-        ))}
+      {/* {packages?.length == 0 && (
+        <button className="mt-12 bg-slate-100 mx-auto p-2 rounded-md">
+          <BiRefresh />
+        </button>
+      )} */}
+      <ul
+        className={`grid grid-cols-1 lg:grid-cols-5 ${
+          packages?.length == 0 ? "mt-3" : "mt-12"
+        } gap-3 place-items-center`}
+      >
+        {packages?.length != 0
+          ? packages?.map(({ icon, features, name, price, id }, i) => (
+              <PriceCard
+                key={i}
+                src={icon}
+                benefits={features}
+                name={name}
+                price={price}
+                slug={id}
+              />
+            ))
+          : [1, 2, 3, 4, 5].map((item) => {
+              return (
+                <div
+                  key={item}
+                  className="w-full bg-slate-100 rounded-lg animate-pulse h-96"
+                ></div>
+              );
+            })}
       </ul>
     </section>
   );
 }
 
 const PriceCard = ({ src, name, price, slug, benefits }) => {
-  const thePrice = price.toLocaleString("id-ID").split(".");
-
+  const thePrice = price?.toLocaleString("id-ID").split(".");
   return (
     <li
       className={`${
-        slug == "eksklusif"
+        name == "Eksklusif"
           ? "bg-black text-white shadow-2xl shadow-black/70 hover:shadow-xl transition-all duration-500"
           : "shadow bg-white z-30"
       }  rounded-xl px-4 py-8 w-full text-center h-fit`}
@@ -77,18 +96,21 @@ const PriceCard = ({ src, name, price, slug, benefits }) => {
         )}
       </div>
       <ul className={`"w-full flex flex-col gap-3 mb-8 mt-6`}>
-        {benefits.map((item, i) => (
-          <li className="text-black/80 items-center  flex gap-2" key={i}>
-            <AiOutlineCheckCircle className="text-green-500" />
-            <p className={`text-sm ${slug == "eksklusif" ? "text-white" : ""}`}>
-              {item}
-            </p>
-          </li>
-        ))}
+        {benefits &&
+          JSON.parse(benefits)?.map((item, i) => (
+            <li className="text-black/80 items-center  flex gap-2" key={i}>
+              <AiOutlineCheckCircle className="text-green-500" />
+              <p
+                className={`text-sm ${name == "Eksklusif" ? "text-white" : ""}`}
+              >
+                {item}
+              </p>
+            </li>
+          ))}
       </ul>
       <Button
         style={
-          slug == "eksklusif" ? buttonStyle.whitelarge : buttonStyle.blackLarge
+          name == "Eksklusif" ? buttonStyle.whitelarge : buttonStyle.blackLarge
         }
       >
         Buat Undangan

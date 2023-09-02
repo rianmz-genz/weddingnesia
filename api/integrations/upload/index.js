@@ -1,18 +1,21 @@
-const { default: axios } = require("axios");
+const { default: makeApiRequest } = require("@/api/helpers/MakeApi");
+const { default: UploadImageRoute } = require("@/api/routes/upload");
 
-const handleUpload = async ({ file }) => {
-  const formData = new FormData();
-  formData.append("image", file);
-
+const handleUploadApi = async ({ file }) => {
+  const data = new FormData();
+  data.append("image", file);
   try {
-    const response = await axios.post("/api/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+    const response = await makeApiRequest({
+      method: "POST",
+      baseUrl: UploadImageRoute,
+      data,
+      type: "multipart/form-data",
     });
-    return response.data;
+    return response;
   } catch (error) {
-    setMessage("An error occurred while uploading the file.");
     console.error("Upload error:", error);
+    throw error;
   }
 };
+
+export default handleUploadApi;

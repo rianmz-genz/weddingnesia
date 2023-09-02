@@ -24,10 +24,19 @@ export default function BreadCumbersCreate({
               idx <= currentIndex && "text-yellow-600 font-semibold"
             } flex space-x-3`}
           >
-            <li onClick={() => onClick(idx)} className="cursor-pointer">
-              {label}
+            <li
+              onClick={() => onClick(idx)}
+              className="cursor-pointer flex gap-1"
+            >
+              <p
+                className={`${
+                  idx <= currentIndex ? "border-yellow-600" : "border-black"
+                } border rounded-full w-6 flex justify-center items-center h-6`}
+              >
+                {idx + 1}
+              </p>
+              <p>{label}</p>
             </li>
-            {idx != items.length - 1 && <li>&gt;</li>}
           </div>
         );
       })}
