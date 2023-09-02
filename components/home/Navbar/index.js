@@ -3,11 +3,14 @@ import Button from "@/components/globals/Button";
 import { initialValue } from "@/store";
 import { buttonStyle } from "@/utils/enum";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { FiX } from "react-icons/fi";
 import { HiOutlineBars3BottomRight } from "react-icons/hi2";
 const NavbarLandingpage = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const headerHeight = 92;
+  const router = useRouter();
   return (
     <header className="w-full mt-8  flex items-center justify-center bg-white top-0 left-0">
       <nav className="w-full mx-auto flex lg:flex-row flex-col justify-between lg:items-center ">
@@ -27,11 +30,16 @@ const NavbarLandingpage = () => {
         >
           {initialValue.home.navbar.map((item, idx) => (
             <li key={idx}>
-              <a href={item.path} className="font-semibold text-black/80">
+              <Link
+                href={item.path}
+                scroll={false}
+                className="font-semibold text-black/80"
+              >
                 {item.value}
-              </a>
+              </Link>
             </li>
           ))}
+
           <li>
             <Link
               href="/auth/login"

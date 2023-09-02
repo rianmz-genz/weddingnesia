@@ -9,6 +9,7 @@ import {
   Testimonial,
   TutorialSection,
 } from "@/components";
+import ScrollToTopButton from "@/components/globals/ScrollToTopButton";
 import FeatureSection from "@/components/home/Feature";
 import HeroSection from "@/components/home/Hero";
 import Head from "next/head";
@@ -67,6 +68,7 @@ export default function Home({ packages }) {
         <PriceSection packages={packages} />
         <ActionSection />
         <Footer />
+        <ScrollToTopButton />
       </main>
     </>
   );

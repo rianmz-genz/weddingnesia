@@ -1,8 +1,9 @@
 import BreadCumbersCreate from "@/components/createInvitation/BreadCumbersCreate";
 import BrideAndGroomInformation from "@/components/createInvitation/BrideAndGroomInformation";
-import ChooseDesign from "@/components/createInvitation/ChooseDesign";
 import ConfigureDomain from "@/components/createInvitation/ConfigureDomain";
 import LocationInformation from "@/components/createInvitation/LocationInformation";
+import OtherData from "@/components/createInvitation/OtherData";
+import ChooseAlbums from "@/components/createInvitation/ChooseAlbums";
 import Loader from "@/components/globals/Loader";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
@@ -18,7 +19,11 @@ const cucumbersItem = [
   },
   {
     label: "Data Undangan",
-    value: "Desain",
+    value: "Data",
+  },
+  {
+    label: "Album",
+    value: "Albums",
   },
   {
     label: "Atur Domain",
@@ -49,6 +54,16 @@ const data = {
   reception_time_end: "",
   reception_address: "",
   reception_map: "",
+  primary_cover: "",
+  secondary_cover: "",
+  slug: "",
+  title: "",
+  is_groom_first: true,
+  greeting: "",
+  opening_remarks: "",
+  quotes: "",
+  source_quotes: "",
+  albums: "",
   albums: [],
 };
 export default function Create({ init }) {
@@ -78,12 +93,18 @@ export default function Create({ init }) {
   };
   const saveData = () => {
     const data = JSON.stringify(initialData);
+    console.table(initialData);
     Cookies.set("dataInvitation", data);
   };
   const onNext = async () => {
     if (currentMenu.value != "Domain") {
       saveData();
+      const index = cucumbersItem.findIndex(
+        (item, i) => item.value == currentMenu.value
+      );
+      handleClickMenu(index + 1);
     }
+    console.table(initialData);
   };
   function getComponentView() {
     switch (currentMenu.value) {
@@ -104,9 +125,17 @@ export default function Create({ init }) {
             setValue={setValue}
           />
         );
-      case "Desain":
+      case "Data":
         return (
-          <ChooseDesign onNext={onNext} {...initialData} setValue={setValue} />
+          <OtherData onNext={onNext} {...initialData} setValue={setValue} />
+        );
+      case "Albums":
+        return (
+          <ChooseAlbums
+            onNext={onNext}
+            albums={initialData.albums}
+            setValue={setValue}
+          />
         );
       case "Domain":
         return (
@@ -127,8 +156,8 @@ export default function Create({ init }) {
     });
   };
   return (
-    <div className="w-full min-h-screen bg-slate-50 py-12">
-      <div className=" sm:max-w-lg lg:max-w-5xl 2xl:max-w-7xl px-7 mx-auto">
+    <div className="w-full min-h-screen bg-slate-50 md:py-12 py-6">
+      <div className=" sm:max-w-lg lg:max-w-5xl 2xl:max-w-7xl px-7 mx-auto flex lg:flex-row flex-col items-start">
         <BreadCumbersCreate
           current={currentMenu}
           items={cucumbersItem}
