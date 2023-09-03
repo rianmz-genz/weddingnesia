@@ -45,12 +45,12 @@ export default function BrideAndGroomInformation({
   }, []);
   useEffect(() => {
     setValue({
-      groom_info: `${orderGroom} dari Bapak ${fatherGroom} & Ibu ${motherGroom}`,
+      groom_info: `${orderGroom} dari pasangan Bapak ${fatherGroom} & Ibu ${motherGroom}`,
     });
   }, [fatherGroom, motherGroom, orderGroom]);
   useEffect(() => {
     setValue({
-      bride_info: `${orderBride} dari Bapak ${fatherBride} & Ibu ${motherBride}`,
+      bride_info: `${orderBride} dari pasangan Bapak ${fatherBride} & Ibu ${motherBride}`,
     });
   }, [fatherBride, motherBride, orderBride]);
   async function partOfInfo(info) {

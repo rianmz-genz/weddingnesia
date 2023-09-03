@@ -7,7 +7,10 @@ import ChooseAlbums from "@/components/createInvitation/ChooseAlbums";
 import Loader from "@/components/globals/Loader";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-
+import { useRouter } from "next/router";
+import { CreateInvitationContext } from "@/context/create-invitation";
+import Skeleton from "@/components/globals/Skeleton";
+import CreateInvitationApi from "@/api/integrations/invitation/CreateInvitation";
 const cucumbersItem = [
   {
     label: "Informasi Mempelai",
@@ -63,13 +66,18 @@ const data = {
   opening_remarks: "",
   quotes: "",
   source_quotes: "",
-  albums: "",
   albums: [],
 };
-export default function Create({ init }) {
+export default function Create({ pageProps }) {
   const [currentMenu, setCurrentMenu] = useState({});
   const [isLoading, setIsLoading] = useState({});
-  const [initialData, setinitialData] = useState(init ?? data);
+  const [isHitApi, setIsHitApi] = useState(false);
+  const [message, setMessage] = useState(false);
+  const [statusApi, setStatusApi] = useState(false);
+  const [trigger, setTrigger] = useState(false);
+  const [initialData, setinitialData] = useState(pageProps.init ?? data);
+  const router = useRouter();
+
   useEffect(() => {
     getCurrentMenu();
   }, []);
@@ -86,14 +94,13 @@ export default function Create({ init }) {
       Cookies.set("currentMenu", JSON.stringify(selectedMenu));
       setTimeout(() => {
         setIsLoading(false);
-      }, 50);
+      }, 500);
     } catch (e) {
       console.log(e);
     }
   };
   const saveData = () => {
     const data = JSON.stringify(initialData);
-    console.table(initialData);
     Cookies.set("dataInvitation", data);
   };
   const onNext = async () => {
@@ -104,9 +111,28 @@ export default function Create({ init }) {
       );
       handleClickMenu(index + 1);
     }
-    console.table(initialData);
+    if (currentMenu.value == "Domain") {
+      console.log("iya");
+      saveData();
+      setIsHitApi(true);
+      CreateInvitationApi({ data: initialData }).then((res) => {
+        setTrigger(true);
+        if (res) {
+          setStatusApi(true);
+          setMessage("Berhasil membuat data undangan");
+          router.push("/create/preview");
+        } else {
+          setStatusApi(false);
+          setMessage("Gagal membuat data undangan");
+        }
+        setIsHitApi(false);
+        setTimeout(() => {
+          setTrigger(false);
+        }, 4000);
+      });
+    }
   };
-  function getComponentView() {
+  function GetComponentView() {
     switch (currentMenu.value) {
       case "Mempelai":
         return (
@@ -155,41 +181,66 @@ export default function Create({ init }) {
       };
     });
   };
+  const contextValue = {
+    isHitApi,
+    statusApi,
+    message,
+    trigger,
+  };
   return (
-    <div className="w-full min-h-screen bg-slate-50 md:py-12 py-6">
-      <div className=" sm:max-w-lg lg:max-w-5xl 2xl:max-w-7xl px-7 mx-auto flex lg:flex-row flex-col items-start">
-        <BreadCumbersCreate
-          current={currentMenu}
-          items={cucumbersItem}
-          className={"my-6"}
-          onClick={(idx) => handleClickMenu(idx)}
-        />
-        {isLoading ? (
-          <Loader className={"mx-auto text-2xl"} />
-        ) : (
-          getComponentView()
-        )}
+    <CreateInvitationContext.Provider value={contextValue}>
+      <div className="w-full min-h-screen bg-slate-100 py-12">
+        <div className=" sm:max-w-lg lg:max-w-5xl 2xl:max-w-7xl px-7 mx-auto flex lg:flex-row flex-col items-start">
+          <BreadCumbersCreate
+            current={currentMenu}
+            items={cucumbersItem}
+            onClick={(idx) => handleClickMenu(idx)}
+          />
+          {isLoading ? (
+            <div className="w-full flex flex-col gap-3">
+              <Skeleton className="w-full h-16 bg-white" />
+              <div className="flex gap-3">
+                <Skeleton className="w-1/2 h-16 bg-white" />
+                <Skeleton className="w-1/2 h-16 bg-white" />
+              </div>
+              <Skeleton className="w-full h-32 bg-white" />
+            </div>
+          ) : (
+            GetComponentView()
+          )}
+        </div>
       </div>
-    </div>
+    </CreateInvitationContext.Provider>
   );
 }
 
 export async function getServerSideProps({ req }) {
   try {
+    const token = req.cookies.token;
+    if (!token) {
+      return {
+        redirect: "/auth/signin",
+      };
+    }
     const init = req.cookies.dataInvitation;
-    console.log(init);
-    if (!init)
+    if (!init) {
+      console.log("undefined");
       return {
         props: {
           init: null,
+          token,
         },
       };
+    }
     // Misalnya, jika Anda ingin mengurutkan berdasarkan urutan: Freemium, Premium, Eksklusif, Pro, Elegant
-    return {
-      props: {
-        init: JSON.parse(init),
-      },
-    };
+    if (init) {
+      console.log("iya masuk");
+      return {
+        props: {
+          init: JSON.parse(init),
+        },
+      };
+    }
   } catch (error) {
     console.error("Error fetching packages:", error.message);
     return {

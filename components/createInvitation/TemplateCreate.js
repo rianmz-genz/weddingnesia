@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "../globals/Button";
-import { buttonStyle } from "@/utils/enum";
+import { alertStyle, buttonStyle } from "@/utils/enum";
 import { removeCookie } from "@/utils";
 import { useRouter } from "next/router";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Cookies from "js-cookie";
 import ScrollToTopButton from "../globals/ScrollToTopButton";
+import { CreateInvitationContext } from "@/context/create-invitation";
+import Alert from "../globals/Alert";
 
 export default function TemplateCreate({
   className,
@@ -32,15 +34,21 @@ export default function TemplateCreate({
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    setisLoading(true);
     onNext().then((res) => setisLoading((prev) => false));
   };
+  const context = useContext(CreateInvitationContext);
+  const { isHitApi, message, statusApi, trigger } = context;
   return (
     <form
       onSubmit={onSubmit}
       className={`${className} bg-white w-full rounded-md p-4 md:p-8`}
     >
       {children}
+      <Alert
+        trigger={trigger}
+        style={statusApi ? alertStyle.success : alertStyle.error}
+        message={message}
+      />
       {!isNoSave && (
         <>
           <Button
@@ -48,7 +56,7 @@ export default function TemplateCreate({
             style={buttonStyle.blackLarge}
             className={"w-full mt-6"}
           >
-            {isLoading ? (
+            {isHitApi ? (
               <AiOutlineLoading3Quarters className="text-red-500 mx-auto text-lg animate-spin" />
             ) : isLast ? (
               "Simpan Data"

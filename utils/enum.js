@@ -24,3 +24,9 @@ export const buttonStyle = {
   dangersmall: "dangersmall",
   greensmall: "greensmall",
 };
+
+export const alertStyle = {
+  success: "success",
+  error: "error",
+  info: "info",
+};

@@ -8,15 +8,19 @@ import { buttonStyle } from "@/utils/enum";
 import { FiSave, FiTrash } from "react-icons/fi";
 import handleUploadApi from "@/api/integrations/upload";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import Skeleton from "../globals/Skeleton";
 
 export default function ChoseAlbums({ albums, setValue, onNext }) {
   const [files, setFiles] = useState([]);
   const [filesSrc, setFilesSrc] = useState(albums);
+  const [isLoading, setIsLoading] = useState(false);
   const [isSaved, setIsSaved] = useState(albums.length > 0);
   const onChange = (file) => {
+    setIsLoading(true);
     setFiles([...files, file]);
     handleUploadApi({ file }).then((res) => {
       setFilesSrc([...filesSrc, res]);
+      setIsLoading(false);
     });
   };
   const onDelete = (idx) => {
@@ -26,7 +30,7 @@ export default function ChoseAlbums({ albums, setValue, onNext }) {
     setFilesSrc(filteredFileSrc);
   };
   const uploadAlbums = async () => {
-    if (files.length > 1) {
+    if (files.length >= 3) {
       changeValue();
       setIsSaved(true);
     }
@@ -37,7 +41,7 @@ export default function ChoseAlbums({ albums, setValue, onNext }) {
   };
   return (
     <TemplateCreate isNoSave={true} onNext={onNext}>
-      <TitleBorder>Pilih Album</TitleBorder>
+      <TitleBorder>Upload Album</TitleBorder>
       <div className="flex justify-end">
         <Button
           onClick={uploadAlbums}
@@ -51,7 +55,13 @@ export default function ChoseAlbums({ albums, setValue, onNext }) {
         {filesSrc.length > 0 &&
           filesSrc?.map((item, idx) => {
             return (
-              <AlbumItem key={idx} src={item} onDelete={() => onDelete(idx)} />
+              <li key={idx}>
+                {isLoading ? (
+                  <Skeleton className="w-32 h-32 bg-slate-200 rounded-lg" />
+                ) : (
+                  <AlbumItem src={item} onDelete={() => onDelete(idx)} />
+                )}
+              </li>
             );
           })}
         {filesSrc.length < 15 && (
