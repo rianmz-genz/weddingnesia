@@ -3,9 +3,10 @@ import React from "react";
 
 const GoogleMapEmbed = ({ iframeHtml }) => {
   return (
-    <div className="w-full flex justify-center">
-      <div dangerouslySetInnerHTML={{ __html: iframeHtml }} />
-    </div>
+    <div
+      dangerouslySetInnerHTML={{ __html: iframeHtml }}
+      className="w-full flex justify-center"
+    ></div>
   );
 };
 
