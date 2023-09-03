@@ -5,6 +5,7 @@ const makeApiRequest = async ({
   method = "GET",
   data,
   type = "application/json",
+  authorization,
 }) => {
   try {
     const response = await axios({
@@ -15,6 +16,7 @@ const makeApiRequest = async ({
       data: data,
       headers: {
         "Content-Type": type,
+        Authorization: authorization,
       },
     });
     if (response.data.status) {
