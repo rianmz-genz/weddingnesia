@@ -17,40 +17,45 @@ export default function BreadCumbersCreate({
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="text-2xl bg-slate-100 p-2 z-50 fixed top-6 right-7 rounded lg:hidden "
+        className="text-2xl bg-slate-100 p-2 z-40 fixed top-6 right-7 rounded lg:hidden "
       >
         {isOpen ? <FiX /> : <HiOutlineBars3BottomRight />}
       </button>
       <ul
         className={`${
-          isOpen ? "max-lg:top-0" : "-top-full"
-        } lg:w-4/12 w-full fixed h-screen z-40 max-lg:mx-auto max-lg:bg-white flex flex-col gap-6 lg:sticky transition-all duration-500 lg:top-6 ${className}`}
+          isOpen ? "top-0 " : "-top-full"
+        } lg:w-4/12 w-full fixed h-screen z-30 max-lg:mx-auto max-lg:bg-white  lg:sticky transition-all duration-500 left-0 ${className}`}
       >
-        <Text style={textStyle.smalltitle}>Buat Undangan</Text>
-        {items.map(({ label }, idx) => {
-          return (
-            <div
-              key={idx}
-              className={`${
-                idx <= currentIndex && "text-yellow-600 font-semibold"
-              } flex `}
-            >
-              <li
-                onClick={() => onClick(idx)}
-                className="cursor-pointer flex gap-2"
+        <div className="w-full mx-auto sm:max-w-lg flex flex-col gap-6 mt-12 px-7">
+          <Text style={textStyle.smalltitle}>Buat Undangan</Text>
+          {items.map(({ label }, idx) => {
+            return (
+              <div
+                key={idx}
+                className={`${
+                  idx <= currentIndex && "text-yellow-600 font-semibold"
+                } flex `}
               >
-                <p
-                  className={`${
-                    idx <= currentIndex ? "border-yellow-600" : "border-black"
-                  } border rounded-md w-6 flex justify-center items-center h-6`}
+                <li
+                  onClick={() => {
+                    setIsOpen(false);
+                    onClick(idx);
+                  }}
+                  className="cursor-pointer flex gap-2"
                 >
-                  {idx + 1}
-                </p>
-                <p>{label}</p>
-              </li>
-            </div>
-          );
-        })}
+                  <p
+                    className={`${
+                      idx <= currentIndex ? "border-yellow-600" : "border-black"
+                    } border rounded-md w-6 flex justify-center items-center h-6`}
+                  >
+                    {idx + 1}
+                  </p>
+                  <p>{label}</p>
+                </li>
+              </div>
+            );
+          })}
+        </div>
       </ul>
     </>
   );
