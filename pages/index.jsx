@@ -1,4 +1,4 @@
-import GetPackagesApi from "@/api/package/GetPackages";
+import GetAllPackage from "../api/integrations/package/GetAllPackage";
 import {
   ActionSection,
   Container,
@@ -14,35 +14,7 @@ import FeatureSection from "@/components/home/Feature";
 import HeroSection from "@/components/home/Hero";
 import Head from "next/head";
 
-export async function getServerSideProps() {
-  try {
-    const res = await GetPackagesApi();
-    if (res.status == 1) {
-      const packages = res.data?.packages;
-      console.log(packages);
-      return {
-        props: {
-          packages,
-        },
-      };
-    } else if (res.status == 0) {
-      return {
-        props: {
-          packages: [],
-        },
-      };
-    }
-  } catch (error) {
-    console.error(error);
-    return {
-      props: {
-        packages: [],
-      },
-    };
-  }
-}
-
-export default function Home({ packages }) {
+export default function Home({ pageProps }) {
   return (
     <>
       <Head>
@@ -93,7 +65,7 @@ export default function Home({ packages }) {
           <TutorialSection />
         </Container>
         <Testimonial />
-        <PriceSection packages={packages} />
+        <PriceSection packages={pageProps.packages} />
         <ActionSection />
         <Footer />
         <ScrollToTopButton />
@@ -106,6 +78,7 @@ export async function getServerSideProps() {
   try {
     const hit = await GetAllPackage();
     // Misalnya, jika Anda ingin mengurutkan berdasarkan urutan: Freemium, Premium, Eksklusif, Pro, Elegant
+    console.log("hit", hit);
     if (!hit)
       return {
         props: {

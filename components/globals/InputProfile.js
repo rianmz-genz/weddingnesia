@@ -83,7 +83,7 @@ export default function InputProfile({
           </div>
         )}
       </div>
-      <div>
+      <div className="w-8/12">
         {imgFile ? (
           <div className="flex gap-2">
             {!hitted && (
@@ -113,7 +113,8 @@ export default function InputProfile({
               onChange={(e) => onPick(e.target.files[0])}
               type="file"
               accept=".png"
-              hidden
+              className="hidden"
+              name={isMan ? "Pria" : "Wanita"}
             />
           </label>
         )}

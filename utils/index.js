@@ -24,3 +24,24 @@ export function GetPackage(value = "bronze") {
       );
   }
 }
+
+export function formatDate(props) {
+  const inputDate = new Date(props);
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
+  const formatter = new Intl.DateTimeFormat("id-ID", options);
+  return formatter.format(inputDate);
+}
+
+export function dateNow() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
