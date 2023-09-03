@@ -4,6 +4,7 @@ import TitleLocation from "./TitleLocation";
 import { InputTitle } from "../globals/Input";
 import GoogleMapEmbed from "./GoogleMapEmbed";
 import TitleBorder from "../globals/TitleBorder";
+import { dateNow } from "@/utils";
 
 export default function LocationInformation({
   wedding_date,
@@ -46,6 +47,7 @@ export default function LocationInformation({
           value={reception_date}
           onChange={(e) => setValue({ reception_date: e.target.value })}
           type="date"
+          min={dateNow()}
           label={"Tanggal Acara*"}
         />
         <InputTitle
@@ -95,6 +97,7 @@ export default function LocationInformation({
           value={wedding_date}
           onChange={(e) => setValue({ wedding_date: e.target.value })}
           type="date"
+          min={dateNow()}
           label={"Tanggal Acara*"}
         />
       </div>
