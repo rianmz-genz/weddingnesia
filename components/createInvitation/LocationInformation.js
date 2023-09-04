@@ -21,6 +21,12 @@ export default function LocationInformation({
   onNext,
   setValue,
 }) {
+  const getSrcValue = (iframeString) => {
+    const startIndex = iframeString.indexOf('src="') + 5;
+    const endIndex = iframeString.indexOf('"', startIndex);
+    if (startIndex === -1 && endIndex === -1 && endIndex < startIndex) return;
+    return iframeString.slice(startIndex, endIndex);
+  };
   return (
     <TemplateCreate onNext={onNext}>
       <TitleBorder>Resepsi</TitleBorder>
@@ -31,7 +37,9 @@ export default function LocationInformation({
         label={"Embed Google Maps*"}
         placeholder="Embed google maps"
         value={reception_map}
-        onChange={(e) => setValue({ reception_map: e.target.value })}
+        onChange={(e) =>
+          setValue({ reception_map: getSrcValue(e.target.value) })
+        }
       />
       <InputTitle
         required
@@ -78,7 +86,7 @@ export default function LocationInformation({
       <InputTitle
         required
         value={wedding_map}
-        onChange={(e) => setValue({ wedding_map: e.target.value })}
+        onChange={(e) => setValue({ wedding_map: getSrcValue(e.target.value) })}
         className={"my-3"}
         label={"Embed Google Maps*"}
         placeholder="Embed google maps"
