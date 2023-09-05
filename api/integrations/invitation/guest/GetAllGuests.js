@@ -4,8 +4,6 @@ import Cookies from "js-cookie";
 const GetAllGuests = async (invitationId) => {
     const token = "Bearer " + Cookies.get("token");
     const url = `${GetDomain()}/invitations/${invitationId}/guests`
-    console.log(url);
-    console.log(token);
     return await fetch(url, {
         method: "GET",
         headers: {
