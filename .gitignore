@@ -44,6 +44,7 @@ auth.puml
 # Sentry Auth Token
 .sentryclirc
 
+.vscode
 
 next-env.d.ts
 public/assets
