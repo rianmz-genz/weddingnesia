@@ -16,13 +16,13 @@ import { urlAuthFacebook, urlAuthGoogle } from "@ApiRoutes/auth";
 function ProviderButton(provider) {
   let icon;
   switch (provider.name) {
-    case 'google':
+    case "google":
       icon = GoogleIcon;
       break;
-    case 'facebook':
+    case "facebook":
       icon = FacebookIcon;
       break;
-    case 'instagram':
+    case "instagram":
       icon = InstagramIcon;
       break;
     default:
@@ -30,111 +30,117 @@ function ProviderButton(provider) {
       break;
   }
   return (
-    <div key={provider.name} className="w-full flex flex-row justify-center rounded-lg py-3 shadow-md">
+    <div
+      key={provider.name}
+      className="w-full flex flex-row justify-center rounded-lg py-3 shadow-md"
+    >
       <Link href={provider.url} className="flex flex-row justify-start gap-4">
         <Image src={icon} alt="icon" className="w-8 h-8" />
         <span>Sign in with {provider.name}</span>
       </Link>
     </div>
-  )
+  );
 }
 
 const LoginView = () => {
-  const thirdProviderClass = 'flex flex-row p-4 shadow-md rounded-xl w-16 h-16';
   const router = useRouter();
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [errorAuthenticate, setErrorAuthenticate] = useState("");
   const [loginUrl, setLoginUrl] = useState(null);
   const [facebookUrl, setFacebookUrl] = useState(null);
 
   function formValidator() {
-    let result = true
-    setErrorEmail(null)
-    setErrorAuthenticate(null)
+    let result = true;
+    setErrorEmail(null);
+    setErrorAuthenticate(null);
     if (email.length < 1) {
-      setErrorEmail("The email field is required")
-      result = false
+      setErrorEmail("The email field is required");
+      result = false;
     }
-    return result
+    return result;
   }
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const validation = formValidator()
+    const validation = formValidator();
 
     if (validation) {
-      LoginApi({email, password}).then((res) => {
+      LoginApi({ email, password }).then((res) => {
         if (res.status === false) {
           if (res.code === 404) {
-            setErrorEmail(res.message)
+            setErrorEmail(res.message);
           }
           if (res.code === 422) {
-            setErrorEmail(res.data.errors.email ?? "")
+            setErrorEmail(res.data.errors.email ?? "");
           }
           if (res.code === 401) {
-            setErrorAuthenticate(res.message)
+            setErrorAuthenticate(res.message);
           }
           if (res.code === 400) {
-            setErrorAuthenticate(res.message)
+            setErrorAuthenticate(res.message);
           }
         }
         if (res.code === 200) {
           Cookies.set("token", res.data.access_token, { expires: 2 });
           router.push("/dashboard");
         }
-      })
+      });
     }
   };
 
   useEffect(() => {
-      fetch(urlAuthGoogle, {
-          headers : {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-          }
+    fetch(urlAuthGoogle, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Something went wrong!");
       })
-          .then((response) => {
-              if (response.ok) {
-                  return response.json();
-              }
-              throw new Error('Something went wrong!');
-          })
-          .then((data) => setLoginUrl( data.url ))
+      .then((data) => setLoginUrl(data.url));
   }, []);
 
   useEffect(() => {
-      fetch(urlAuthFacebook, {
-          headers : {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-          }
+    fetch(urlAuthFacebook, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Something went wrong!");
       })
-          .then((response) => {
-              if (response.ok) {
-                  return response.json();
-              }
-              throw new Error('Something went wrong!');
-          })
-          .then((data) => setFacebookUrl( data.url ))
+      .then((data) => setFacebookUrl(data.url));
   }, []);
 
   const providers = [
     {
-      name: 'google',
-      url: loginUrl ?? '#'
+      name: "google",
+      url: loginUrl ?? "#",
     },
     {
-      name: 'facebook',
-      url: facebookUrl ?? '#'
+      name: "facebook",
+      url: facebookUrl ?? "#",
     },
-  ]
+  ];
 
   return (
     <AuthPage onSubmit={handleLogin}>
       <Logo className={"w-8/12"} />
-      {errorAuthenticate ? <div className="text-sm text-red-500">{errorAuthenticate}</div> : ''}
+      {errorAuthenticate ? (
+        <div className="text-sm text-red-500">{errorAuthenticate}</div>
+      ) : (
+        ""
+      )}
       <div className="w-full mt-6">
         <Text className={"mb-1"} style={textStyle.titleQuestion}>
           Email
@@ -145,9 +151,12 @@ const LoginView = () => {
           icon={<BiUser className="text-black mr-2" />}
           onChange={(e) => setEmail(e.target.value)}
         />
-        {errorEmail ? <div className="text-sm text-red-500">{errorEmail}</div> : ''}
-        <Text className={"mb-1 mt-3"}
-              style={textStyle.titleQuestion}>
+        {errorEmail ? (
+          <div className="text-sm text-red-500">{errorEmail}</div>
+        ) : (
+          ""
+        )}
+        <Text className={"mb-1 mt-3"} style={textStyle.titleQuestion}>
           Password
         </Text>
         <InputIcon
