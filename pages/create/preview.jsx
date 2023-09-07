@@ -232,7 +232,6 @@ export default function PreviewDataInvitation({ pageProps }) {
           audio={audio}
           onOpenModal={() => {
             if (isHitApi) return;
-            console.log(triggerModal);
             setTriggerModal(true);
           }}
         />

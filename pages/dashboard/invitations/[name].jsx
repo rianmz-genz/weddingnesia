@@ -12,9 +12,11 @@ import DataTable from "react-data-table-component";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import QRCode from "react-qr-code";
 import { getServerSideProps } from "..";
+import Modals from "@/components/globals/Modals";
 
 export default function InvitationsDetail() {
-  const [guests, setGuests] = useState([])
+  const [guests, setGuests] = useState([]);
+  const [isOpenDelete, setIsOpenDelete] = useState(false);
   const router = useRouter();
   const items = ["Undangan", router.query.name];
   const details = [
@@ -55,79 +57,89 @@ export default function InvitationsDetail() {
   ];
 
   const convertRSVP = (status) => {
-    let result = "ERROR"
+    let result = "ERROR";
     if (status == "SURE") {
-      result = "Akan Datang"
+      result = "Akan Datang";
     }
     if (status == "ABSENT") {
-      result = "Tidak Datang"
+      result = "Tidak Datang";
     }
     if (status == "NOT_SURE") {
-      result = "Belum Tahu"
+      result = "Belum Tahu";
     }
     return result;
-  }
+  };
 
   const convertToGuestRowTable = (guest) => {
     return {
       name: guest.name,
       confirm: convertRSVP(guest.rsvp_status),
       // present: "27-09-2027 11:00",
-      present: guest.attendace_at ?? 'Belum hadir',
+      present: guest.attendace_at ?? "Belum hadir",
       qr: (
-          <QRCode
-            className="w-16 h-16 object-cover"
-            value={guest.qr_code}
-            width={1080}
-            height={1080}
-          />
+        <QRCode
+          className="w-16 h-16 object-cover"
+          value={guest.qr_code}
+          width={1080}
+          height={1080}
+        />
       ),
-      action: <DetailInvitationAction />,
-    }
-  }
+      action: <DetailInvitationAction openDelete={openDelete} />,
+    };
+  };
 
   useEffect(() => {
     GetAllGuests("5302a206-55b1-49fb-8a13-c6e992e5c213").then((res) => {
-      const guests = res.data.guests
-      setGuests(guests.map((guest) => convertToGuestRowTable(guest)))      
-    })
-  }, [])
-
+      const guests = res.data.guests;
+      setGuests(guests.map((guest) => convertToGuestRowTable(guest)));
+    });
+  }, []);
+  const openDelete = () => {
+    setIsOpenDelete(true);
+  };
+  const onCloseDelete = () => {
+    setIsOpenDelete(false);
+  };
   return (
-    <DashboardUser>
-      <div className="w-11/12 mx-auto mt-6">
-        <BreadCumbers back={"/dashboard"} items={items} />
-        <div className="w-full flex mt-8 md:space-x-3 md:flex-row flex-col">
-          <img
-            className="md:w-6/12 w-full h-48 object-cover rounded-md my-2"
-            src="/images/mockuplaptop.png"
-            alt="Gambar Cover"
-            width={1080}
-            height={1080}
-          />
-          <div className="md:w-6/12 w-full max-md:mt-6 space-y-3 flex flex-col justify-start">
-            {/* {details.map(({ top, bottom }, idx) => (
+    <>
+      <Modals onClose={onCloseDelete} trigger={isOpenDelete}>
+        pppp
+      </Modals>
+      <DashboardUser>
+        <div className="w-11/12 mx-auto mt-6">
+          <BreadCumbers back={"/dashboard"} items={items} />
+          <div className="w-full flex mt-8 md:space-x-3 md:flex-row flex-col">
+            <img
+              className="md:w-6/12 w-full h-48 object-cover rounded-md my-2"
+              src="/images/mockuplaptop.png"
+              alt="Gambar Cover"
+              width={1080}
+              height={1080}
+            />
+            <div className="md:w-6/12 w-full max-md:mt-6 space-y-3 flex flex-col justify-start">
+              {/* {details.map(({ top, bottom }, idx) => (
               <TopBottomText key={idx} top={top} bottom={bottom} />
             ))} */}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="md:px-4 px-2 my-12">
-        <DataTable
-          className="scrollbar"
-          selectableRows
-          pagination={true}
-          title={"Daftar Tamu Undangan"}
-          progressPending={false}
-          progressComponent={
-            <AiOutlineLoading3Quarters className="text-xl text-black animate-spin" />
-          }
-          columns={columns}
-          data={guests}
-          onSelectedRowsChange={(row) => console.log(row.selectedRows)}
-          fixedHeader
-        />
-      </div>
-    </DashboardUser>
+        <div className="md:px-4 px-2 my-12">
+          <DataTable
+            className="scrollbar"
+            selectableRows
+            pagination={true}
+            title={"Daftar Tamu Undangan"}
+            progressPending={false}
+            progressComponent={
+              <AiOutlineLoading3Quarters className="text-xl text-black animate-spin" />
+            }
+            columns={columns}
+            data={guests}
+            onSelectedRowsChange={(row) => console.log(row.selectedRows)}
+            fixedHeader
+          />
+        </div>
+      </DashboardUser>
+    </>
   );
 }

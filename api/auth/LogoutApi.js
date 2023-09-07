@@ -7,11 +7,11 @@ const LogoutApi = async () => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: token
+      Authorization: token,
     },
   }).then((response) => {
-    return response.json()
-  })
+    return response.json();
+  });
 };
 
 export default LogoutApi;
