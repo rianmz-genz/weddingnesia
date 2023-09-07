@@ -15,7 +15,7 @@ export default function PriceSection({ packages }) {
   return (
     <section
       id="price"
-      className="bg-slate-50 sm:max-w-lg lg:max-w-7xl mx-auto py-16 lg:py-32 px-7"
+      className="bg-slate-50 lg:bg-white sm:max-w-lg lg:max-w-7xl mx-auto py-16 lg:py-32 px-7"
     >
       <SectionParagraph
         className={"lg:w-8/12 text-center mx-auto"}

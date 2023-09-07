@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import Text from "../../components/globals/Text";
-import { buttonStyle, textStyle } from "../../utils/enum";
+import { alertStyle, buttonStyle, textStyle } from "../../utils/enum";
 import TitleBorder from "../../components/globals/TitleBorder";
 import ContainerWhite from "../../components/globals/ContainerWhite";
 import Image from "next/image";
@@ -11,9 +11,22 @@ import GoogleMapEmbed from "@/components/createInvitation/GoogleMapEmbed";
 import { Button } from "@/components";
 import PreviewPage from "@/components/createInvitation/preview";
 import GetAllDesign from "@/api/integrations/design/GetAllDesign";
+import CreateInvitationApi from "@/api/integrations/invitation/CreateInvitation";
+import { CreateInvitationContext } from "@/context/create-invitation";
+import Alert from "@/components/globals/Alert";
+import Modals from "@/components/globals/Modals";
+import Skeleton from "@/components/globals/Skeleton";
 
 export default function PreviewDataInvitation({ pageProps }) {
-  const { init, designs } = pageProps;
+  const [isHitApi, setIsHitApi] = useState(true);
+  const [message, setMessage] = useState(false);
+  const [statusApi, setStatusApi] = useState(false);
+  const [trigger, setTrigger] = useState(false);
+  const [triggerModal, setTriggerModal] = useState(false);
+  const { init } = pageProps;
+  setTimeout(() => {
+    setIsHitApi(false);
+  }, 500);
   const {
     audio,
     timezone,
@@ -149,39 +162,89 @@ export default function PreviewDataInvitation({ pageProps }) {
     },
   ];
 
+  const handleSubmit = () => {
+    setTriggerModal(false);
+    setIsHitApi(true);
+    CreateInvitationApi({ data: init }).then((res) => {
+      setTrigger(true);
+      if (res) {
+        setStatusApi(true);
+        setMessage("Berhasil membuat data undangan");
+      } else {
+        setStatusApi(false);
+        setMessage("Gagal membuat data undangan");
+      }
+      setIsHitApi(false);
+      setTimeout(() => {
+        setTrigger(false);
+      }, 4000);
+    });
+  };
+  const contextValue = {
+    isHitApi,
+    statusApi,
+    message,
+    triggerModal,
+    trigger,
+  };
   return (
-    <PreviewPage
-      reception_map={reception_map}
-      albums={albums}
-      bride_avatar={bride_avatar}
-      brides={brides}
-      grooms={grooms}
-      groom_avatar={groom_avatar}
-      receptions={receptions}
-      weddings={weddings}
-      wedding_map={wedding_map}
-      slug={slug}
-      primary_cover={primary_cover}
-      secondary_cover={secondary_cover}
-      title={title}
-      is_groom_first={is_groom_first}
-      greeting={greeting}
-      opening_remarks={opening_remarks}
-      quotes={quotes}
-      source_quotes={source_quotes}
-      quotess={quotess}
-      greetings={greetings}
-      designs={designs}
-    />
+    <CreateInvitationContext.Provider value={contextValue}>
+      <div>
+        <Alert
+          trigger={trigger}
+          style={statusApi ? alertStyle.success : alertStyle.error}
+          message={message}
+        />
+        <Modals trigger={triggerModal} onClose={() => setTriggerModal(false)}>
+          <Text style={textStyle.smalltitle} className={"text-center"}>
+            Apakah anda yakin ingin membuat undangan?
+          </Text>
+          <Button
+            onClick={handleSubmit}
+            style={buttonStyle.blackMedium}
+            className={"w-full mt-3"}
+          >
+            Buat
+          </Button>
+        </Modals>
+        <PreviewPage
+          isLoading={isHitApi}
+          reception_map={reception_map}
+          albums={albums}
+          bride_avatar={bride_avatar}
+          brides={brides}
+          grooms={grooms}
+          groom_avatar={groom_avatar}
+          receptions={receptions}
+          weddings={weddings}
+          wedding_map={wedding_map}
+          slug={slug}
+          primary_cover={primary_cover}
+          secondary_cover={secondary_cover}
+          title={title}
+          is_groom_first={is_groom_first}
+          greeting={greeting}
+          opening_remarks={opening_remarks}
+          quotes={quotes}
+          source_quotes={source_quotes}
+          quotess={quotess}
+          greetings={greetings}
+          audio={audio}
+          onOpenModal={() => {
+            if (isHitApi) return;
+            console.log(triggerModal);
+            setTriggerModal(true);
+          }}
+        />
+      </div>
+    </CreateInvitationContext.Provider>
   );
 }
 
 export async function getServerSideProps({ req }) {
   try {
     const init = req.cookies.dataInvitation;
-    const designs = await GetAllDesign();
-    if (!init || !designs) {
-      console.log("undefined");
+    if (!init) {
       return {
         props: {
           init: null,
@@ -189,12 +252,10 @@ export async function getServerSideProps({ req }) {
       };
     }
     // Misalnya, jika Anda ingin mengurutkan berdasarkan urutan: Freemium, Premium, Eksklusif, Pro, Elegant
-    if (init && designs) {
-      console.log("iya masuk");
+    if (init) {
       return {
         props: {
           init: JSON.parse(init),
-          designs,
         },
       };
     }

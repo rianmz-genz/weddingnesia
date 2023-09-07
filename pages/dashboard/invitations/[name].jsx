@@ -1,3 +1,4 @@
+import GetAllGuests from "@/api/integrations/invitation/guest/GetAllGuests";
 import { DashboardUser, Text } from "@/components";
 import BreadCumbers from "@/components/globals/BreadCumbers";
 import DetailInvitationAction from "@/components/globals/DetailInvitationAction";
@@ -6,11 +7,14 @@ import { GetPackage } from "@/utils";
 import { textStyle } from "@/utils/enum";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import QRCode from "react-qr-code";
+import { getServerSideProps } from "..";
 
 export default function InvitationsDetail() {
+  const [guests, setGuests] = useState([])
   const router = useRouter();
   const items = ["Undangan", router.query.name];
   const details = [
@@ -45,35 +49,50 @@ export default function InvitationsDetail() {
       selector: (row) => row.confirm,
     },
     {
-      name: "Kehadiran",
-      selector: (row) => row.present,
-    },
-    {
-      name: "QR",
-      selector: (row) => row.qr,
-    },
-    {
       name: "Aksi",
       selector: (row) => row.action,
     },
   ];
-  const datas = [
-    {
-      name: "Adrian Aji Septa",
-      confirm: "Hadir",
-      present: "27-09-2027 11:00",
+
+  const convertRSVP = (status) => {
+    let result = "ERROR"
+    if (status == "SURE") {
+      result = "Akan Datang"
+    }
+    if (status == "ABSENT") {
+      result = "Tidak Datang"
+    }
+    if (status == "NOT_SURE") {
+      result = "Belum Tahu"
+    }
+    return result;
+  }
+
+  const convertToGuestRowTable = (guest) => {
+    return {
+      name: guest.name,
+      confirm: convertRSVP(guest.rsvp_status),
+      // present: "27-09-2027 11:00",
+      present: guest.attendace_at ?? 'Belum hadir',
       qr: (
-        <img
-          src="/images/scanner.png"
-          alt="gambar qr"
-          className="w-16 h-16 object-cover"
-          width={1080}
-          height={1080}
-        />
+          <QRCode
+            className="w-16 h-16 object-cover"
+            value={guest.qr_code}
+            width={1080}
+            height={1080}
+          />
       ),
       action: <DetailInvitationAction />,
-    },
-  ];
+    }
+  }
+
+  useEffect(() => {
+    GetAllGuests("5302a206-55b1-49fb-8a13-c6e992e5c213").then((res) => {
+      const guests = res.data.guests
+      setGuests(guests.map((guest) => convertToGuestRowTable(guest)))      
+    })
+  }, [])
+
   return (
     <DashboardUser>
       <div className="w-11/12 mx-auto mt-6">
@@ -87,9 +106,9 @@ export default function InvitationsDetail() {
             height={1080}
           />
           <div className="md:w-6/12 w-full max-md:mt-6 space-y-3 flex flex-col justify-start">
-            {details.map(({ top, bottom }, idx) => (
+            {/* {details.map(({ top, bottom }, idx) => (
               <TopBottomText key={idx} top={top} bottom={bottom} />
-            ))}
+            ))} */}
           </div>
         </div>
       </div>
@@ -97,14 +116,14 @@ export default function InvitationsDetail() {
         <DataTable
           className="scrollbar"
           selectableRows
-          pagination={datas.length > 10}
+          pagination={true}
           title={"Daftar Tamu Undangan"}
           progressPending={false}
           progressComponent={
             <AiOutlineLoading3Quarters className="text-xl text-black animate-spin" />
           }
           columns={columns}
-          data={datas}
+          data={guests}
           onSelectedRowsChange={(row) => console.log(row.selectedRows)}
           fixedHeader
         />

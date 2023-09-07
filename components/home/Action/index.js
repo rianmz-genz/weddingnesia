@@ -2,6 +2,7 @@ import Button from "@/components/globals/Button";
 import Text from "@/components/globals/Text";
 import { textStyle } from "@/utils/enum";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export default function ActionSection() {
@@ -10,13 +11,6 @@ export default function ActionSection() {
       <Text style={textStyle.description} className={"text-yellow-600"}>
         Buat Undangan Online Sekarang
       </Text>
-      {/* <Image
-        src={"/images/logo.png"}
-        alt="Logo"
-        width={1080}
-        height={1080}
-        className="w-5/12 mx-auto"
-      ></Image> */}
       <Text style={textStyle.bigtitle} className={" my-3"}>
         Dipercaya 1.119 Customer
       </Text>
@@ -24,7 +18,9 @@ export default function ActionSection() {
         Kami ingin menjadi bagian kebahagian momen spesial Anda, mari
         bergabunglah bersama kami yang telah dipercaya lebih dari ribuan orang.
       </Text>
-      <Button className="mt-4">Buat Undangan Gratis</Button>
+      <Link href={"/auth/signin"}>
+        <Button className="mt-4">Buat Undangan Gratis</Button>
+      </Link>
     </section>
   );
 }
