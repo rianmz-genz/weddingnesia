@@ -1,45 +1,33 @@
-import { initialValue } from "@/store";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { BiLogOut } from "react-icons/bi";
 import ToggleButton from "./ToggleButton";
-import LogoutApi from "@/api/auth/LogoutApi";
-import Cookies from "js-cookie";
-import { HiOutlineEnvelope, HiOutlineCalendar } from "react-icons/hi2"
+import { HiOutlineEnvelope, HiOutlineCalendar } from "react-icons/hi2";
 import { MdCloudUpload } from "react-icons/md";
 
 const NavbarGuest = () => {
+  const router = useRouter();
+  const guestId = router.query?.guestId;
   const navbar = [
     {
-      label: 'E-Ticket',
-      href: '#',
-      icon: <HiOutlineEnvelope />
+      label: "E-Ticket",
+      href: `/guests/${guestId}/e-ticket`,
+      icon: <HiOutlineEnvelope />,
     },
     {
-      label: 'Kehadiran',
-      href: '#',
-      icon: <HiOutlineCalendar />
+      label: "Kehadiran",
+      href: `/guests/${guestId}/rsvp`,
+      icon: <HiOutlineCalendar />,
     },
     {
-      label: 'Upload',
-      href: '#',
-      icon: <MdCloudUpload />
-    }
-  ]
-  const router = useRouter();
+      label: "Upload",
+      href: `/guests/${guestId}/upload`,
+      icon: <MdCloudUpload />,
+    },
+  ];
   const { pathname } = router;
   const [isOpened, setIsOpened] = useState(false);
 
-  const handleLogout = () => {
-    LogoutApi().then((res) => {
-      Cookies.remove('token')
-      if (res.status === true) {
-        router.push('/')
-      }
-    })
-  }
-  
   return (
     <>
       <ToggleButton
@@ -66,14 +54,6 @@ const NavbarGuest = () => {
             </li>
           ))}
         </ul>
-        <div className="w-8/12">
-          <li className={` flex items-center space-x-3 text-lg`}>
-            <p className={` text-xl`}>
-              <BiLogOut />
-            </p>
-            <button onClick={handleLogout}>Logout</button>
-          </li>
-        </div>
       </nav>
     </>
   );
