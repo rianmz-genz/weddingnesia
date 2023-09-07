@@ -112,24 +112,10 @@ export default function Create({ pageProps }) {
       handleClickMenu(index + 1);
     }
     if (currentMenu.value == "Domain") {
-      console.log("iya");
       saveData();
       setIsHitApi(true);
-      CreateInvitationApi({ data: initialData }).then((res) => {
-        setTrigger(true);
-        if (res) {
-          setStatusApi(true);
-          setMessage("Berhasil membuat data undangan");
-          router.push("/create/preview");
-        } else {
-          setStatusApi(false);
-          setMessage("Gagal membuat data undangan");
-        }
-        setIsHitApi(false);
-        setTimeout(() => {
-          setTrigger(false);
-        }, 4000);
-      });
+      setIsLoading(true);
+      router.push("/create/preview");
     }
   };
   function GetComponentView() {
@@ -219,7 +205,7 @@ export async function getServerSideProps({ req }) {
     const token = req.cookies.token;
     if (!token) {
       return {
-        redirect: "/auth/signin",
+        redirect: { destination: "/auth/signin" },
       };
     }
     const init = req.cookies.dataInvitation;
@@ -238,6 +224,7 @@ export async function getServerSideProps({ req }) {
       return {
         props: {
           init: JSON.parse(init),
+          token,
         },
       };
     }

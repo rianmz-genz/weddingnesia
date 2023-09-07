@@ -5,7 +5,6 @@ import axios from "axios";
 
 const CreateInvitationApi = async ({ data }) => {
   console.log(`url ${InvitationRoute}/store`);
-  console.table("data", data);
   console.log("token", GetToken());
   try {
     const res = await makeApiRequest({
@@ -13,9 +12,12 @@ const CreateInvitationApi = async ({ data }) => {
       method: "POST",
       data,
       headers: {
+        "Content-Type": "application/json",
         Authorization: GetToken(),
+        Accept: "application/json",
       },
     });
+
     if (!res) return false;
     return res[0];
   } catch (error) {

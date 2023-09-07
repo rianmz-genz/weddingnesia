@@ -257,6 +257,7 @@ export default function InvitationsDetail() {
             }
             columns={columns}
             data={guests.map((guest) => convertToGuestRowTable(guest))}
+
             onSelectedRowsChange={(row) => console.log(row.selectedRows)}
             fixedHeader
           />
