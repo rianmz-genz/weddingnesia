@@ -2,13 +2,13 @@ import GetDomain from "@/api/utils/GetDomain";
 import GetToken from "@/api/utils/GetToken";
 
 async function GuestSendEmailInvitation(guestId) {
-  const url = `${GetDomain()}/guests/${guestId}`;
+  const url = `${GetDomain()}/guests/${guestId}/send-email`;
   return fetch(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json",
-      "Authorization": GetToken(),
+      Accept: "application/json",
+      Authorization: GetToken(),
     },
   }).then((res) => res.json());
 }
