@@ -1,10 +1,10 @@
-import GetGuestById from "@/api/integrations/guest/GetGuestById";
 import DashboardGuest from "@/components/layout/DashboardGuest";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
+import GuestGetById from "@/api/integrations/guest/GuestGetById";
 
-function GuestEticket() {
+function GuestETicket() {
   const router = useRouter();
   const [guest, setGuest] = useState({
     name: "john doe",
@@ -14,7 +14,7 @@ function GuestEticket() {
   useEffect(() => {
     const guestId = router.query.guestId;
 
-    GetGuestById(guestId).then((res) => {
+    GuestGetById(guestId).then((res) => {
       if (res.status === true) {
         setGuest(res.data.guest);
       }
@@ -62,4 +62,4 @@ function GuestEticket() {
   );
 }
 
-export default GuestEticket;
+export default GuestETicket;
