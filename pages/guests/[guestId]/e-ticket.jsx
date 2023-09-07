@@ -6,17 +6,23 @@ import QRCode from "react-qr-code";
 
 function GuestEticket() {
   const router = useRouter();
-  const [guest, setGuest] = useState({name: "john doe", rsvp_status: "NOT_SURE"})
+  const [guest, setGuest] = useState({
+    name: "john doe",
+    rsvp_status: "NOT_SURE",
+  });
 
   useEffect(() => {
     const guestId = router.query.guestId;
 
     GetGuestById(guestId).then((res) => {
       if (res.status === true) {
-        setGuest(res.data.guest)      
+        setGuest(res.data.guest);
       }
-    })
-  })
+      if (res.status === false) {
+        console.log(res.message);
+      }
+    });
+  }, []);
 
   const userData = [
     {
