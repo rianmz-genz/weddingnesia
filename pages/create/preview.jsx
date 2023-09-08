@@ -16,6 +16,7 @@ import { CreateInvitationContext } from "@/context/create-invitation";
 import Alert from "@/components/globals/Alert";
 import Modals from "@/components/globals/Modals";
 import Skeleton from "@/components/globals/Skeleton";
+import { useRouter } from "next/router";
 
 export default function PreviewDataInvitation({ pageProps }) {
   const [isHitApi, setIsHitApi] = useState(true);
@@ -24,6 +25,7 @@ export default function PreviewDataInvitation({ pageProps }) {
   const [trigger, setTrigger] = useState(false);
   const [triggerModal, setTriggerModal] = useState(false);
   const { init } = pageProps;
+  const router = useRouter();
   setTimeout(() => {
     setIsHitApi(false);
   }, 500);
@@ -167,9 +169,13 @@ export default function PreviewDataInvitation({ pageProps }) {
     setIsHitApi(true);
     CreateInvitationApi({ data: init }).then((res) => {
       setTrigger(true);
+      console.log("response", res);
       if (res) {
         setStatusApi(true);
         setMessage("Berhasil membuat data undangan");
+        setTimeout(() => {
+          router.push("/dashboard/invitations");
+        }, 1500);
       } else {
         setStatusApi(false);
         setMessage("Gagal membuat data undangan");
