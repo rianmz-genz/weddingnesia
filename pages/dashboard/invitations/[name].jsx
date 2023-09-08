@@ -2,7 +2,7 @@ import { Button, DashboardUser, Input, Text } from "@/components";
 import BreadCumbers from "@/components/globals/BreadCumbers";
 import DetailInvitationAction from "@/components/globals/DetailInvitationAction";
 import TopBottomText from "@/components/globals/TopBottomText";
-import { GetPackage } from "@/utils";
+import { GetPackage, formatDate } from "@/utils";
 import { textStyle } from "@/utils/enum";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -18,6 +18,10 @@ import GuestCheckin from "@/api/integrations/guest/GuestCheckin";
 import GuestUpdate from "@/api/integrations/guest/GuestUpdate";
 import { BiUser } from "react-icons/bi";
 import GuestSendEmailInvitation from "@/api/integrations/guest/GuestSendEmailInvitation";
+import InvitationBySlugApi from "@/api/integrations/invitation/BySlug";
+import Image from "next/image";
+import Skeleton from "@/components/globals/Skeleton";
+import { FiHome } from "react-icons/fi";
 
 export default function InvitationsDetail() {
   const [guestId, setGuestId] = useState("");
@@ -28,23 +32,32 @@ export default function InvitationsDetail() {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const router = useRouter();
-  const items = ["Undangan", router.query.name];
+  const [invitation, setInvitation] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const items = [<FiHome key={1} />, router.query.name];
   const details = [
     {
       top: "Undangan Milik",
-      bottom: <span className="text-2xl font-bold">{router.query.name}</span>,
+      bottom: (
+        <span className="text-2xl font-bold">
+          {invitation?.groom_name} & {invitation?.bride_name}
+        </span>
+      ),
     },
     {
       top: "Link",
       bottom: (
-        <Link href={"/"} className="italic underline">
-          https://asjkajskasj
+        <Link
+          href={`/invitation?sl=${router.query.name}`}
+          className="italic underline"
+        >
+          https://app.weddingnesia.id/invitation?sl={router.query.name}
         </Link>
       ),
     },
     {
       top: "Tanggal Nikah",
-      bottom: "29-06-2027",
+      bottom: formatDate(invitation?.wedding_date ?? Date.now()),
     },
     {
       top: "Paket",
@@ -106,13 +119,24 @@ export default function InvitationsDetail() {
   };
 
   useEffect(() => {
-    GetGuestsByInvitationId("5302a206-55b1-49fb-8a13-c6e992e5c213").then(
-      (res) => {
-        const guests = res.data.guests;
-        setGuests(guests);
+    getInvitation();
+  }, [router.isReady]);
+  const getInvitation = () => {
+    setIsLoading(true);
+    InvitationBySlugApi({ slug: router.query.name }).then((resInvitation) => {
+      console.log(resInvitation);
+      if (resInvitation) {
+        setInvitation(resInvitation);
+        getGuests(resInvitation?.id);
       }
-    );
-  }, []);
+    });
+  };
+  const getGuests = (id) => {
+    GetGuestsByInvitationId(id).then((guests) => {
+      setGuests(guests.data.guests);
+      setIsLoading(false);
+    });
+  };
 
   const handleCheckin = (paramGuestCode) => {
     GuestCheckin(paramGuestCode).then((res) => {
@@ -227,40 +251,60 @@ export default function InvitationsDetail() {
           <Button className={"mt-6 w-full"}>Masuk</Button>
         </form>
       </Modals>
+
       <DashboardUser>
         <div className="w-11/12 mx-auto mt-6">
-          <BreadCumbers back={"/dashboard"} items={items} />
+          <BreadCumbers back={"/dashboard/invitations"} items={items} />
           <div className="w-full flex mt-8 md:space-x-3 md:flex-row flex-col">
-            <img
-              className="md:w-6/12 w-full h-48 object-cover rounded-md my-2"
-              src="/images/mockuplaptop.png"
-              alt="Gambar Cover"
-              width={1080}
-              height={1080}
-            />
-            <div className="md:w-6/12 w-full max-md:mt-6 space-y-3 flex flex-col justify-start">
-              {/* {details.map(({ top, bottom }, idx) => (
-              <TopBottomText key={idx} top={top} bottom={bottom} />
-            ))} */}
-            </div>
+            {isLoading ? (
+              <>
+                <Skeleton className="bg-slate-200 md:w-6/12 w-full lg:h-64 sm:h-48" />
+                <ul className="md:w-6/12 w-full flex flex-col gap-3">
+                  <Skeleton className="bg-slate-200 w-1/3 h-12" />
+                  <Skeleton className="bg-slate-200 w-2/3 h-12" />
+                  <Skeleton className="bg-slate-200 w-1/3 h-12" />
+                  <Skeleton className="bg-slate-200 w-2/3 h-12" />
+                  <Skeleton className="bg-slate-200 w-1/3 h-12" />
+                  <Skeleton className="bg-slate-200 w-2/3 h-12" />
+                </ul>
+              </>
+            ) : (
+              <>
+                <Image
+                  className="md:w-6/12 w-full lg:h-64 sm:h-48 object-cover rounded-md my-2"
+                  src={invitation?.primary_cover}
+                  alt="Gambar Cover"
+                  width={1080}
+                  height={1080}
+                />
+                <div className="md:w-6/12 w-full max-md:mt-6 space-y-3 flex flex-col justify-start">
+                  {details.map(({ top, bottom }, idx) => (
+                    <TopBottomText key={idx} top={top} bottom={bottom} />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
         <div className="md:px-4 px-2 my-12">
-          <DataTable
-            className="scrollbar"
-            selectableRows
-            pagination={true}
-            title={"Daftar Tamu Undangan"}
-            progressPending={false}
-            progressComponent={
-              <AiOutlineLoading3Quarters className="text-xl text-black animate-spin" />
-            }
-            columns={columns}
-            data={guests.map((guest) => convertToGuestRowTable(guest))}
-
-            onSelectedRowsChange={(row) => console.log(row.selectedRows)}
-            fixedHeader
-          />
+          {isLoading ? (
+            <Skeleton className="bg-slate-200 w-full h-96" />
+          ) : (
+            <DataTable
+              className="scrollbar"
+              selectableRows
+              pagination={true}
+              title={"Daftar Tamu Undangan"}
+              progressPending={false}
+              progressComponent={
+                <AiOutlineLoading3Quarters className="text-xl text-black animate-spin" />
+              }
+              columns={columns}
+              data={guests.map((guest) => convertToGuestRowTable(guest))}
+              onSelectedRowsChange={(row) => console.log(row.selectedRows)}
+              fixedHeader
+            />
+          )}
         </div>
       </DashboardUser>
     </>
