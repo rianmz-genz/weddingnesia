@@ -20,7 +20,9 @@ export function GetPackage(value = "bronze") {
   switch (value) {
     case "bronze":
       return (
-        <div className="bg-slate-100 px-4 w-fit py-2 rounded-full">Bronze</div>
+        <span className="bg-slate-100 px-4 w-fit py-2 rounded-full">
+          Freemium
+        </span>
       );
   }
 }
