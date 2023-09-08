@@ -17,6 +17,7 @@ const makeApiRequest = async ({
       headers: {
         "Content-Type": type,
         Authorization: authorization,
+        Accept: "application/json",
       },
     });
     if (response.data.status) {
@@ -25,6 +26,7 @@ const makeApiRequest = async ({
       return false;
     }
   } catch (error) {
+    console.log(error);
     return error;
   }
 };
