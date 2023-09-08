@@ -1,15 +1,16 @@
 import GetDomain from "@/api/utils/GetDomain";
+import GetToken from "@/api/utils/GetToken";
 
-async function DeleteGuest(guestId) {
-  const token = "Bearer " + Cookies.get("token");
+async function GuestDeleteById(guestId) {
   const url = `${GetDomain()}/guests/${guestId}`;
-  fetch(url, {
+  return fetch(url, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: token,
+      Accept: "application/json",
+      Authorization: GetToken(),
     },
   }).then((res) => res.json());
 }
 
-export default DeleteGuest;
+export default GuestDeleteById;

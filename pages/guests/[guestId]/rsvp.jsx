@@ -1,4 +1,3 @@
-import ChangeRSVPStatus from "@/api/integrations/invitation/guest/ChangeRSVPStatus";
 import { Button } from "@/components";
 import DashboardGuest from "@/components/layout/DashboardGuest";
 import { buttonStyle } from "@/utils/enum";
@@ -9,6 +8,7 @@ import {
   HiOutlineQuestionMarkCircle,
   HiOutlineXCircle,
 } from "react-icons/hi";
+import GuestUpdateRSVPStatus from "@/api/integrations/guest/GuestChangeRSVPStatus";
 
 function GuestAttendance() {
   const router = useRouter();
@@ -37,7 +37,7 @@ function GuestAttendance() {
   ];
 
   const handleChangeRsvpStatus = () => {
-    ChangeRSVPStatus(guestId, rsvpStatus).then((res) => {
+    GuestUpdateRSVPStatus(guestId, rsvpStatus).then((res) => {
       console.log(res);
     });
   };
