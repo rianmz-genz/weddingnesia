@@ -3,19 +3,18 @@ import InvitationRoute from "@/api/routes/invitation";
 import GetToken from "@/api/utils/GetToken";
 import axios from "axios";
 
-const CreateInvitationApi = async ({ data }) => {
+const InvitationByUserApi = async () => {
   try {
     const res = await makeApiRequest({
-      baseUrl: `${InvitationRoute}/store`,
+      baseUrl: `${InvitationRoute}/filter-by-user`,
       method: "POST",
-      data,
       authorization: GetToken(),
     });
-    if (!res) return false;
-    return res[0];
+    if (!res || !res.invitation) return false;
+    return res?.invitation;
   } catch (error) {
-    return console?.log(error);
+    throw error;
   }
 };
 
-export default CreateInvitationApi;
+export default InvitationByUserApi;

@@ -1,16 +1,16 @@
 import GetDomain from "@/api/utils/GetDomain";
+import GetToken from "@/api/utils/GetToken";
 
-async function CreateGuest(data) {
-  const token = "Bearer " + Cookies.get("token");
+async function GuestCreate(data) {
   const url = `${GetDomain()}/guests`;
-  fetch(url, {
+  return fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: token,
+      "Authorization": GetToken(),
     },
     body: JSON.stringify(data),
   }).then((res) => res.json());
 }
 
-export default CreateGuest;
+export default GuestCreate;

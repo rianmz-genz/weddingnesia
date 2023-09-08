@@ -1,6 +1,6 @@
 import GetDomain from "@/api/utils/GetDomain";
 
-async function UpdateGuestAvatar(guestId, data) {
+async function GuestUpdateAvatar(guestId, data) {
   const url = `${GetDomain()}/guests/${guestId}`;
   fetch(url, {
     method: "PUT",
@@ -11,4 +11,4 @@ async function UpdateGuestAvatar(guestId, data) {
   }).then((res) => res.json());
 }
 
-export default UpdateGuestAvatar;
+export default GuestUpdateAvatar;

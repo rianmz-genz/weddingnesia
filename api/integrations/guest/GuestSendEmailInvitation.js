@@ -1,15 +1,16 @@
 import GetDomain from "@/api/utils/GetDomain";
+import GetToken from "@/api/utils/GetToken";
 
-async function SendEmailInvitation(guestId) {
-  const token = "Bearer " + Cookies.get("token");
+async function GuestSendEmailInvitation(guestId) {
   const url = `${GetDomain()}/guests/${guestId}/send-email`;
-  fetch(url, {
+  return fetch(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: token,
+      Accept: "application/json",
+      Authorization: GetToken(),
     },
   }).then((res) => res.json());
 }
 
-export default SendEmailInvitation;
+export default GuestSendEmailInvitation;

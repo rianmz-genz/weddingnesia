@@ -1,18 +1,17 @@
 import GetDomain from "@/api/utils/GetDomain";
-import Cookies from "js-cookie";
+import GetToken from "@/api/utils/GetToken";
 
-const GetAllGuests = async (invitationId) => {
-    const token = "Bearer " + Cookies.get("token");
+const GetGuestsByInvitationId = async (invitationId) => {
     const url = `${GetDomain()}/invitations/${invitationId}/guests`
     return await fetch(url, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            Authorization: token
+            "Authorization": GetToken()
         }
     }).then((response) => {
         return response.json()
     }).catch((error) => console.log("on error" + error))
 }
 
-export default GetAllGuests
+export default GetGuestsByInvitationId
