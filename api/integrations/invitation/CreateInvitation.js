@@ -4,20 +4,13 @@ import GetToken from "@/api/utils/GetToken";
 import axios from "axios";
 
 const CreateInvitationApi = async ({ data }) => {
-  console.log(`url ${InvitationRoute}/store`);
-  console.log("token", GetToken());
   try {
     const res = await makeApiRequest({
       baseUrl: `${InvitationRoute}/store`,
       method: "POST",
       data,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: GetToken(),
-        Accept: "application/json",
-      },
+      authorization: GetToken(),
     });
-
     if (!res) return false;
     return res[0];
   } catch (error) {
