@@ -40,6 +40,18 @@ export function formatDate(props) {
   return formatter.format(inputDate);
 }
 
+export function formatHour(props) {
+  const inputDate = new Date(props);
+  const options = {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  };
+
+  const formatter = new Intl.DateTimeFormat("id-ID", options);
+  return formatter.format(inputDate);
+}
+
 export function dateNow() {
   const today = new Date();
   const year = today.getFullYear();
