@@ -2,8 +2,8 @@ import { Button, DashboardUser, Input, Text } from "@/components";
 import BreadCumbers from "@/components/globals/BreadCumbers";
 import DetailInvitationAction from "@/components/globals/DetailInvitationAction";
 import TopBottomText from "@/components/globals/TopBottomText";
-import { GetPackage, formatDate } from "@/utils";
-import { textStyle } from "@/utils/enum";
+import { GetPackage, formatDate, formatHour } from "@/utils";
+import { buttonStyle, textStyle } from "@/utils/enum";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -21,7 +21,8 @@ import GuestSendEmailInvitation from "@/api/integrations/guest/GuestSendEmailInv
 import InvitationBySlugApi from "@/api/integrations/invitation/BySlug";
 import Image from "next/image";
 import Skeleton from "@/components/globals/Skeleton";
-import { FiHome } from "react-icons/fi";
+import { FiHome, FiPlus } from "react-icons/fi";
+import GuestCreate from "@/api/integrations/guest/GuestCreate";
 
 export default function InvitationsDetail() {
   const [guestId, setGuestId] = useState("");
@@ -31,9 +32,13 @@ export default function InvitationsDetail() {
   const [guestEmail, setGuestEmail] = useState("");
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
+  const [isOpenCreate, setIsOpenCreate] = useState(false);
   const router = useRouter();
   const [invitation, setInvitation] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [guestNameCreate, setGuestNameCreate] = useState("");
+  const [guestPhoneCreate, setGuestPhoneCreate] = useState(0);
+  const [guestEmailCreate, setGuestEmailCreate] = useState("");
   const items = [<FiHome key={1} />, router.query.name];
   const details = [
     {
@@ -74,6 +79,10 @@ export default function InvitationsDetail() {
       selector: (row) => row.confirm,
     },
     {
+      name: "Hadir Pada",
+      selector: (row) => row.present,
+    },
+    {
       name: "Aksi",
       selector: (row) => row.action,
     },
@@ -97,8 +106,10 @@ export default function InvitationsDetail() {
     return {
       name: guest.name,
       confirm: convertRSVP(guest.rsvp_status),
-      // present: "27-09-2027 11:00",
-      present: guest.attendace_at ?? "Belum hadir",
+      present:
+        guest.attendance_at == null
+          ? "Belum Hadir"
+          : formatHour(guest.attendance_at),
       qr: (
         <QRCode
           className="w-16 h-16 object-cover"
@@ -133,15 +144,33 @@ export default function InvitationsDetail() {
   };
   const getGuests = (id) => {
     GetGuestsByInvitationId(id).then((guests) => {
+      console.log(guests.data.guests);
       setGuests(guests.data.guests);
       setIsLoading(false);
+    });
+  };
+  const handleCreateGuest = (e) => {
+    e.preventDefault();
+    const data = {
+      name: guestNameCreate,
+      email: guestEmailCreate,
+      phone: guestPhoneCreate,
+      invitationId: invitation.id,
+    };
+    GuestCreate(data).then((res) => {
+      console.log(res);
+      if (res) {
+        getInvitation();
+      } else {
+      }
+      setIsOpenCreate(false);
     });
   };
 
   const handleCheckin = (paramGuestCode) => {
     GuestCheckin(paramGuestCode).then((res) => {
       if (res.status === true) {
-        console.log("success checkin");
+        getInvitation();
       }
       if (res.status === false) {
         console.log("error checkin");
@@ -172,14 +201,16 @@ export default function InvitationsDetail() {
   const onCloseEdit = () => {
     setIsOpenEdit(false);
   };
-  const handleUpdateGuest = () => {
+  const handleUpdateGuest = (e) => {
+    e.preventDefault();
     const data = { name: guestName, email: guestEmail, phone: guestPhone };
     GuestUpdate(guestId, data).then((res) => {
       setIsOpenDelete(false);
-      if (res.status === true) {
+      if (res?.status === true) {
         console.log("success update");
+        getInvitation();
       }
-      if (res.status === false) {
+      if (res?.status === false) {
         console.log("error update");
       }
     });
@@ -191,12 +222,15 @@ export default function InvitationsDetail() {
   const onCloseDelete = () => {
     setIsOpenDelete(false);
   };
+  const onCloseCreate = () => {
+    setIsOpenCreate(false);
+  };
   const handleDeleteGuest = () => {
     GuestDeleteById(guestId).then((res) => {
       setIsOpenDelete(false);
-      console.log(res);
       if (res.status === true) {
         console.log("success delete");
+        getInvitation();
       }
       if (res.status === false) {
         console.log("error delete");
@@ -209,7 +243,49 @@ export default function InvitationsDetail() {
         <h1>Apakah anda yakin menghapus tamu ini?</h1>
         <Button onClick={handleDeleteGuest}>Hapus</Button>
       </Modals>
-
+      {/* create */}
+      <Modals onClose={onCloseCreate} trigger={isOpenCreate}>
+        <h1>Tambah Data Tamu</h1>
+        <form
+          onSubmit={handleCreateGuest}
+          className="w-full max-w-[450px] bg-white px-6 py-12 rounded-md shadow-lg shadow-blue-600/10 flex flex-col items-center"
+        >
+          <Text className={"mb-1"} style={textStyle.titleQuestion}>
+            Nama
+          </Text>
+          <Input
+            autoFocus={true}
+            value={guestNameCreate}
+            placeholder="Name"
+            icon={<BiUser className="text-black mr-2" />}
+            onChange={(e) => setGuestNameCreate(e.target.value)}
+          />
+          <Text className={"mb-1"} style={textStyle.titleQuestion}>
+            Nomor Telepon
+          </Text>
+          <Input
+            type="number"
+            value={guestPhoneCreate}
+            autoFocus={true}
+            placeholder="Phone"
+            icon={<BiUser className="text-black mr-2" />}
+            onChange={(e) => setGuestPhoneCreate(e.target.value)}
+          />
+          <Text className={"mb-1"} style={textStyle.titleQuestion}>
+            Email
+          </Text>
+          <Input
+            type="email"
+            value={guestEmailCreate}
+            autoFocus={true}
+            placeholder="Email"
+            icon={<BiUser className="text-black mr-2" />}
+            onChange={(e) => setGuestEmailCreate(e.target.value)}
+          />
+          <Button className={"mt-6 w-full"}>Masuk</Button>
+        </form>
+      </Modals>
+      {/* update */}
       <Modals onClose={onCloseEdit} trigger={isOpenEdit}>
         <h1>Update Data Tamu</h1>
         <form
@@ -296,12 +372,18 @@ export default function InvitationsDetail() {
               pagination={true}
               title={"Daftar Tamu Undangan"}
               progressPending={false}
+              actions={
+                <ActionTable
+                  onOpenCreate={() => {
+                    setIsOpenCreate(true);
+                  }}
+                />
+              }
               progressComponent={
                 <AiOutlineLoading3Quarters className="text-xl text-black animate-spin" />
               }
               columns={columns}
               data={guests.map((guest) => convertToGuestRowTable(guest))}
-              onSelectedRowsChange={(row) => console.log(row.selectedRows)}
               fixedHeader
             />
           )}
@@ -310,3 +392,17 @@ export default function InvitationsDetail() {
     </>
   );
 }
+
+const ActionTable = ({ onOpenCreate }) => {
+  return (
+    <div className="flex">
+      <Button
+        type="button"
+        onClick={onOpenCreate}
+        style={buttonStyle.greensmall}
+      >
+        <FiPlus />
+      </Button>
+    </div>
+  );
+};

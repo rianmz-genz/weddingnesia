@@ -12,6 +12,7 @@ import InstagramIcon from "@/public/images/instagram.png";
 import LoginApi from "@/api/auth/LoginApi";
 import Cookies from "js-cookie";
 import { urlAuthFacebook, urlAuthGoogle } from "@ApiRoutes/auth";
+import Loader from "@/components/globals/Loader";
 
 function ProviderButton(provider) {
   let icon;
@@ -50,6 +51,7 @@ const LoginView = () => {
   const [errorAuthenticate, setErrorAuthenticate] = useState("");
   const [loginUrl, setLoginUrl] = useState(null);
   const [facebookUrl, setFacebookUrl] = useState(null);
+  const [isHitApi, setIsHitApi] = useState(false);
 
   function formValidator() {
     let result = true;
@@ -64,6 +66,7 @@ const LoginView = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsHitApi(true);
     const validation = formValidator();
 
     if (validation) {
@@ -82,6 +85,8 @@ const LoginView = () => {
             setErrorAuthenticate(res.message);
           }
         }
+        setIsHitApi(false);
+        console.log(res);
         if (res.code === 200) {
           Cookies.set("token", res.data.access_token, { expires: 2 });
           router.push("/dashboard");
@@ -165,7 +170,9 @@ const LoginView = () => {
           icon={<FiKey className="text-black mr-2" />}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button className={"mt-6 w-full"}>Masuk</Button>
+        <Button className={"mt-6 w-full"}>
+          {isHitApi ? <Loader /> : "Masuk"}
+        </Button>
         <Text className={"text-center mt-3"}>
           Belum memiliki akun?{" "}
           <Link
