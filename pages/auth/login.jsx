@@ -13,6 +13,7 @@ import LoginApi from "@/api/auth/LoginApi";
 import Cookies from "js-cookie";
 import { urlAuthFacebook, urlAuthGoogle } from "@ApiRoutes/auth";
 import Loader from "@/components/globals/Loader";
+import MyLog from "@/utils/MyLog";
 
 function ProviderButton(provider) {
   let icon;
@@ -86,7 +87,7 @@ const LoginView = () => {
           }
         }
         setIsHitApi(false);
-        console.log(res);
+        MyLog(res)
         if (res.code === 200) {
           Cookies.set("token", res.data.access_token, { expires: 2 });
           router.push("/dashboard");
