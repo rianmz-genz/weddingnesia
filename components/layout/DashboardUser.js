@@ -8,7 +8,6 @@ const DashboardUser = ({ children }) => {
       <div className="w-2/12 max-md:hidden h-screen"></div>
       <NavbarUser />
       <div className="md:w-10/12 w-11/12 mx-auto min-h-screen mr-3 pt-12">
-        {/* <ProfileCard /> */}
         {children}
       </div>
     </div>

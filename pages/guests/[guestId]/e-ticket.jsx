@@ -13,7 +13,6 @@ function GuestETicket() {
 
   useEffect(() => {
     const guestId = router.query.guestId;
-
     GuestGetById(guestId).then((res) => {
       if (res.status === true) {
         setGuest(res.data.guest);
@@ -22,7 +21,7 @@ function GuestETicket() {
         console.log(res.message);
       }
     });
-  }, []);
+  }, [router.isReady]);
 
   const userData = [
     {

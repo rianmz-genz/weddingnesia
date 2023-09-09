@@ -1,16 +1,18 @@
+import makeApiRequest from "@/api/helpers/MakeApi";
 import GetDomain from "@/api/utils/GetDomain";
 import GetToken from "@/api/utils/GetToken";
 
 async function GuestCreate(data) {
   const url = `${GetDomain()}/guests`;
-  return fetch(url, {
+  const res = await makeApiRequest({
+    baseUrl: url,
+    data,
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": GetToken(),
-    },
-    body: JSON.stringify(data),
-  }).then((res) => res.json());
+    authorization: GetToken(),
+  });
+  console.log(res);
+  if (!res || !res?.guestId) return false;
+  return res.guestId;
 }
 
 export default GuestCreate;
