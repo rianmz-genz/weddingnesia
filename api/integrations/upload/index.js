@@ -3,7 +3,7 @@ const { default: UploadImageRoute } = require("@/api/routes/upload");
 
 const handleUploadApi = async ({ file }) => {
   const data = new FormData();
-  data.append("image", file);
+  data.append("cover", file);
   try {
     const response = await makeApiRequest({
       method: "POST",
@@ -11,7 +11,7 @@ const handleUploadApi = async ({ file }) => {
       data,
       type: "multipart/form-data",
     });
-    return response;
+    return response?.url;
   } catch (error) {
     console.error("Upload error:", error);
     throw error;
