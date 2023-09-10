@@ -63,7 +63,7 @@ export default function InputProfile({
     <div className="w-full flex gap-5 items-center ">
       {preview != null && <ViewImage onClose={closePreview} src={preview} />}
       <div className="relative group">
-        <Image
+        <img
           src={src}
           loading="lazy"
           alt={`Mempelai ${isMan ? "Laki-Laki" : "Perempuan"}`}
