@@ -17,14 +17,16 @@ import Alert from "@/components/globals/Alert";
 import Modals from "@/components/globals/Modals";
 import Skeleton from "@/components/globals/Skeleton";
 import { useRouter } from "next/router";
+import SelectTemplateApi from "@/api/integrations/order/SelectTemplate";
 
 export default function PreviewDataInvitation({ pageProps }) {
   const [isHitApi, setIsHitApi] = useState(true);
-  const [message, setMessage] = useState(false);
+  const [message, setMessage] = useState("");
   const [statusApi, setStatusApi] = useState(false);
   const [trigger, setTrigger] = useState(false);
   const [triggerModal, setTriggerModal] = useState(false);
-  const { init } = pageProps;
+  const { init, designs } = pageProps;
+  console.log(designs);
   const router = useRouter();
   setTimeout(() => {
     setIsHitApi(false);
@@ -171,19 +173,31 @@ export default function PreviewDataInvitation({ pageProps }) {
       setTrigger(true);
       console.log("response", res);
       if (res) {
-        setStatusApi(true);
-        setMessage("Berhasil membuat data undangan");
+        const data = {
+          design_id: designs[0].id,
+          invitation_id: res.id,
+        };
+        SelectTemplateApi({ data }).then((res) => {
+          console.log(res);
+          if (res) {
+            setStatusApi(true);
+            setMessage("Berhasil membuat data undangan");
+            setTimeout(() => {
+              router.push("/dashboard/invitations");
+            }, 1500);
+          } else {
+            setStatusApi(false);
+            setMessage("Gagal membuat data undangan");
+          }
+        });
+        setIsHitApi(false);
         setTimeout(() => {
-          router.push("/dashboard/invitations");
-        }, 1500);
+          setTrigger(false);
+        }, 4000);
       } else {
         setStatusApi(false);
         setMessage("Gagal membuat data undangan");
       }
-      setIsHitApi(false);
-      setTimeout(() => {
-        setTrigger(false);
-      }, 4000);
     });
   };
   const contextValue = {
@@ -249,18 +263,21 @@ export default function PreviewDataInvitation({ pageProps }) {
 export async function getServerSideProps({ req }) {
   try {
     const init = req.cookies.dataInvitation;
-    if (!init) {
+    const designs = await GetAllDesign();
+    if (!init || !designs) {
       return {
         props: {
           init: null,
+          designs: null,
         },
       };
     }
     // Misalnya, jika Anda ingin mengurutkan berdasarkan urutan: Freemium, Premium, Eksklusif, Pro, Elegant
-    if (init) {
+    if (init || designs) {
       return {
         props: {
           init: JSON.parse(init),
+          designs,
         },
       };
     }

@@ -20,7 +20,7 @@ export function GetPackage(value = "bronze") {
   switch (value) {
     case "bronze":
       return (
-        <span className="bg-slate-100 px-4 w-fit py-2 rounded-full">
+        <span className="bg-slate-100 px-4 w-fit py-2 mt-2 rounded-full">
           Freemium
         </span>
       );
@@ -49,7 +49,8 @@ export function formatHour(props) {
   };
 
   const formatter = new Intl.DateTimeFormat("id-ID", options);
-  return formatter.format(inputDate);
+  const split = formatter.format(inputDate).split(".");
+  return `${split[0]}:${split[1]}:${split[2]} WIB`;
 }
 
 export function dateNow() {

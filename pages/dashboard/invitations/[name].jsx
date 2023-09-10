@@ -3,7 +3,7 @@ import BreadCumbers from "@/components/globals/BreadCumbers";
 import DetailInvitationAction from "@/components/globals/DetailInvitationAction";
 import TopBottomText from "@/components/globals/TopBottomText";
 import { GetPackage, formatDate, formatHour } from "@/utils";
-import { buttonStyle, textStyle } from "@/utils/enum";
+import { alertStyle, buttonStyle, textStyle } from "@/utils/enum";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -23,6 +23,8 @@ import Image from "next/image";
 import Skeleton from "@/components/globals/Skeleton";
 import { FiHome, FiPlus } from "react-icons/fi";
 import GuestCreate from "@/api/integrations/guest/GuestCreate";
+import { InputLeftWithTitle, InputTitle } from "@/components/globals/Input";
+import Alert from "@/components/globals/Alert";
 
 export default function InvitationsDetail() {
   const [guestId, setGuestId] = useState("");
@@ -39,6 +41,9 @@ export default function InvitationsDetail() {
   const [guestNameCreate, setGuestNameCreate] = useState("");
   const [guestPhoneCreate, setGuestPhoneCreate] = useState(0);
   const [guestEmailCreate, setGuestEmailCreate] = useState("");
+  const [message, setMessage] = useState(false);
+  const [statusApi, setStatusApi] = useState(false);
+  const [trigger, setTrigger] = useState(false);
   const items = [<FiHome key={1} />, router.query.name];
   const details = [
     {
@@ -158,10 +163,21 @@ export default function InvitationsDetail() {
       invitationId: invitation.id,
     };
     GuestCreate(data).then((res) => {
-      console.log(res);
       if (res) {
         getInvitation();
+        setStatusApi(true);
+        setTrigger(true);
+        setMessage("Berhasil menambahkan data tamu");
+        setTimeout(() => {
+          setTrigger(false);
+        }, 4000);
       } else {
+        setStatusApi(false);
+        setTrigger(true);
+        setMessage("Gagal menambahkan data tamu");
+        setTimeout(() => {
+          setTrigger(false);
+        }, 4000);
       }
       setIsOpenCreate(false);
     });
@@ -205,13 +221,22 @@ export default function InvitationsDetail() {
     e.preventDefault();
     const data = { name: guestName, email: guestEmail, phone: guestPhone };
     GuestUpdate(guestId, data).then((res) => {
-      setIsOpenDelete(false);
-      if (res?.status === true) {
-        console.log("success update");
+      setIsOpenEdit(false);
+      if (res) {
         getInvitation();
-      }
-      if (res?.status === false) {
-        console.log("error update");
+        setStatusApi(true);
+        setTrigger(true);
+        setMessage("Berhasil mengubah data tamu");
+        setTimeout(() => {
+          setTrigger(false);
+        }, 4000);
+      } else {
+        setStatusApi(false);
+        setTrigger(true);
+        setMessage("Gagal mengubah data tamu");
+        setTimeout(() => {
+          setTrigger(false);
+        }, 4000);
       }
     });
   };
@@ -228,61 +253,84 @@ export default function InvitationsDetail() {
   const handleDeleteGuest = () => {
     GuestDeleteById(guestId).then((res) => {
       setIsOpenDelete(false);
-      if (res.status === true) {
-        console.log("success delete");
+      if (res) {
         getInvitation();
-      }
-      if (res.status === false) {
-        console.log("error delete");
+        setStatusApi(true);
+        setTrigger(true);
+        setMessage("Berhasil menghapus data tamu");
+        setTimeout(() => {
+          setTrigger(false);
+        }, 4000);
+      } else {
+        setStatusApi(false);
+        setTrigger(true);
+        setMessage("Gagal menghapus data tamu");
+        setTimeout(() => {
+          setTrigger(false);
+        }, 4000);
       }
     });
   };
   return (
     <>
+      <Alert
+        trigger={trigger}
+        style={statusApi ? alertStyle.success : alertStyle.error}
+        message={message}
+      />
       <Modals onClose={onCloseDelete} trigger={isOpenDelete}>
-        <h1>Apakah anda yakin menghapus tamu ini?</h1>
-        <Button onClick={handleDeleteGuest}>Hapus</Button>
+        <Text style={textStyle.description} className="text-center mb-3">
+          Apakah anda yakin menghapus tamu ini?
+        </Text>
+        <div className="flex">
+          <Button
+            className={"w-full"}
+            style={buttonStyle.dangerlarge}
+            onClick={handleDeleteGuest}
+          >
+            Hapus
+          </Button>
+        </div>
       </Modals>
+
       {/* create */}
       <Modals onClose={onCloseCreate} trigger={isOpenCreate}>
-        <h1>Tambah Data Tamu</h1>
         <form
           onSubmit={handleCreateGuest}
           className="w-full max-w-[450px] bg-white px-6 py-12 rounded-md shadow-lg shadow-blue-600/10 flex flex-col items-center"
         >
-          <Text className={"mb-1"} style={textStyle.titleQuestion}>
-            Nama
-          </Text>
-          <Input
-            autoFocus={true}
-            value={guestNameCreate}
-            placeholder="Name"
-            icon={<BiUser className="text-black mr-2" />}
-            onChange={(e) => setGuestNameCreate(e.target.value)}
-          />
-          <Text className={"mb-1"} style={textStyle.titleQuestion}>
-            Nomor Telepon
-          </Text>
-          <Input
-            type="number"
-            value={guestPhoneCreate}
-            autoFocus={true}
-            placeholder="Phone"
-            icon={<BiUser className="text-black mr-2" />}
-            onChange={(e) => setGuestPhoneCreate(e.target.value)}
-          />
-          <Text className={"mb-1"} style={textStyle.titleQuestion}>
-            Email
-          </Text>
-          <Input
-            type="email"
-            value={guestEmailCreate}
-            autoFocus={true}
-            placeholder="Email"
-            icon={<BiUser className="text-black mr-2" />}
-            onChange={(e) => setGuestEmailCreate(e.target.value)}
-          />
-          <Button className={"mt-6 w-full"}>Masuk</Button>
+          <Text style={textStyle.title}>Tambah Tamu</Text>
+          <div className="w-full flex flex-col gap-3">
+            <InputTitle
+              label={"Nama"}
+              autoFocus={true}
+              value={guestNameCreate}
+              placeholder="Name"
+              required
+              onChange={(e) => setGuestNameCreate(e.target.value)}
+            />
+            <InputLeftWithTitle
+              label={"Nomor Telepon"}
+              left={"+62"}
+              type="number"
+              value={guestPhoneCreate}
+              autoFocus={true}
+              placeholder="Phone"
+              required
+              onChange={(e) => setGuestPhoneCreate(e.target.value)}
+            />
+            <InputTitle
+              label={"Email"}
+              value={guestEmailCreate}
+              autoFocus={true}
+              placeholder="Email"
+              type="email"
+              required
+              onChange={(e) => setGuestEmailCreate(e.target.value)}
+            />
+          </div>
+
+          <Button className={"mt-6 w-full"}>Tambah</Button>
         </form>
       </Modals>
       {/* update */}
@@ -292,39 +340,37 @@ export default function InvitationsDetail() {
           onSubmit={handleUpdateGuest}
           className="w-full max-w-[450px] bg-white px-6 py-12 rounded-md shadow-lg shadow-blue-600/10 flex flex-col items-center"
         >
-          <Text className={"mb-1"} style={textStyle.titleQuestion}>
-            Name
-          </Text>
-          <Input
-            autoFocus={true}
-            value={guestName}
-            placeholder="Name"
-            icon={<BiUser className="text-black mr-2" />}
-            onChange={(e) => setGuestName(e.target.value)}
-          />
-          <Text className={"mb-1"} style={textStyle.titleQuestion}>
-            Phone
-          </Text>
-          <Input
-            type="number"
-            value={guestPhone}
-            autoFocus={true}
-            placeholder="Phone"
-            icon={<BiUser className="text-black mr-2" />}
-            onChange={(e) => setGuestPhone(e.target.value)}
-          />
-          <Text className={"mb-1"} style={textStyle.titleQuestion}>
-            Email
-          </Text>
-          <Input
-            type="email"
-            value={guestEmail}
-            autoFocus={true}
-            placeholder="Email"
-            icon={<BiUser className="text-black mr-2" />}
-            onChange={(e) => setGuestEmail(e.target.value)}
-          />
-          <Button className={"mt-6 w-full"}>Masuk</Button>
+          <Text style={textStyle.title}>Tambah Tamu</Text>
+          <div className="w-full flex flex-col gap-3">
+            <InputTitle
+              label={"Nama"}
+              autoFocus={true}
+              value={guestName}
+              placeholder="Name"
+              onChange={(e) => setGuestName(e.target.value)}
+              required
+            />
+            <InputLeftWithTitle
+              label={"Nomor Telepon"}
+              left={"+62"}
+              type="number"
+              value={guestPhone}
+              autoFocus={true}
+              placeholder="Phone"
+              onChange={(e) => setGuestPhone(e.target.value)}
+              required
+            />
+            <InputTitle
+              label={"Email"}
+              value={guestEmail}
+              autoFocus={true}
+              placeholder="Email"
+              onChange={(e) => setGuestEmail(e.target.value)}
+              type="email"
+              required
+            />
+          </div>
+          <Button className={"mt-6 w-full"}>Edit</Button>
         </form>
       </Modals>
 
@@ -346,7 +392,7 @@ export default function InvitationsDetail() {
               </>
             ) : (
               <>
-                <Image
+                <img
                   className="md:w-6/12 w-full lg:h-64 sm:h-48 object-cover rounded-md my-2"
                   src={invitation?.primary_cover}
                   alt="Gambar Cover"

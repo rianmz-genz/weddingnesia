@@ -15,7 +15,7 @@ export default function BrideAndGroomPreview({
       <PreviewTemplate title={"Mempelai Pria"} items={grooms}>
         <div className="flex gap-3 flex-col mt-3">
           <Text>Profile</Text>
-          <Image
+          <img
             loading="lazy"
             src={groom_avatar}
             alt="Mempelai Pria"
@@ -28,7 +28,7 @@ export default function BrideAndGroomPreview({
       <PreviewTemplate title={"Mempelai Wanita"} items={brides}>
         <div className="flex gap-3 flex-col mt-3">
           <Text>Profile</Text>
-          <Image
+          <img
             loading="lazy"
             src={bride_avatar}
             alt="Mempelai Wanita"
