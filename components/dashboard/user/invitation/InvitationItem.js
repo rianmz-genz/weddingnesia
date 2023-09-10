@@ -6,7 +6,12 @@ const { textStyle } = require("@/utils/enum");
 const { default: Link } = require("next/link");
 const { FiEye, FiEdit } = require("react-icons/fi");
 
-export default function InvitationItem({ groom_name, bride_name, slug }) {
+export default function InvitationItem({
+  groom_name,
+  bride_name,
+  slug,
+  status,
+}) {
   return (
     <li className="w-full bg-white shadow-sm px-4 py-2 rounded-md flex justify-between items-center">
       <Text style={textStyle.description}>
@@ -19,7 +24,7 @@ export default function InvitationItem({ groom_name, bride_name, slug }) {
         <Link href={"#"}>
           <FiEdit />
         </Link>
-        <GetBadgeInvitation />
+        <GetBadgeInvitation status={status} />
       </div>
     </li>
   );
