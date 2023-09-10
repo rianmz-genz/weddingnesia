@@ -11,7 +11,7 @@ export default function Modals({ children, trigger, onClose }) {
       onClick={onClose}
       className={`${
         isOpened ? "visible opacity-100" : "invisible opacity-0"
-      } transition-all duration-500 w-full h-screen bg-black/40 z-50 backdrop-blur-sm fixed flex justify-center items-center`}
+      } transition-all duration-500 w-full h-screen bg-black/40 px-7 z-50 backdrop-blur-sm fixed flex justify-center items-center`}
     >
       <div
         onClick={(e) => {
