@@ -12,6 +12,7 @@ import {
 import ScrollToTopButton from "@/components/globals/ScrollToTopButton";
 import FeatureSection from "@/components/home/Feature";
 import HeroSection from "@/components/home/Hero";
+import MyLog from "@/utils/MyLog";
 import Head from "next/head";
 
 export default function Home({ pageProps }) {
@@ -78,7 +79,7 @@ export async function getServerSideProps() {
   try {
     const hit = await GetAllPackage();
     // Misalnya, jika Anda ingin mengurutkan berdasarkan urutan: Freemium, Premium, Eksklusif, Pro, Elegant
-    console.log("hit", hit);
+    MyLog("hit", hit)
     if (!hit)
       return {
         props: {
