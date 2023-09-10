@@ -2,7 +2,6 @@ import ContainerWhite from "@/components/globals/ContainerWhite";
 import React, { useState } from "react";
 import PreviewTemplate from "./PreviewTemplate";
 import Text from "@/components/globals/Text";
-import Image from "next/image";
 import GoogleMapEmbed from "../GoogleMapEmbed";
 import TitleBorder from "@/components/globals/TitleBorder";
 import Button from "@/components/globals/Button";
@@ -68,7 +67,7 @@ export default function PreviewPage({
             <PreviewTemplate items={greetings} title={"Sambutan"}>
               <div className="flex gap-3 flex-col mt-3">
                 <Text>Primary Cover</Text>
-                <Image
+                <img
                   loading="lazy"
                   src={primary_cover}
                   alt="Primary Cover"
@@ -81,7 +80,7 @@ export default function PreviewPage({
             <PreviewTemplate items={quotess} title={"Quotes"}>
               <div className="flex gap-3 flex-col mt-3">
                 <Text>Secondary Cover</Text>
-                <Image
+                <img
                   loading="lazy"
                   src={secondary_cover}
                   alt="Secondary Cover"
@@ -100,12 +99,12 @@ export default function PreviewPage({
             <ul className="flex flex-wrap mt-6 gap-6 justify-center">
               {albums.map((src, i) => (
                 <li key={i} className="w-fit ring-1 ring-black/30">
-                  <Image
+                  <img
                     loading="lazy"
                     src={src}
                     height={1080}
                     width={1080}
-                    alt="image"
+                    alt="img"
                     className="object-cover w-32 h-32"
                   />
                 </li>
@@ -125,7 +124,7 @@ export default function PreviewPage({
                   : "ring-1 hover:ring-2 hover:ring-black"
               } transition-all duration-300 cursor-pointer`}
             >
-              <Image
+              <img
                 src={cover}
                 alt={name}
                 width={1080}
