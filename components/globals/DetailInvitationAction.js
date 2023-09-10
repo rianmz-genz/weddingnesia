@@ -13,6 +13,7 @@ export default function DetailInvitationAction({
     <ul className="flex w-full my-2 flex-wrap gap-2 transition-all duration-300">
       <IconButton
         onClick={checkinGuest}
+        title="Menghadirkan Tamu"
         className={"hover:bg-green-500/10 hover:text-green-500"}
       >
         <FiCheckCircle />
@@ -42,10 +43,11 @@ export default function DetailInvitationAction({
   );
 }
 
-const IconButton = ({ className, children, onClick }) => {
+const IconButton = ({ className, children, onClick, ...props }) => {
   return (
     <button
       onClick={onClick}
+      {...props}
       className={`transition-all duration-300 cursor-pointer rounded-md text-lg p-1 ${className}`}
     >
       {children}
