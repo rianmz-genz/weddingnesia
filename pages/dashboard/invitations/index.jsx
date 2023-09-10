@@ -42,13 +42,13 @@ const DashboardInvitations = () => {
         <ul className="mt-6 flex flex-col gap-3 justify-start items-start">
           {isLoading ? (
             <>
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
+              <Skeleton className="w-full h-24 bg-slate-200" />
+              <Skeleton className="w-full h-24 bg-slate-200" />
+              <Skeleton className="w-full h-24 bg-slate-200" />
+              <Skeleton className="w-full h-24 bg-slate-200" />
+              <Skeleton className="w-full h-24 bg-slate-200" />
+              <Skeleton className="w-full h-24 bg-slate-200" />
+              <Skeleton className="w-full h-24 bg-slate-200" />
             </>
           ) : (
             invitations?.map((invitation, i) => (
@@ -56,6 +56,7 @@ const DashboardInvitations = () => {
                 bride_name={invitation.bride_name}
                 groom_name={invitation.groom_name}
                 slug={invitation.slug}
+                status={invitation.order.length > 0}
                 key={i}
               />
             ))
