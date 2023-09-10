@@ -106,7 +106,7 @@ const AlbumItem = ({ onDelete, src }) => {
           <FiTrash />
         </Button>
       </div>
-      <Image
+      <img
         src={src}
         alt="Wayang"
         width={1080}
