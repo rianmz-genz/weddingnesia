@@ -1,5 +1,5 @@
 function MyLog(message, ...data) {
-    if (process.env.APP_ENV === "local") {
+    if (process.env.APP_ENV == "local") {
         console.log(message, data);
     }
 }
