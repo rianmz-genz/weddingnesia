@@ -1,12 +1,12 @@
-async function GuestGetById({ url }) {
-  console.log("url", url);
-  return await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  }).then((res) => res.json());
+import makeApiRequest from "@/api/helpers/MakeApi";
+import getDomain from "@/api/routes/domain";
+
+async function GuestGetById({ guestId }) {
+  const res = await makeApiRequest({
+    baseUrl: `${getDomain()}/guests/${guestId}`,
+  });
+  if (!res) return res;
+  return res?.guest;
 }
 
 export default GuestGetById;
