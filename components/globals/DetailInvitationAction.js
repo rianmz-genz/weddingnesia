@@ -1,9 +1,10 @@
 import React from "react";
 import { BiRefresh } from "react-icons/bi";
-import { FiCheckCircle, FiEdit, FiTrash } from "react-icons/fi";
+import { FiCheckCircle, FiEdit, FiEye, FiTrash } from "react-icons/fi";
 import { RiShareCircleLine } from "react-icons/ri";
 
 export default function DetailInvitationAction({
+  showGuest,
   checkinGuest,
   openEdit,
   openDelete,
@@ -11,6 +12,13 @@ export default function DetailInvitationAction({
 }) {
   return (
     <ul className="flex w-full my-2 flex-wrap gap-2 transition-all duration-300">
+      <IconButton
+        onClick={showGuest}
+        title="Lihat halaman tamu"
+        className={"hover:bg-green-500/10 hover:text-green-500"}
+      >
+        <FiEye />
+      </IconButton>
       <IconButton
         onClick={checkinGuest}
         title="Menghadirkan Tamu"

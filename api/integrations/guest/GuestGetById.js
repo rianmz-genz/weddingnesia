@@ -1,8 +1,6 @@
-import GetDomain from "@/api/utils/GetDomain";
-
-async function GuestGetById(guestId) {
-  const url = `${GetDomain()}/guests/${guestId}`;
-  return fetch(url, {
+async function GuestGetById({ url }) {
+  console.log("url", url);
+  return await fetch(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
