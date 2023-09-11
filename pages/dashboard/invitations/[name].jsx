@@ -25,6 +25,7 @@ import { FiHome, FiPlus } from "react-icons/fi";
 import GuestCreate from "@/api/integrations/guest/GuestCreate";
 import { InputLeftWithTitle, InputTitle } from "@/components/globals/Input";
 import Alert from "@/components/globals/Alert";
+import { redirect } from "next/dist/server/api-utils";
 
 export default function InvitationsDetail() {
   const [guestId, setGuestId] = useState("");
@@ -125,6 +126,7 @@ export default function InvitationsDetail() {
       ),
       action: (
         <DetailInvitationAction
+          showGuest={() => router.push(`/guests/${guest.id}/e-ticket`)}
           checkinGuest={() => handleCheckin(guest.qr_code)}
           openDelete={() => openDelete(guest.id)}
           openEdit={() => openEdit(guest.id)}

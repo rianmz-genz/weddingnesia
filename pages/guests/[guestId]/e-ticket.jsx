@@ -3,22 +3,31 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 import GuestGetById from "@/api/integrations/guest/GuestGetById";
+import MyLog from "@/utils/MyLog";
+import GetDomain from "@/api/utils/GetDomain";
 
 function GuestETicket() {
   const router = useRouter();
   const [guest, setGuest] = useState({
     name: "john doe",
     rsvp_status: "NOT_SURE",
+    code: "example-code",
   });
 
   useEffect(() => {
     const guestId = router.query.guestId;
-    GuestGetById(guestId).then((res) => {
+    const url = `${GetDomain()}/guests/${guestId}`;
+
+    GuestGetById({ url }).then((res) => {
+      MyLog("res", res);
       if (res.status === true) {
-        setGuest(res.data.guest);
+        // setGuest(res.data.guest);
+        MyLog("guest", guest);
+        console.log("guest", guest);
       }
       if (res.status === false) {
         console.log(res.message);
+        MyLog("message", res.message);
       }
     });
   }, [router.isReady]);
@@ -48,7 +57,7 @@ function GuestETicket() {
         <div className="flex flex-row justify-center items-start gap-4">
           <QRCode
             className="w-72 h-4w-72 object-cover"
-            value="my-code"
+            value={guest.code}
             width={1080}
             height={1080}
           />
