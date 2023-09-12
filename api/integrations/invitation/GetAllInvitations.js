@@ -1,4 +1,5 @@
 import GetDomain from "@/api/utils/GetDomain";
+import MyLog from "@/utils/MyLog";
 import Cookies from "js-cookie";
 
 const GetAllInvitations = async () => {
@@ -12,7 +13,7 @@ const GetAllInvitations = async () => {
         }
     }).then((response) => {
         return response.json()
-    }).catch((error) => console.log("on error" + error))
+    }).catch((error) => MyLog("on error" + error))
 }
 
 export default GetAllInvitations
