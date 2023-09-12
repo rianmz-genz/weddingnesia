@@ -12,7 +12,7 @@ export default function BrideProfile({
 }) {
   return (
     <div className="md:w-6/12 w-full flex flex-col items-center">
-      <Image
+      <img
         src={src}
         width={1080}
         height={1080}

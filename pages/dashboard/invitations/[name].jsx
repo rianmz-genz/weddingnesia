@@ -25,6 +25,7 @@ import { FiHome, FiPlus } from "react-icons/fi";
 import GuestCreate from "@/api/integrations/guest/GuestCreate";
 import { InputLeftWithTitle, InputTitle } from "@/components/globals/Input";
 import Alert from "@/components/globals/Alert";
+import { redirect } from "next/dist/server/api-utils";
 
 export default function InvitationsDetail() {
   const [guestId, setGuestId] = useState("");
@@ -58,10 +59,11 @@ export default function InvitationsDetail() {
       top: "Link",
       bottom: (
         <Link
-          href={`/invitation?sl=${router.query.name}`}
+          href={`/theme?sl=blackjavanese&i=${router.query.name}`}
           className="italic underline"
         >
-          https://app.weddingnesia.id/invitation?sl={router.query.name}
+          https://app.weddingnesia.id/theme?sl=blackjavanese&i=
+          {router.query.name}
         </Link>
       ),
     },
@@ -125,6 +127,7 @@ export default function InvitationsDetail() {
       ),
       action: (
         <DetailInvitationAction
+          showGuest={() => router.push(`/guests/${guest.id}/e-ticket`)}
           checkinGuest={() => handleCheckin(guest.qr_code)}
           openDelete={() => openDelete(guest.id)}
           openEdit={() => openEdit(guest.id)}
