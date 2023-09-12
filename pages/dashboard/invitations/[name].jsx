@@ -59,10 +59,11 @@ export default function InvitationsDetail() {
       top: "Link",
       bottom: (
         <Link
-          href={`/invitation?sl=${router.query.name}`}
+          href={`/theme?sl=blackjavanese&i=${router.query.name}`}
           className="italic underline"
         >
-          https://app.weddingnesia.id/invitation?sl={router.query.name}
+          https://app.weddingnesia.id/theme?sl=blackjavanese&i=
+          {router.query.name}
         </Link>
       ),
     },
