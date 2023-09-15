@@ -93,7 +93,7 @@ export default function CoverButton({
         ) : (
           <label className="flex gap-1 mt-2 cursor-pointer text-yellow-600 items-center rounded-md  bg-black px-4 py-2 w-fit">
             <FiFolder />
-            <p className="text-sm">Pilih</p>
+            <p className="text-sm">Upload</p>
             <input
               onChange={(e) => onChange(e.target.files[0])}
               type="file"
