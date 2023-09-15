@@ -5,7 +5,6 @@ import InputProfile from "../globals/InputProfile";
 import ContainerPart from "./ContainerPart";
 import { VscMention } from "react-icons/vsc";
 import TitleBorder from "../globals/TitleBorder";
-
 export default function BrideAndGroomInformation({
   groom_name,
   groom_avatar,
@@ -73,7 +72,6 @@ export default function BrideAndGroomInformation({
       <div className="flex justify-center gap-6 flex-col">
         <ContainerPart>
           <TitleBorder>Mempelai Pria</TitleBorder>
-
           <InputProfile
             saveData={saveData}
             groom_avatar={groom_avatar}
@@ -125,13 +123,12 @@ export default function BrideAndGroomInformation({
           <InputLeftWithTitle
             required
             left={<VscMention className="text-xl" />}
-            label={"Instagram Pria*"}
+            label={"Instagram Pria"}
             placeholder="Instagram Pria"
             value={groom_instagram}
             onChange={(e) => setValue({ groom_instagram: e.target.value })}
           />
         </ContainerPart>
-
         <ContainerPart className={"mt-6"}>
           <TitleBorder>Mempelai Wanita</TitleBorder>
 
@@ -185,7 +182,7 @@ export default function BrideAndGroomInformation({
           <InputLeftWithTitle
             required
             left={<VscMention className="text-xl" />}
-            label={"Instagram Wanita*"}
+            label={"Instagram Wanita"}
             placeholder="Instagram Wanita"
             value={bride_instagram}
             onChange={(e) => setValue({ bride_instagram: e.target.value })}

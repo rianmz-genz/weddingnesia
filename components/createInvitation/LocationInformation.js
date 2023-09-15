@@ -5,6 +5,7 @@ import { InputTitle } from "../globals/Input";
 import GoogleMapEmbed from "./GoogleMapEmbed";
 import TitleBorder from "../globals/TitleBorder";
 import { dateNow } from "@/utils";
+import Text from "../globals/Text";
 
 export default function LocationInformation({
   wedding_date,
@@ -26,6 +27,21 @@ export default function LocationInformation({
     const endIndex = iframeString.indexOf('"', startIndex);
     if (startIndex === -1 && endIndex === -1 && endIndex < startIndex) return;
     return iframeString.slice(startIndex, endIndex);
+  };
+  const copyData = (e) => {
+    if (e) {
+      setValue({ wedding_map: reception_map });
+      setValue({ wedding_address: reception_address });
+      setValue({ wedding_date: reception_date });
+      setValue({ wedding_time_start: reception_time_start });
+      setValue({ wedding_time_end: reception_time_end });
+    } else {
+      setValue({ wedding_map: "" });
+      setValue({ wedding_address: "" });
+      setValue({ wedding_date: "" });
+      setValue({ wedding_time_start: "" });
+      setValue({ wedding_time_end: "" });
+    }
   };
   return (
     <TemplateCreate onNext={onNext}>
@@ -82,13 +98,17 @@ export default function LocationInformation({
           label={"Jam Selesai Acara*"}
         />
       </div>
-      <TitleBorder className={"mt-6"}>Akad</TitleBorder>
+      <TitleBorder className={"mt-12"}>Akad</TitleBorder>
+      <label className="flex items-center gap-2">
+        <input type="checkbox" onChange={(e) => copyData(e.target.checked)} />
+        <Text>Sama Dengan Resepsi</Text>
+      </label>
       <InputTitle
         required
         value={wedding_map}
         onChange={(e) => setValue({ wedding_map: getSrcValue(e.target.value) })}
         className={"my-3"}
-        label={"Embed Google Maps*"}
+        label={"Embed Google Maps"}
         placeholder="Embed google maps"
       />
       <InputTitle
@@ -96,7 +116,7 @@ export default function LocationInformation({
         value={wedding_address}
         onChange={(e) => setValue({ wedding_address: e.target.value })}
         className={"my-3"}
-        label={"Nama Lokasi*"}
+        label={"Nama Lokasi"}
         placeholder="Rumah/Gedung.."
       />
       <div className="flex items-start gap-3 my-3 md:flex-row flex-col">
@@ -106,7 +126,7 @@ export default function LocationInformation({
           onChange={(e) => setValue({ wedding_date: e.target.value })}
           type="date"
           min={dateNow()}
-          label={"Tanggal Acara*"}
+          label={"Tanggal Acara"}
         />
       </div>
       <div className="flex items-start gap-3 my-3 md:flex-row flex-col">
@@ -115,14 +135,14 @@ export default function LocationInformation({
           value={wedding_time_start}
           onChange={(e) => setValue({ wedding_time_start: e.target.value })}
           type="time"
-          label={"Jam Mulai Acara*"}
+          label={"Jam Mulai Acara"}
         />
         <InputTitle
           required
           value={wedding_time_end}
           onChange={(e) => setValue({ wedding_time_end: e.target.value })}
           type="time"
-          label={"Jam Selesai Acara*"}
+          label={"Jam Selesai Acara"}
         />
       </div>
     </TemplateCreate>
