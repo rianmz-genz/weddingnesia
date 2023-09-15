@@ -12,7 +12,14 @@ import UploadGallery from "./UploadGallery";
 import DropDown from "../globals/Dropdown";
 import { useState } from "react";
 import TitleBorder from "../globals/TitleBorder";
-
+const covers = [
+  "/images/cover1.jpg",
+  "/images/cover2.jpg",
+  "/images/cover3.jpg",
+  "/images/cover4.jpg",
+  "/images/cover5.jpg",
+  "/images/cover6.jpg",
+];
 export default function OtherData({
   primary_cover,
   secondary_cover,
@@ -35,6 +42,20 @@ export default function OtherData({
   return (
     <TemplateCreate onNext={onNext}>
       <TitleBorder>Pilih Cover</TitleBorder>
+      <ul className="grid grid-cols-2 gap-3">
+        {covers.map((item, i) => (
+          <Image
+            alt={"Gambar" + item}
+            key={i}
+            src={item}
+            width={1080}
+            height={1080}
+            loading="lazy"
+            className="w-full rounded-lg"
+          />
+        ))}
+      </ul>
+      <Text className={"text-center my-3"}>Atau Upload</Text>
       <CoverButton
         primary_cover={primary_cover}
         setValue={setValue}
