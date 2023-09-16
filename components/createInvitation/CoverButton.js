@@ -55,7 +55,7 @@ export default function CoverButton({
     <div
       className={`flex md:flex-row flex-col gap-2 md:gap-6 w-full ${className}`}
     >
-      <Image
+      <img
         className="md:w-6/12 object-cover rounded-md h-36"
         src={src}
         width={1080}
