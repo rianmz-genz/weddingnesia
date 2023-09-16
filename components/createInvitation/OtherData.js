@@ -33,25 +33,24 @@ export default function OtherData({
   setValue,
   onNext,
 }) {
-  const { templates } = initialValue.create;
   const queueOptions = ["Pria - Wanita", "Wanita - Pria"];
-  const openingOptions = ["Muslim", "General"];
-  const [queueSelected, setQueueSelected] = useState("Pilih salah satu");
-  const [openingSelected, setOpeningSelected] = useState("Pilih salah satu");
 
   return (
     <TemplateCreate onNext={onNext}>
       <TitleBorder>Pilih Cover</TitleBorder>
-      <ul className="grid grid-cols-2 gap-3">
+      <ul className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {covers.map((item, i) => (
           <Image
+            onClick={() => setValue({ primary_cover: item })}
             alt={"Gambar" + item}
             key={i}
             src={item}
             width={1080}
             height={1080}
             loading="lazy"
-            className="w-full rounded-lg"
+            className={`w-full rounded-lg hover:ring-1 cursor-pointer ${
+              item == primary_cover ? "ring-2 ring-black" : " opacity-80"
+            } transition-all duration-500`}
           />
         ))}
       </ul>
@@ -72,7 +71,7 @@ export default function OtherData({
         description={"Digunakan untuk bacgkround cover undangan bagian bawah"}
       />
       <TitleBorder className={"mt-6"}>Data Undangan</TitleBorder>
-      <div className="flex items-center gap-4 justify-center mt-3 md:flex-row flex-col">
+      {/* <div className="flex items-center gap-4 justify-center mt-3 md:flex-row flex-col">
         <InputTitle
           required
           label={"Link Background Music"}
@@ -87,7 +86,14 @@ export default function OtherData({
           value={title}
           onChange={(e) => setValue({ title: e.target.value })}
         />
-      </div>
+      </div> */}
+      <InputTitle
+        required
+        label={"Link Background Music"}
+        placeholder="Link Background Music"
+        value={audio}
+        onChange={(e) => setValue({ audio: e.target.value })}
+      />
       <DropDown
         title={"Urutan Mempelai"}
         options={queueOptions}
