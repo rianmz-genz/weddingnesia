@@ -2,7 +2,7 @@ import CheckoutApi from "@/api/integrations/payment/CheckoutApi";
 import GetMidtransUrl from "@/api/utils/GetMidtransUrl";
 import { useState } from "react";
 
-function ShowSnap(snapToken) {
+export function ShowSnap(snapToken) {
   const script = document.createElement("script");
   script.src = GetMidtransUrl();
   script.async = true;
