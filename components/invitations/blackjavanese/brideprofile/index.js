@@ -3,13 +3,7 @@ import { textStyle } from "@/utils/enum";
 import Image from "next/image";
 import React from "react";
 
-export default function BrideProfile({
-  src,
-  nickName,
-  fullName,
-  father,
-  mother,
-}) {
+export default function BrideProfile({ src, nickName, fullName, info }) {
   return (
     <div className="md:w-6/12 w-full flex flex-col items-center">
       <img
@@ -21,10 +15,7 @@ export default function BrideProfile({
       />
       <Text style={textStyle.smallDescriptionAllura}>-{nickName}-</Text>
       <Text style={textStyle.descriptionAllura}>{fullName}</Text>
-      <Text className={"mt-1"}>Putra dari pasangan</Text>
-      <Text>
-        Bapak {father} & Ibu {mother}
-      </Text>
+      <Text className={"mt-1"}>{info}</Text>
     </div>
   );
 }
