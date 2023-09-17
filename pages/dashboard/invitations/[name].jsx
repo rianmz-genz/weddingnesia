@@ -26,6 +26,8 @@ import GuestCreate from "@/api/integrations/guest/GuestCreate";
 import { InputLeftWithTitle, InputTitle } from "@/components/globals/Input";
 import Alert from "@/components/globals/Alert";
 import { redirect } from "next/dist/server/api-utils";
+import CheckoutApi from "@/api/integrations/payment/CheckoutApi";
+import { ShowSnap } from "@/pages/payment";
 
 export default function InvitationsDetail() {
   const [guestId, setGuestId] = useState("");
@@ -42,6 +44,7 @@ export default function InvitationsDetail() {
   const [guestNameCreate, setGuestNameCreate] = useState("");
   const [guestPhoneCreate, setGuestPhoneCreate] = useState(0);
   const [guestEmailCreate, setGuestEmailCreate] = useState("");
+  const [snapToken, setSnapToken] = useState("");
   const [message, setMessage] = useState(false);
   const [statusApi, setStatusApi] = useState(false);
   const [trigger, setTrigger] = useState(false);
@@ -274,6 +277,15 @@ export default function InvitationsDetail() {
       }
     });
   };
+  const handleCO = async (orderId) => {
+    // console.log(orderId);
+    CheckoutApi({ orderId }).then((response) => {
+      if (!response.data?.snap_token) return console.log(response.data);
+      const token = response.data?.snap_token;
+      console.log(token);
+      setSnapToken(token);
+    });
+  };
   return (
     <>
       <Alert
@@ -408,6 +420,28 @@ export default function InvitationsDetail() {
                   ))}
                 </div>
               </>
+            )}
+          </div>
+        </div>
+        <div className="w-11/12 mx-auto mt-6">
+          <div className="w-full flex mt-8 md:space-x-3 md:flex-row flex-col">
+            {isLoading ? (
+              <Skeleton className="bg-slate-200 w-full h-96" />
+            ) : (
+              <div className="flex gap-3 ">
+                <div>
+                  <Text className={"mb-2"}>Checkout</Text>
+                  <Button
+                    onClick={() =>
+                      handleCO(invitation.order[invitation.order.length - 1].id)
+                    }
+                    style={buttonStyle.greensmall}
+                  >
+                    Checkout
+                  </Button>
+                  {snapToken && ShowSnap(snapToken)}
+                </div>
+              </div>
             )}
           </div>
         </div>
