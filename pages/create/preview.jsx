@@ -26,7 +26,6 @@ export default function PreviewDataInvitation({ pageProps }) {
   const [trigger, setTrigger] = useState(false);
   const [triggerModal, setTriggerModal] = useState(false);
   const { init, designs } = pageProps;
-  console.log(designs);
   const router = useRouter();
   setTimeout(() => {
     setIsHitApi(false);
@@ -140,7 +139,7 @@ export default function PreviewDataInvitation({ pageProps }) {
   const greetings = [
     {
       q: "Judul Undangan",
-      a: title,
+      a: "Welcome to Our Wedding",
     },
     {
       q: "Salam Pembuka",
@@ -169,6 +168,7 @@ export default function PreviewDataInvitation({ pageProps }) {
   const handleSubmit = () => {
     setTriggerModal(false);
     setIsHitApi(true);
+    init.title = "Welcome to Our Wedding";
     CreateInvitationApi({ data: init }).then((res) => {
       setTrigger(true);
       console.log("response", res);
@@ -177,17 +177,17 @@ export default function PreviewDataInvitation({ pageProps }) {
           design_id: designs[0].id,
           invitation_id: res.id,
         };
-        SelectTemplateApi({ data }).then((res) => {
-          console.log(res);
-          if (res) {
+        SelectTemplateApi({ data }).then((resTemplate) => {
+          console.log("select", data);
+          if (resTemplate) {
             setStatusApi(true);
             setMessage("Berhasil membuat data undangan");
             setTimeout(() => {
-              router.push("/dashboard/invitations");
+              router.push(`/dashboard/invitations/${res.slug}`);
             }, 1500);
           } else {
             setStatusApi(false);
-            setMessage("Gagal membuat data undangan");
+            setMessage(data?.message ?? "Gagal membuat data undangan");
           }
         });
         setIsHitApi(false);

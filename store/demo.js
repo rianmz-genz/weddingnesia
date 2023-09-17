@@ -2,6 +2,7 @@ import BlackJavanese from "@/components/invitations/blackjavanese";
 import { BiBook } from "react-icons/bi";
 import { FaLocationDot } from "react-icons/fa6";
 import { GiBigDiamondRing } from "react-icons/gi";
+import { RiGalleryLine } from "react-icons/ri";
 
 const DemoInvitationData = [
   {
@@ -30,8 +31,8 @@ export const NavbarInvitation = [
     href: "#location",
   },
   {
-    icon: <BiBook />,
-    href: "#book",
+    icon: <RiGalleryLine />,
+    href: "#gallery",
   },
 ];
 

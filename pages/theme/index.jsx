@@ -14,6 +14,9 @@ export default function DemoInvitation() {
   }, [router.isReady]);
   const getInvitation = () => {
     InvitationBySlugApi({ slug: i }).then((resInvitation) => {
+      if (resInvitation.order.length == 0) {
+        return <NotFoundMessage />;
+      }
       setInvitation(resInvitation);
       console.log(resInvitation);
     });

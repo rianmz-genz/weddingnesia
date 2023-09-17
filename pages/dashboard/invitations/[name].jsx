@@ -411,7 +411,7 @@ export default function InvitationsDetail() {
             )}
           </div>
         </div>
-        <div className="md:px-4 px-2 my-12">
+        {/* <div className="md:px-4 px-2 my-12">
           {isLoading ? (
             <Skeleton className="bg-slate-200 w-full h-96" />
           ) : (
@@ -436,7 +436,7 @@ export default function InvitationsDetail() {
               fixedHeader
             />
           )}
-        </div>
+        </div> */}
       </DashboardUser>
     </>
   );
