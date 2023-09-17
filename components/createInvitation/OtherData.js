@@ -34,7 +34,12 @@ export default function OtherData({
   onNext,
 }) {
   const queueOptions = ["Pria - Wanita", "Wanita - Pria"];
-
+  const getSrcValue = (iframeString) => {
+    const startIndex = iframeString.indexOf('src="') + 5;
+    const endIndex = iframeString.indexOf('"', startIndex);
+    if (startIndex === -1 && endIndex === -1 && endIndex < startIndex) return;
+    return iframeString.slice(startIndex, endIndex);
+  };
   return (
     <TemplateCreate onNext={onNext}>
       <TitleBorder>Pilih Cover</TitleBorder>
@@ -92,7 +97,7 @@ export default function OtherData({
         label={"Link Background Music"}
         placeholder="Link Background Music"
         value={audio}
-        onChange={(e) => setValue({ audio: e.target.value })}
+        onChange={(e) => setValue({ audio: getSrcValue(e.target.value) })}
       />
       <DropDown
         title={"Urutan Mempelai"}
