@@ -1,55 +1,49 @@
 import { Text } from "@/components";
 import { textStyle } from "@/utils/enum";
 import Image from "next/image";
-import React from "react";
+import React, { useContext } from "react";
+import LocationItem from "./LocationItem";
+import { InvitationContext } from "@/context/invitation";
 
 export default function LocationBlackJavanese() {
+  const {
+    timezone,
+    reception_time_start,
+    reception_time_end,
+    reception_date,
+    reception_address,
+    reception_map,
+    wedding_time_start,
+    wedding_time_end,
+    wedding_date,
+    wedding_address,
+    wedding_map,
+  } = useContext(InvitationContext);
   return (
     <div id="location" className="py-12 w-11/12 mx-auto">
       <Text style={textStyle.smallTitleAllura} className={"text-center"}>
         Lokasi
       </Text>
-      <div className="w-full shadow-xl border mt-6 rounded-md p-6 flex flex-col items-center">
-        <Text style={textStyle.descriptionAllura}>Resepsi</Text>
-        <ImageText2
-          title={"Jumat, 1 September 2023"}
-          src={"/images/date.svg"}
-          description={"18:00 - 21:00 WIB"}
-        />
-        <ImageText2
-          title={"Hotel Aston Imperium Purwokerto"}
-          src={"/images/location.svg"}
-          description={
-            "Jl. Overste Isdiman No.33, Glempang, Bancarkembar, Kec. Purwokerto Utara, Kabupaten Banyumas, Jawa Tengah 53114"
-          }
-        />
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.4325756822072!2d109.24039888885498!3d-7.417283999999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e655e8d2f347f67%3A0xea62bc175447bf91!2sAston%20Imperium%20Purwokerto!5e0!3m2!1sid!2sid!4v1692539649994!5m2!1sid!2sid"
-          width="600"
-          height="450"
-          className="w-full mt-8"
-        ></iframe>
-      </div>
-    </div>
-  );
-}
-
-function ImageText2({ src, title, description }) {
-  return (
-    <>
-      <Image
-        src={src}
-        alt="tanggal"
-        className="w-12 mt-5"
-        width={1080}
-        height={1080}
+      <LocationItem
+        date={reception_date ?? Date.now()}
+        address={reception_address}
+        start_time={reception_time_start}
+        end_time={reception_time_end}
+        src={reception_map}
+        timezone={timezone}
+        title={"Resepsi"}
       />
-      <Text style={textStyle.description} className={"font-bold my-2"}>
-        {title}
-      </Text>
-      <Text style={textStyle.smalldescription} className={"text-center"}>
-        {description}
-      </Text>
-    </>
+      {reception_map != wedding_map && (
+        <LocationItem
+          date={wedding_date ?? Date.now()}
+          address={wedding_address}
+          start_time={wedding_time_start}
+          end_time={wedding_time_end}
+          src={wedding_map}
+          timezone={timezone}
+          title={"Akad"}
+        />
+      )}
+    </div>
   );
 }
