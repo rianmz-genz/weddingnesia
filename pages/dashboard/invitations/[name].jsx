@@ -28,6 +28,7 @@ import Alert from "@/components/globals/Alert";
 import { redirect } from "next/dist/server/api-utils";
 import CheckoutApi from "@/api/integrations/payment/CheckoutApi";
 import { ShowSnap } from "@/pages/payment";
+import GetBadgeInvitation from "@/components/globals/GetBadge";
 
 export default function InvitationsDetail() {
   const [guestId, setGuestId] = useState("");
@@ -38,6 +39,7 @@ export default function InvitationsDetail() {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [isOpenCreate, setIsOpenCreate] = useState(false);
+  const [isOpenDelInv, setIsOpenDelInv] = useState(false);
   const router = useRouter();
   const [invitation, setInvitation] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +47,7 @@ export default function InvitationsDetail() {
   const [guestPhoneCreate, setGuestPhoneCreate] = useState(0);
   const [guestEmailCreate, setGuestEmailCreate] = useState("");
   const [snapToken, setSnapToken] = useState("");
+  const [deleteText, setDeleteText] = useState("");
   const [message, setMessage] = useState(false);
   const [statusApi, setStatusApi] = useState(false);
   const [trigger, setTrigger] = useState(false);
@@ -75,9 +78,17 @@ export default function InvitationsDetail() {
       bottom: formatDate(invitation?.wedding_date ?? Date.now()),
     },
     {
-      top: "Paket",
-      bottom: GetPackage(),
+      top: "Status",
+      bottom: (
+        <GetBadgeInvitation
+          status={invitation.order && invitation?.order[0]?.status == "PAID"}
+        />
+      ),
     },
+    // {
+    //   top: "Paket",
+    //   bottom: GetPackage(),
+    // },
   ];
   const columns = [
     {
@@ -279,11 +290,13 @@ export default function InvitationsDetail() {
   };
   const handleCO = async (orderId) => {
     // console.log(orderId);
+    setIsLoading(true);
     CheckoutApi({ orderId }).then((response) => {
       if (!response.data?.snap_token) return console.log(response.data);
       const token = response.data?.snap_token;
       console.log(token);
       setSnapToken(token);
+      setIsLoading(false);
     });
   };
   return (
@@ -388,6 +401,36 @@ export default function InvitationsDetail() {
           <Button className={"mt-6 w-full"}>Edit</Button>
         </form>
       </Modals>
+      {/* delete inv */}
+      <Modals onClose={() => setIsOpenDelInv(false)} trigger={isOpenDelInv}>
+        <form
+          onSubmit={handleCreateGuest}
+          className="w-full max-w-[450px] bg-white px-6 py-12 rounded-md shadow-blue-600/10 flex flex-col items-center"
+        >
+          <Text>
+            Jika Anda yakin akan menghapus undangan ini tolong ketikan slug
+            undangan Anda yaitu &quot;
+            <span className="font-bold">{invitation.slug}</span>&quot;
+          </Text>
+          <Input
+            className={"my-3"}
+            placeholder={invitation.slug}
+            value={deleteText}
+            onChange={(e) => setDeleteText(e.target.value)}
+          />
+          <Button
+            disabled={invitation.slug != deleteText}
+            className={`${
+              invitation.slug != deleteText
+                ? "cursor-not-allowed opacity-40"
+                : ""
+            } w-full`}
+            style={buttonStyle.dangerlarge}
+          >
+            Hapus
+          </Button>
+        </form>
+      </Modals>
 
       <DashboardUser>
         <div className="w-11/12 mx-auto mt-6">
@@ -414,24 +457,12 @@ export default function InvitationsDetail() {
                   width={1080}
                   height={1080}
                 />
-                <div className="md:w-6/12 w-full max-md:mt-6 space-y-3 flex flex-col justify-start">
+                <div className="md:w-6/12 w-full max-md:mt-6 gap-3 flex flex-col justify-start">
                   {details.map(({ top, bottom }, idx) => (
                     <TopBottomText key={idx} top={top} bottom={bottom} />
                   ))}
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-        <div className="w-11/12 mx-auto mt-6">
-          <div className="w-full flex mt-8 md:space-x-3 md:flex-row flex-col">
-            {isLoading ? (
-              <Skeleton className="bg-slate-200 w-full h-96" />
-            ) : (
-              <div className="flex gap-3 ">
-                <div>
-                  <Text className={"mb-2"}>Checkout</Text>
                   <Button
+                    className={"w-full"}
                     onClick={() =>
                       handleCO(invitation.order[invitation.order.length - 1].id)
                     }
@@ -440,11 +471,32 @@ export default function InvitationsDetail() {
                     Checkout
                   </Button>
                   {snapToken && ShowSnap(snapToken)}
+                  <Button
+                    className={"w-full"}
+                    onClick={() => setIsOpenDelInv(true)}
+                    style={buttonStyle.dangersmall}
+                  >
+                    Hapus
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+        {/* <div className="w-11/12 mx-auto mt-6">
+          <div className="w-full flex mt-8 md:space-x-3 md:flex-row flex-col">
+            {isLoading ? (
+              <Skeleton className="bg-slate-200 w-full h-96" />
+            ) : (
+              <div className="flex gap-3 ">
+                <div>
+                  <Text className={"mb-2"}>Checkout</Text>
+                  
                 </div>
               </div>
             )}
           </div>
-        </div>
+        </div> */}
         {/* <div className="md:px-4 px-2 my-12">
           {isLoading ? (
             <Skeleton className="bg-slate-200 w-full h-96" />
