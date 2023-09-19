@@ -431,7 +431,6 @@ export default function InvitationsDetail() {
           </Button>
         </form>
       </Modals>
-
       <DashboardUser>
         <div className="w-11/12 mx-auto mt-6">
           <BreadCumbers back={"/dashboard/invitations"} items={items} />
