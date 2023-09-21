@@ -8,9 +8,9 @@ import GalleryBlackJavanese from "./sections/Gallery";
 import GuestBookBlackJavanese from "./sections/GuestBook";
 import CountdownBlackJavanese from "./sections/Countdown";
 import { InvitationContext } from "@/context/invitation";
+import QuotesBlackJavanese from "./sections/Quotes";
 
 export default function BlackJavanese() {
-  const context = useContext(InvitationContext);
   return (
     <div className="mb-12">
       <NavbarBlackJavanese />
@@ -19,7 +19,7 @@ export default function BlackJavanese() {
       <BrideBlackJavanese />
       <LocationBlackJavanese />
       <GalleryBlackJavanese />
-      <GuestBookBlackJavanese />
+      <QuotesBlackJavanese />
     </div>
   );
 }

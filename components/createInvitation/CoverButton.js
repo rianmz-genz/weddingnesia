@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Text from "../globals/Text";
 import Button from "../globals/Button";
 import { buttonStyle, textStyle } from "@/utils/enum";
@@ -24,6 +24,13 @@ export default function CoverButton({
       ? secondary_cover
       : wayang
   );
+  useEffect(() => {
+    if (isPrimary && primary_cover != "") {
+      setSrc(primary_cover);
+    } else if (!isPrimary && secondary_cover != "") {
+      setSrc(secondary_cover);
+    }
+  }, [primary_cover, secondary_cover, isPrimary]);
   const [file, setFile] = useState(null);
   const [isHit, setIsHit] = useState(false);
   const [hitted, setHitted] = useState(false);

@@ -73,7 +73,7 @@ export default function PreviewPage({
                   alt="Primary Cover"
                   width={1080}
                   height={1080}
-                  className="w-full rounded-lg object-cover ring-2 ring-black"
+                  className="w-full rounded-lg object-cover ring-2 ring-black h-96"
                 />
               </div>
             </PreviewTemplate>
@@ -86,7 +86,7 @@ export default function PreviewPage({
                   alt="Secondary Cover"
                   width={1080}
                   height={1080}
-                  className="w-full rounded-lg object-cover ring-2 ring-black"
+                  className="w-full rounded-lg object-cover ring-2 ring-black h-96"
                 />
               </div>
             </PreviewTemplate>

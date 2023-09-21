@@ -12,6 +12,8 @@ import UploadGallery from "./UploadGallery";
 import DropDown from "../globals/Dropdown";
 import { useState } from "react";
 import TitleBorder from "../globals/TitleBorder";
+import { FaQuestionCircle } from "react-icons/fa";
+import Modals from "../globals/Modals";
 const covers = [
   "/images/cover1.jpg",
   "/images/cover2.jpg",
@@ -34,9 +36,52 @@ export default function OtherData({
   onNext,
 }) {
   const queueOptions = ["Pria - Wanita", "Wanita - Pria"];
-
+  const getSrcValue = (iframeString) => {
+    const startIndex = iframeString.indexOf('src="') + 5;
+    const endIndex = iframeString.indexOf('"', startIndex);
+    if (startIndex === -1 && endIndex === -1 && endIndex < startIndex) return;
+    return iframeString.slice(startIndex, endIndex);
+  };
+  const [isOpenBgm, setIsOpenBgm] = useState(false);
+  const [isOpenUcapan, setIsOpenUcapan] = useState(false);
   return (
     <TemplateCreate onNext={onNext}>
+      <Modals onClose={() => setIsOpenBgm(false)} trigger={isOpenBgm}>
+        <Text style={textStyle.description} className={"font-bold"}>
+          Apa yang disebut Link Background Music?
+        </Text>
+        <Text>
+          Link Background Music adalah embed link yang didapat dari platform
+          penyedia music yaitu soundcloud. Anda dapat melihat bagaimana cara
+          embed Link Background Music
+          <a
+            href="https://scribehow.com/shared/Tutorial_embed_SoundCloud_Track__u12AQH2ZRJSmKquX5yuo6A"
+            className="underline text-blue-500 mx-1"
+          >
+            disini
+          </a>
+          dan kami memiliki rekomendasi
+          <a
+            href="https://on.soundcloud.com/tn9hL"
+            className="underline text-blue-500 mx-1"
+          >
+            playlist
+          </a>
+          untuk anda
+        </Text>
+      </Modals>
+      <Modals onClose={() => setIsOpenUcapan(false)} trigger={isOpenUcapan}>
+        <Text style={textStyle.description} className={"font-bold"}>
+          Berikut Contoh Ucapan Pembuka
+        </Text>
+        <Text className={"text-justify"}>
+          &quot;Dengan segala kerendahan hati, kami sangat berbahagia bisa
+          membagi saat-saat penting ini kepada Bapak/Ibu/Saudara/i. Besar
+          harapan kami atas kehadiran serta iringan doa dan restunya agar
+          pernikahan yang akan digelar bisa berjalan sebagaimana mestinya.&quot;
+        </Text>
+      </Modals>
+
       <TitleBorder>Pilih Cover</TitleBorder>
       <ul className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {covers.map((item, i) => (
@@ -92,7 +137,13 @@ export default function OtherData({
         label={"Link Background Music"}
         placeholder="Link Background Music"
         value={audio}
-        onChange={(e) => setValue({ audio: e.target.value })}
+        onChange={(e) => setValue({ audio: getSrcValue(e.target.value) })}
+        icon={
+          <FaQuestionCircle
+            className="cursor-pointer"
+            onClick={() => setIsOpenBgm(true)}
+          />
+        }
       />
       <DropDown
         title={"Urutan Mempelai"}
@@ -114,6 +165,12 @@ export default function OtherData({
         placeholder="Ucapan Pembuka"
         value={opening_remarks}
         onChange={(e) => setValue({ opening_remarks: e.target.value })}
+        icon={
+          <FaQuestionCircle
+            className="cursor-pointer"
+            onClick={() => setIsOpenUcapan(true)}
+          />
+        }
       />
       <TextareaTitle
         label={"Quotes"}

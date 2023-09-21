@@ -19,7 +19,7 @@ const DashboardInvitations = () => {
   const getInvitations = () => {
     setIsLoading(true);
     InvitationByUserApi().then((res) => {
-      console.log(res);
+      // console.log(res);
       setInvitations(res);
       setIsLoading(false);
     });
@@ -56,7 +56,7 @@ const DashboardInvitations = () => {
                 bride_name={invitation.bride_name}
                 groom_name={invitation.groom_name}
                 slug={invitation.slug}
-                status={invitation.order.length > 0}
+                status={invitation?.order?.status == "PAID"}
                 key={i}
               />
             ))
@@ -68,7 +68,6 @@ const DashboardInvitations = () => {
 };
 
 export default DashboardInvitations;
-
 // export async function getServerSideProps({ req }) {
 //   try {
 //     const init = await InvitationByUserApi();

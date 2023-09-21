@@ -20,8 +20,8 @@ export function GetPackage(value = "bronze") {
   switch (value) {
     case "bronze":
       return (
-        <span className="bg-slate-100 px-4 w-fit py-2 mt-2 rounded-full">
-          Freemium
+        <span className="bg-slate-100 px-4 w-fit py-2 my-4 rounded-full">
+          Premium
         </span>
       );
   }

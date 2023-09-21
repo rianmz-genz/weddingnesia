@@ -1,46 +1,51 @@
 import CheckoutApi from "@/api/integrations/payment/CheckoutApi";
+import GetMidtransUrl from "@/api/utils/GetMidtransUrl";
 import { useState } from "react";
 
-function ShowSnap(snapToken) {
-  const script = document.createElement('script');
-    script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';
-    script.async = true;
+export function ShowSnap(snapToken) {
+  const script = document.createElement("script");
+  script.src = GetMidtransUrl();
+  script.async = true;
 
-    script.onload = () => {
-      snap.pay(snapToken, {
-        onSuccess: function (result) {
-          // Handle successful payment
-          console.log(result);
-        },
-        onError: function (result) {
-          // Handle payment failure
-          console.error(result);
-        },
-      });
-    };
+  script.onload = () => {
+    snap.pay(snapToken, {
+      onSuccess: function (result) {
+        // Handle successful payment
+        console.log(result);
+      },
+      onError: function (result) {
+        // Handle payment failure
+        console.error(result);
+      },
+    });
+  };
 
-    document.head.appendChild(script);
+  document.head.appendChild(script);
 
-    return () => {
-      document.head.removeChild(script);
-    };
+  return () => {
+    document.head.removeChild(script);
+  };
 }
 
 function PaymentPage() {
   const [snapToken, setSnapToken] = useState("");
 
   const handlePayment = async (orderId) => {
-    CheckoutApi({orderId}).then((response) => {
-      const token = response.data.snap_token
-      setSnapToken(token)
-    })    
+    CheckoutApi({ orderId }).then((response) => {
+      const token = response.data.snap_token;
+      setSnapToken(token);
+    });
   };
 
   return (
     <div>
       <h1>Midtrans Payment Integration</h1>
-      <button onClick={() => handlePayment("c99f7002-02a5-488f-a22c-9afc88fdc292")}>Pay Now</button>
-      {snapToken != "" ? ShowSnap(snapToken) : ''}
+      <button
+        onClick={() => handlePayment("72d8eacb-62e4-43a7-a71a-4332eddbd0bf")}
+      >
+        Pay Now
+      </button>
+      {snapToken != "" ? ShowSnap(snapToken) : ""}
     </div>
   );
 }

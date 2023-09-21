@@ -36,10 +36,13 @@ export const InputSearch = ({ className, ...props }) => {
   );
 };
 
-export const InputTitle = ({ label, className, ...props }) => {
+export const InputTitle = ({ label, className, icon, ...props }) => {
   return (
     <div className={`w-full ${className}`}>
-      <Text style={textStyle.description}>{label}</Text>
+      <div className="flex gap-2 items-center">
+        <Text style={textStyle.description}>{label}</Text>
+        {icon}
+      </div>
       <input
         className="px-4 py-2 mt-1 w-full rounded border border-black/10 focus:outline-none focus:ring-2 ring-yellow-800 transition-all duration-300"
         {...props}
@@ -48,10 +51,13 @@ export const InputTitle = ({ label, className, ...props }) => {
   );
 };
 
-export const TextareaTitle = ({ label, className, ...props }) => {
+export const TextareaTitle = ({ label, className, icon, ...props }) => {
   return (
     <div className={`w-full ${className}`}>
-      <Text style={textStyle.description}>{label}</Text>
+      <div className="flex gap-2 items-center">
+        <Text style={textStyle.description}>{label}</Text>
+        {icon}
+      </div>
       <textarea
         className="px-4 py-2 mt-1 w-full rounded border border-black/10 focus:outline-none focus:ring-2 ring-yellow-800 transition-all duration-300"
         {...props}

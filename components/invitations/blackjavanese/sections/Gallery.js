@@ -1,23 +1,26 @@
 import { Text } from "@/components";
+import { InvitationContext } from "@/context/invitation";
 import { textStyle } from "@/utils/enum";
 import Image from "next/image";
-import React from "react";
+import React, { useContext } from "react";
 
 export default function GalleryBlackJavanese() {
+  const { albums } = useContext(InvitationContext);
   return (
-    <div className="py-12 w-full text-center bg-slate-50">
+    <div id="gallery" className="py-12 w-full text-center bg-slate-50">
       <Text style={textStyle.smallTitleAllura}>Gallery</Text>
-      <ul className="grid w-11/12 mx-auto md:grid-cols-3 grid-cols-1 gap-3 lg:grid-cols-4 mt-8">
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => (
-          <Image
-            key={i}
-            src="/images/gallery.svg"
-            width={1080}
-            className="rounded w-full"
-            height={1080}
-            alt="Gallery"
-          />
-        ))}
+      <ul className="w-11/12 mx-auto justify-center flex gap-6 flex-wrap mt-8">
+        {albums != undefined &&
+          JSON.parse(albums)?.map((item, i) => (
+            <img
+              key={i}
+              src={item}
+              width={1080}
+              className="rounded w-48 lg:w-64 h-48 lg:h-64 object-cover"
+              height={1080}
+              alt={`Gallery ${i}`}
+            />
+          ))}
       </ul>
     </div>
   );

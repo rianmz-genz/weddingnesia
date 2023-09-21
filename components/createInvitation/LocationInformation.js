@@ -104,7 +104,6 @@ export default function LocationInformation({
         <Text>Sama Dengan Resepsi</Text>
       </label>
       <InputTitle
-        required
         value={wedding_map}
         onChange={(e) => setValue({ wedding_map: getSrcValue(e.target.value) })}
         className={"my-3"}
@@ -112,7 +111,6 @@ export default function LocationInformation({
         placeholder="Embed google maps"
       />
       <InputTitle
-        required
         value={wedding_address}
         onChange={(e) => setValue({ wedding_address: e.target.value })}
         className={"my-3"}
@@ -121,7 +119,6 @@ export default function LocationInformation({
       />
       <div className="flex items-start gap-3 my-3 md:flex-row flex-col">
         <InputTitle
-          required
           value={wedding_date}
           onChange={(e) => setValue({ wedding_date: e.target.value })}
           type="date"
@@ -131,14 +128,12 @@ export default function LocationInformation({
       </div>
       <div className="flex items-start gap-3 my-3 md:flex-row flex-col">
         <InputTitle
-          required
           value={wedding_time_start}
           onChange={(e) => setValue({ wedding_time_start: e.target.value })}
           type="time"
           label={"Jam Mulai Acara"}
         />
         <InputTitle
-          required
           value={wedding_time_end}
           onChange={(e) => setValue({ wedding_time_end: e.target.value })}
           type="time"

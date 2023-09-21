@@ -26,6 +26,10 @@ import GuestCreate from "@/api/integrations/guest/GuestCreate";
 import { InputLeftWithTitle, InputTitle } from "@/components/globals/Input";
 import Alert from "@/components/globals/Alert";
 import { redirect } from "next/dist/server/api-utils";
+import CheckoutApi from "@/api/integrations/payment/CheckoutApi";
+import { ShowSnap } from "@/pages/payment";
+import GetBadgeInvitation from "@/components/globals/GetBadge";
+import DeleteInvitationApi from "@/api/integrations/invitation/Delete";
 
 export default function InvitationsDetail() {
   const [guestId, setGuestId] = useState("");
@@ -36,12 +40,15 @@ export default function InvitationsDetail() {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [isOpenCreate, setIsOpenCreate] = useState(false);
+  const [isOpenDelInv, setIsOpenDelInv] = useState(false);
   const router = useRouter();
   const [invitation, setInvitation] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [guestNameCreate, setGuestNameCreate] = useState("");
   const [guestPhoneCreate, setGuestPhoneCreate] = useState(0);
   const [guestEmailCreate, setGuestEmailCreate] = useState("");
+  const [snapToken, setSnapToken] = useState("");
+  const [deleteText, setDeleteText] = useState("");
   const [message, setMessage] = useState(false);
   const [statusApi, setStatusApi] = useState(false);
   const [trigger, setTrigger] = useState(false);
@@ -72,9 +79,17 @@ export default function InvitationsDetail() {
       bottom: formatDate(invitation?.wedding_date ?? Date.now()),
     },
     {
-      top: "Paket",
-      bottom: GetPackage(),
+      top: "Status",
+      bottom: (
+        <GetBadgeInvitation
+          status={invitation.order && invitation?.order[0]?.status == "PAID"}
+        />
+      ),
     },
+    // {
+    //   top: "Paket",
+    //   bottom: GetPackage(),
+    // },
   ];
   const columns = [
     {
@@ -274,6 +289,45 @@ export default function InvitationsDetail() {
       }
     });
   };
+  const handleDelInv = (e) => {
+    e.preventDefault();
+    // console.log(invitation.id);
+    // setIsLoading(true);
+    DeleteInvitationApi({ id: invitation.id }).then((res) => {
+      setIsOpenDelInv(false);
+      console.log(res);
+      if (res) {
+        getInvitation();
+        setStatusApi(true);
+        setTrigger(true);
+        setMessage("Berhasil menghapus data undangan");
+        router.push("/dashboard/invitations");
+      } else {
+        setStatusApi(false);
+        setTrigger(true);
+        setMessage("Gagal menghapus data undangan");
+        setIsLoading(false);
+      }
+      setTimeout(() => {
+        setTrigger(false);
+      }, 4000);
+    });
+  };
+  const handleCO = async (orderId) => {
+    // console.log(orderId);
+    setIsLoading(true);
+    CheckoutApi({ orderId }).then((response) => {
+      if (!response.data?.snap_token) {
+        setTrigger(true);
+        setStatusApi(false);
+        setMessage(response.message);
+      }
+      const token = response.data?.snap_token;
+      console.log(token);
+      setSnapToken(token);
+      setIsLoading(false);
+    });
+  };
   return (
     <>
       <Alert
@@ -376,7 +430,37 @@ export default function InvitationsDetail() {
           <Button className={"mt-6 w-full"}>Edit</Button>
         </form>
       </Modals>
-
+      {/* delete inv */}
+      <Modals onClose={() => setIsOpenDelInv(false)} trigger={isOpenDelInv}>
+        <form
+          onSubmit={handleDelInv}
+          className="w-full max-w-[450px] bg-white px-6 py-12 rounded-md shadow-blue-600/10 flex flex-col items-center"
+        >
+          <Text>
+            Jika Anda yakin akan menghapus undangan ini tolong ketikan slug
+            undangan Anda yaitu &quot;
+            <span className="font-bold">{invitation.slug}</span>&quot;
+          </Text>
+          <Input
+            className={"my-3"}
+            placeholder={invitation.slug}
+            value={deleteText}
+            onChange={(e) => setDeleteText(e.target.value)}
+          />
+          <Button
+            disabled={invitation.slug != deleteText}
+            className={`${
+              invitation.slug != deleteText
+                ? "cursor-not-allowed opacity-40"
+                : ""
+            } w-full`}
+            type="submit"
+            style={buttonStyle.dangerlarge}
+          >
+            Hapus
+          </Button>
+        </form>
+      </Modals>
       <DashboardUser>
         <div className="w-11/12 mx-auto mt-6">
           <BreadCumbers back={"/dashboard/invitations"} items={items} />
@@ -402,16 +486,47 @@ export default function InvitationsDetail() {
                   width={1080}
                   height={1080}
                 />
-                <div className="md:w-6/12 w-full max-md:mt-6 space-y-3 flex flex-col justify-start">
+                <div className="md:w-6/12 w-full max-md:mt-6 gap-3 flex flex-col justify-start">
                   {details.map(({ top, bottom }, idx) => (
                     <TopBottomText key={idx} top={top} bottom={bottom} />
                   ))}
+                  <Button
+                    className={"w-full"}
+                    onClick={() =>
+                      handleCO(invitation.order[invitation.order.length - 1].id)
+                    }
+                    style={buttonStyle.greensmall}
+                  >
+                    Checkout
+                  </Button>
+                  {snapToken && ShowSnap(snapToken)}
+                  <Button
+                    className={"w-full"}
+                    onClick={() => setIsOpenDelInv(true)}
+                    style={buttonStyle.dangersmall}
+                  >
+                    Hapus
+                  </Button>
                 </div>
               </>
             )}
           </div>
         </div>
-        <div className="md:px-4 px-2 my-12">
+        {/* <div className="w-11/12 mx-auto mt-6">
+          <div className="w-full flex mt-8 md:space-x-3 md:flex-row flex-col">
+            {isLoading ? (
+              <Skeleton className="bg-slate-200 w-full h-96" />
+            ) : (
+              <div className="flex gap-3 ">
+                <div>
+                  <Text className={"mb-2"}>Checkout</Text>
+                  
+                </div>
+              </div>
+            )}
+          </div>
+        </div> */}
+        {/* <div className="md:px-4 px-2 my-12">
           {isLoading ? (
             <Skeleton className="bg-slate-200 w-full h-96" />
           ) : (
@@ -436,7 +551,7 @@ export default function InvitationsDetail() {
               fixedHeader
             />
           )}
-        </div>
+        </div> */}
       </DashboardUser>
     </>
   );

@@ -60,7 +60,7 @@ export default function CountdownBlackJavanese() {
     },
   ];
   return (
-    <div className="w-full bg-slate-50 py-12">
+    <div className="w-full py-12">
       <Text style={textStyle.smallTitleAllura} className={"text-center"}>
         Menghitung Hari
       </Text>

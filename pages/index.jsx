@@ -12,9 +12,10 @@ import {
 import ScrollToTopButton from "@/components/globals/ScrollToTopButton";
 import FeatureSection from "@/components/home/Feature";
 import HeroSection from "@/components/home/Hero";
+import Layout from "@/components/layout/Layout";
 import MyLog from "@/utils/MyLog";
 import Head from "next/head";
-
+import Script from "next/script";
 export default function Home({ pageProps }) {
   return (
     <>
@@ -55,22 +56,24 @@ export default function Home({ pageProps }) {
         {/* Favicon */}
         <link rel="icon" href="/images/wn.png" />
       </Head>
-      <main className="overflow-hidden">
-        <Container>
-          <NavbarLandingpage />
-          <HeroSection />
-          <InterestSection />
-        </Container>
-        <FeatureSection />
-        <Container>
-          <TutorialSection />
-        </Container>
-        <Testimonial />
-        <PriceSection packages={pageProps.packages} />
-        <ActionSection />
-        <Footer />
-        <ScrollToTopButton />
-      </main>
+      <Layout>
+        <main className="overflow-hidden">
+          <Container>
+            <NavbarLandingpage />
+            <HeroSection />
+            <InterestSection />
+          </Container>
+          <FeatureSection />
+          <Container>
+            <TutorialSection />
+          </Container>
+          <Testimonial />
+          <PriceSection packages={pageProps.packages} />
+          <ActionSection />
+          <Footer />
+          <ScrollToTopButton />
+        </main>
+      </Layout>
     </>
   );
 }
@@ -79,7 +82,7 @@ export async function getServerSideProps() {
   try {
     const hit = await GetAllPackage();
     // Misalnya, jika Anda ingin mengurutkan berdasarkan urutan: Freemium, Premium, Eksklusif, Pro, Elegant
-    MyLog("hit", hit)
+    MyLog("hit", hit);
     if (!hit)
       return {
         props: {
