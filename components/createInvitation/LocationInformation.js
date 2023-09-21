@@ -6,6 +6,9 @@ import GoogleMapEmbed from "./GoogleMapEmbed";
 import TitleBorder from "../globals/TitleBorder";
 import { dateNow } from "@/utils";
 import Text from "../globals/Text";
+import Modals from "../globals/Modals";
+import { FaQuestionCircle } from "react-icons/fa";
+import { textStyle } from "@/utils/enum";
 
 export default function LocationInformation({
   wedding_date,
@@ -43,8 +46,24 @@ export default function LocationInformation({
       setValue({ wedding_time_end: "" });
     }
   };
+  const [isOpenFaqMap, setIsOpenFaqMap] = useState(false);
   return (
     <TemplateCreate onNext={onNext}>
+      <Modals onClose={() => setIsOpenFaqMap(false)} trigger={isOpenFaqMap}>
+        <Text style={textStyle.description} className={"font-bold"}>
+          Apa yang disebut Embed Google Maps?
+        </Text>
+        <Text>
+          Embed Google Maps adalah embed link yang didapat dari platform google
+          maps. Anda dapat melihat bagaimana cara mengembed Link Google Maps
+          <a
+            href="https://scribehow.com/shared/Tutorial_embed_google_maps__ElDeH9ZfRO6a_q4aUoXedw"
+            className="underline text-blue-500 mx-1"
+          >
+            disini.
+          </a>
+        </Text>
+      </Modals>
       <TitleBorder>Resepsi</TitleBorder>
       <InputTitle
         required
@@ -55,6 +74,12 @@ export default function LocationInformation({
         value={reception_map}
         onChange={(e) =>
           setValue({ reception_map: getSrcValue(e.target.value) })
+        }
+        icon={
+          <FaQuestionCircle
+            className="cursor-pointer"
+            onClick={() => setIsOpenFaqMap(true)}
+          />
         }
       />
       <InputTitle

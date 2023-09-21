@@ -18,10 +18,9 @@ export default function DemoInvitation() {
         return <NotFoundMessage />;
       }
       setInvitation(resInvitation);
-      console.log(resInvitation);
     });
   };
-  if (!currentInvitation) {
+  if (!currentInvitation || invitation?.order[0].status != "PAID") {
     // Jika currentInvitation adalah undefined, kembalikan halaman 404.
     return <NotFoundMessage />; // Ganti ini dengan komponen 404 yang sesuai
   }
@@ -36,7 +35,7 @@ export default function DemoInvitation() {
 function NotFoundMessage() {
   return (
     <div className="w-full h-screen bg-black text-white flex justify-center items-center">
-      404 - Invitation Not Found
+      undangan belum dibayar atau diaktifkan
     </div>
   );
 }

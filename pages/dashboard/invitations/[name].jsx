@@ -490,15 +490,19 @@ export default function InvitationsDetail() {
                   {details.map(({ top, bottom }, idx) => (
                     <TopBottomText key={idx} top={top} bottom={bottom} />
                   ))}
-                  <Button
-                    className={"w-full"}
-                    onClick={() =>
-                      handleCO(invitation.order[invitation.order.length - 1].id)
-                    }
-                    style={buttonStyle.greensmall}
-                  >
-                    Checkout
-                  </Button>
+                  {invitation.status != "PAID" && (
+                    <Button
+                      className={"w-full"}
+                      onClick={() =>
+                        handleCO(
+                          invitation.order[invitation.order.length - 1].id
+                        )
+                      }
+                      style={buttonStyle.greensmall}
+                    >
+                      Checkout
+                    </Button>
+                  )}
                   {snapToken && ShowSnap(snapToken)}
                   <Button
                     className={"w-full"}

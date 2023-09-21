@@ -67,7 +67,7 @@ export default function OtherData({
           >
             playlist
           </a>
-          untuk anda
+          untuk Anda.
         </Text>
       </Modals>
       <Modals onClose={() => setIsOpenUcapan(false)} trigger={isOpenUcapan}>

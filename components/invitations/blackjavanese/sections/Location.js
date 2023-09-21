@@ -33,7 +33,7 @@ export default function LocationBlackJavanese() {
         timezone={timezone}
         title={"Resepsi"}
       />
-      {reception_map != wedding_map && (
+      {reception_map != wedding_map && wedding_map != "" && (
         <LocationItem
           date={wedding_date ?? Date.now()}
           address={wedding_address}
