@@ -121,7 +121,6 @@ export default function BrideAndGroomInformation({
             />
           </div>
           <InputLeftWithTitle
-            required
             left={<VscMention className="text-xl" />}
             label={"Instagram Pria"}
             placeholder="Instagram Pria"
@@ -180,7 +179,6 @@ export default function BrideAndGroomInformation({
             />
           </div>
           <InputLeftWithTitle
-            required
             left={<VscMention className="text-xl" />}
             label={"Instagram Wanita"}
             placeholder="Instagram Wanita"
