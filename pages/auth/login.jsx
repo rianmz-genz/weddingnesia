@@ -87,7 +87,7 @@ const LoginView = () => {
           }
         }
         setIsHitApi(false);
-        MyLog(res)
+        MyLog(res);
         if (res.code === 200) {
           Cookies.set("token", res.data.access_token, { expires: 2 });
           router.push("/dashboard");
@@ -152,8 +152,10 @@ const LoginView = () => {
           Email
         </Text>
         <InputIcon
+          required
           autoFocus={true}
           placeholder="Email"
+          type="email"
           icon={<BiUser className="text-black mr-2" />}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -166,6 +168,7 @@ const LoginView = () => {
           Password
         </Text>
         <InputIcon
+          required
           type="password"
           placeholder="Password"
           icon={<FiKey className="text-black mr-2" />}
