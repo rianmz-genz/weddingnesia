@@ -29,6 +29,7 @@ import { redirect } from "next/dist/server/api-utils";
 import CheckoutApi from "@/api/integrations/payment/CheckoutApi";
 import { ShowSnap } from "@/pages/payment";
 import GetBadgeInvitation from "@/components/globals/GetBadge";
+import DeleteInvitationApi from "@/api/integrations/invitation/Delete";
 
 export default function InvitationsDetail() {
   const [guestId, setGuestId] = useState("");
@@ -288,11 +289,39 @@ export default function InvitationsDetail() {
       }
     });
   };
+  const handleDelInv = (e) => {
+    e.preventDefault();
+    // console.log(invitation.id);
+    // setIsLoading(true);
+    DeleteInvitationApi({ id: invitation.id }).then((res) => {
+      setIsOpenDelInv(false);
+      console.log(res);
+      if (res) {
+        getInvitation();
+        setStatusApi(true);
+        setTrigger(true);
+        setMessage("Berhasil menghapus data undangan");
+        router.push("/dashboard/invitations");
+      } else {
+        setStatusApi(false);
+        setTrigger(true);
+        setMessage("Gagal menghapus data undangan");
+        setIsLoading(false);
+      }
+      setTimeout(() => {
+        setTrigger(false);
+      }, 4000);
+    });
+  };
   const handleCO = async (orderId) => {
     // console.log(orderId);
     setIsLoading(true);
     CheckoutApi({ orderId }).then((response) => {
-      if (!response.data?.snap_token) return console.log(response.data);
+      if (!response.data?.snap_token) {
+        setTrigger(true);
+        setStatusApi(false);
+        setMessage(response.message);
+      }
       const token = response.data?.snap_token;
       console.log(token);
       setSnapToken(token);
@@ -404,7 +433,7 @@ export default function InvitationsDetail() {
       {/* delete inv */}
       <Modals onClose={() => setIsOpenDelInv(false)} trigger={isOpenDelInv}>
         <form
-          onSubmit={handleCreateGuest}
+          onSubmit={handleDelInv}
           className="w-full max-w-[450px] bg-white px-6 py-12 rounded-md shadow-blue-600/10 flex flex-col items-center"
         >
           <Text>
@@ -425,6 +454,7 @@ export default function InvitationsDetail() {
                 ? "cursor-not-allowed opacity-40"
                 : ""
             } w-full`}
+            type="submit"
             style={buttonStyle.dangerlarge}
           >
             Hapus
