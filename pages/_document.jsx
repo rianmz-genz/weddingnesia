@@ -1,6 +1,25 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
+import { useEffect } from "react";
 
 export default function Document() {
+  useEffect(() => {
+    const handleContextMenu = (e) => {
+      // prevent the right-click menu from appearing
+      console.log(e);
+      e.preventDefault();
+    };
+
+    // attach the event listener to
+    // the document object
+    document.addEventListener("contextmenu", handleContextMenu);
+
+    // clean up the event listener when
+    // the component unmounts
+    return () => {
+      document.removeEventListener("contextmenu", handleContextMenu);
+    };
+  }, []);
   return (
     <Html lang="en">
       <Head>
