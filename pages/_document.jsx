@@ -6,7 +6,7 @@ export default function Document() {
   useEffect(() => {
     const handleContextMenu = (e) => {
       // prevent the right-click menu from appearing
-      console.log(e);
+      //console.log(e);
       e.preventDefault();
     };
 

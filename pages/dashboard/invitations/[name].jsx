@@ -158,7 +158,7 @@ export default function InvitationsDetail() {
   const getInvitation = () => {
     setIsLoading(true);
     InvitationBySlugApi({ slug: router.query.name }).then((resInvitation) => {
-      console.log(resInvitation);
+      //console.log(resInvitation);
       if (resInvitation) {
         setInvitation(resInvitation);
         getGuests(resInvitation?.id);
@@ -167,7 +167,7 @@ export default function InvitationsDetail() {
   };
   const getGuests = (id) => {
     GetGuestsByInvitationId(id).then((guests) => {
-      console.log(guests.data.guests);
+      //console.log(guests.data.guests);
       setGuests(guests.data.guests);
       setIsLoading(false);
     });
@@ -207,7 +207,7 @@ export default function InvitationsDetail() {
         getInvitation();
       }
       if (res.status === false) {
-        console.log("error checkin");
+        //console.log("error checkin");
       }
     });
   };
@@ -215,17 +215,17 @@ export default function InvitationsDetail() {
   const handleSendEmailInvitation = (paramGuestId) => {
     GuestSendEmailInvitation(paramGuestId).then((res) => {
       if (res.status === true) {
-        console.log("success send email invitation");
+        //console.log("success send email invitation");
       }
       if (res.status === false) {
-        console.log("error send email invitation");
+        //console.log("error send email invitation");
       }
     });
   };
 
   const openEdit = (paramGuestId) => {
     const guest = guests.filter((guest) => guest.id === paramGuestId)[0];
-    console.log(guest);
+    //console.log(guest);
     setGuestName(guest.name);
     setGuestEmail(guest.email);
     setGuestPhone(guest.phone);
@@ -291,11 +291,11 @@ export default function InvitationsDetail() {
   };
   const handleDelInv = (e) => {
     e.preventDefault();
-    // console.log(invitation.id);
+    // //console.log(invitation.id);
     // setIsLoading(true);
     DeleteInvitationApi({ id: invitation.id }).then((res) => {
       setIsOpenDelInv(false);
-      console.log(res);
+      //console.log(res);
       if (res) {
         getInvitation();
         setStatusApi(true);
@@ -314,16 +314,16 @@ export default function InvitationsDetail() {
     });
   };
   const handleCO = async (orderId) => {
-    // console.log(orderId);
     setIsLoading(true);
     CheckoutApi({ orderId }).then((response) => {
+      // //console.log(orderId);
+      console.log(response);
       if (!response.data?.snap_token) {
         setTrigger(true);
         setStatusApi(false);
         setMessage(response.message);
       }
       const token = response.data?.snap_token;
-      console.log(token);
       setSnapToken(token);
       setIsLoading(false);
     });

@@ -11,7 +11,7 @@ export function ShowSnap(snapToken) {
     snap.pay(snapToken, {
       onSuccess: function (result) {
         // Handle successful payment
-        console.log(result);
+        //console.log(result);
       },
       onError: function (result) {
         // Handle payment failure
@@ -32,6 +32,7 @@ function PaymentPage() {
 
   const handlePayment = async (orderId) => {
     CheckoutApi({ orderId }).then((response) => {
+      console.log(response);
       const token = response.data.snap_token;
       setSnapToken(token);
     });

@@ -19,7 +19,7 @@ const DashboardInvitations = () => {
   const getInvitations = () => {
     setIsLoading(true);
     InvitationByUserApi().then((res) => {
-      // console.log(res);
+      // //console.log(res);
       setInvitations(res);
       setIsLoading(false);
     });
@@ -71,7 +71,7 @@ export default DashboardInvitations;
 // export async function getServerSideProps({ req }) {
 //   try {
 //     const init = await InvitationByUserApi();
-//     console.log(init);
+//     //console.log(init);
 //     if (!init) {
 //       return {
 //         props: {

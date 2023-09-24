@@ -34,14 +34,14 @@ function GuestUpload() {
     setIsLoading(true);
     handleUploadApi({ file: imgFile })
       .then((res) => {
-        console.log("res", res);
+        //console.log("res", res);
         if (res) {
           updateAvatar(res);
         }
       })
       .catch((err) => {
         MyLog("err", err);
-        console.log("err 2", res);
+        //console.log("err 2", res);
       });
   };
   const updateAvatar = (avatar) => {
