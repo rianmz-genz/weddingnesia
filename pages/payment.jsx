@@ -3,9 +3,11 @@ import GetMidtransUrl from "@/api/utils/GetMidtransUrl";
 import { useState } from "react";
 
 export function ShowSnap(snapToken) {
+  const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
   const script = document.createElement("script");
   script.src = GetMidtransUrl();
   script.async = true;
+  script.setAttribute("data-client-key", clientKey);
 
   script.onload = () => {
     snap.pay(snapToken, {
