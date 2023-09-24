@@ -17,7 +17,7 @@ export function ShowSnap(snapToken) {
       },
       onError: function (result) {
         // Handle payment failure
-        console.error(result);
+        // console.error(result);
       },
     });
   };
