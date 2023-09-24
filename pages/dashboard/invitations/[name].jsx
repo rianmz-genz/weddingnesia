@@ -317,7 +317,7 @@ export default function InvitationsDetail() {
     setIsLoading(true);
     CheckoutApi({ orderId }).then((response) => {
       // //console.log(orderId);
-      console.log(response);
+      // console.log(response);
       if (!response.data?.snap_token) {
         setTrigger(true);
         setStatusApi(false);
