@@ -56,7 +56,9 @@ const DashboardInvitations = () => {
                 bride_name={invitation.bride_name}
                 groom_name={invitation.groom_name}
                 slug={invitation.slug}
-                status={invitation?.order?.status == "PAID"}
+                status={
+                  invitation.order && invitation?.order[0]?.status == "PAID"
+                }
                 key={i}
               />
             ))
