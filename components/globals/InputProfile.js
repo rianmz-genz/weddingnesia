@@ -49,13 +49,13 @@ export default function InputProfile({
     setIsHit(true);
     handleUploadApi({ file: imgFile })
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         setValue({ [key]: res });
         setIsHit(false);
         setHitted(true);
       })
       .catch((err) => {
-        console.log(err);
+        //console.log(err);
         setIsHit(false);
       });
   };

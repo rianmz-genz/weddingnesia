@@ -34,7 +34,7 @@ export default function TemplateCreate({
       removeCookie("currentMenu");
       router.push("/dashboard");
     } catch (err) {
-      console.log(err);
+      //console.log(err);
     }
   };
   const onSubmit = (e) => {

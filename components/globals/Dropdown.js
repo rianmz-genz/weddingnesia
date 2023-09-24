@@ -16,7 +16,7 @@ const DropDown = ({ className, title, options, is_groom_first, setValue }) => {
   const selectOption = (option) => {
     setSelected(option);
     setValue({ is_groom_first: option == groom_bride });
-    console.log(option == groom_bride);
+    //console.log(option == groom_bride);
     setIsOpen(false);
   };
 
