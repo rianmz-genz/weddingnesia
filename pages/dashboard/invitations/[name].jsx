@@ -53,6 +53,8 @@ export default function InvitationsDetail() {
   const [statusApi, setStatusApi] = useState(false);
   const [trigger, setTrigger] = useState(false);
   const items = [<FiHome key={1} />, router.query.name];
+  const linknya = `https://app.weddingnesia.id/theme?sl=blackjavanese&i=
+          ${router.query.name}`;
   const details = [
     {
       top: "Undangan Milik",
@@ -69,8 +71,7 @@ export default function InvitationsDetail() {
           href={`/theme?sl=blackjavanese&i=${router.query.name}`}
           className="italic underline"
         >
-          https://app.weddingnesia.id/theme?sl=blackjavanese&i=
-          {router.query.name}
+          {linknya}
         </Link>
       ),
     },
@@ -158,13 +159,14 @@ export default function InvitationsDetail() {
   const getInvitation = () => {
     setIsLoading(true);
     InvitationBySlugApi({ slug: router.query.name }).then((resInvitation) => {
-      //console.log(resInvitation);
+      // console.log(resInvitation);
       if (resInvitation) {
         setInvitation(resInvitation);
         getGuests(resInvitation?.id);
       }
     });
   };
+
   const getGuests = (id) => {
     GetGuestsByInvitationId(id).then((guests) => {
       //console.log(guests.data.guests);
@@ -490,6 +492,32 @@ export default function InvitationsDetail() {
                   {details.map(({ top, bottom }, idx) => (
                     <TopBottomText key={idx} top={top} bottom={bottom} />
                   ))}
+                  <div className="my-3">
+                    <Text className={"font-bold"}>
+                      Berikut Template text untuk membagikan undaangan milik
+                      anda
+                    </Text>
+                    <Text>
+                      Hi teman-teman, <br /> <br /> Kami dengan senang hati
+                      ingin berbagi momen istimewa dalam hidup kami dengan Anda.
+                      Kami akan menikah dan kami ingin Anda hadir untuk
+                      merayakan bersama kami. <br /> <br />
+                      Tgl Pernikahan:{" "}
+                      {invitation.reception_date &&
+                        formatDate(invitation.reception_date)}
+                      <br /> <br /> Waktu:{" "}
+                      {`${invitation.reception_time_start} ${invitation.timezone}`}{" "}
+                      <br /> <br /> Tempat: {invitation.reception_address}{" "}
+                      <br /> <br /> Anda dapat menemukan detail lengkap undangan
+                      pernikahan kami di link berikut: <br />
+                      {linknya} <br /> <br /> Kami berharap dapat melihat Anda
+                      di acara kami dan berbagi kebahagiaan bersama. Terima
+                      kasih atas perhatian dan doa terbaik Anda.
+                      <br /> <br />
+                      Salam, <br />
+                      {`${invitation.groom_name} & ${invitation.bride_name}`}
+                    </Text>
+                  </div>
                   {invitation.status != "PAID" && (
                     <Button
                       className={"w-full"}
