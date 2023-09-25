@@ -28,6 +28,7 @@ export default function DemoInvitation() {
     });
   };
   if (isLoading) return <div className="bg-white h-screen w-full"></div>;
+  if (!sl || (!i && !isLoading)) return <NotFoundMessage />;
   if (invitation == undefined) return <NotFoundMessage />;
   if (invitation == false) return <NotFoundMessage />;
   if (invitation?.order) {
