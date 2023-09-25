@@ -56,24 +56,22 @@ export default function Home({ pageProps }) {
         {/* Favicon */}
         <link rel="icon" href="/images/wn.png" />
       </Head>
-      <Layout>
-        <main className="overflow-hidden">
-          <Container>
-            <NavbarLandingpage />
-            <HeroSection />
-            <InterestSection />
-          </Container>
-          <FeatureSection />
-          <Container>
-            <TutorialSection />
-          </Container>
-          <Testimonial />
-          <PriceSection packages={pageProps.packages} />
-          <ActionSection />
-          <Footer />
-          <ScrollToTopButton />
-        </main>
-      </Layout>
+      <main className="overflow-hidden">
+        <Container>
+          <NavbarLandingpage />
+          <HeroSection />
+          <InterestSection />
+        </Container>
+        <FeatureSection />
+        <Container>
+          <TutorialSection />
+        </Container>
+        <Testimonial />
+        <PriceSection packages={pageProps.packages} />
+        <ActionSection />
+        <Footer />
+        <ScrollToTopButton />
+      </main>
     </>
   );
 }
