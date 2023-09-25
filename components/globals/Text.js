@@ -13,7 +13,7 @@ const Text = ({ style, className, ...props }) => {
       titleQuestion: "text-sm font-semibold",
       base: "text-sm",
       heroTitleAllura: "font-allura md:text-[5rem] text-5xl",
-      smallTitleAllura: "font-allura text-5xl",
+      smallTitleAllura: "font-allura text-3xl",
       descriptionAllura: "font-allura text-3xl",
       smallDescriptionAllura: "font-allura text-2xl",
     },
