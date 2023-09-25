@@ -488,8 +488,8 @@ export default function InvitationsDetail() {
                   ))}
                   <div className="my-3">
                     <Text className={"font-bold"}>
-                      Berikut Template text untuk membagikan undaangan milik
-                      anda
+                      Berikut Template text untuk membagikan undangan milik
+                      Anda.
                     </Text>
                     <Text>
                       Hi teman-teman, <br /> <br /> Kami dengan senang hati
