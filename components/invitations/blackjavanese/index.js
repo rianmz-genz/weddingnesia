@@ -9,17 +9,19 @@ import GuestBookBlackJavanese from "./sections/GuestBook";
 import CountdownBlackJavanese from "./sections/Countdown";
 import { InvitationContext } from "@/context/invitation";
 import QuotesBlackJavanese from "./sections/Quotes";
+import FooterInvitation from "@/components/globals/FooterInvitation";
 
 export default function BlackJavanese() {
   return (
     <div className="mb-12">
       <NavbarBlackJavanese />
       <HeroBlackJavanese />
-      <CountdownBlackJavanese />
       <BrideBlackJavanese />
       <LocationBlackJavanese />
+      {/* <CountdownBlackJavanese /> */}
       <GalleryBlackJavanese />
       <QuotesBlackJavanese />
+      <FooterInvitation />
     </div>
   );
 }
