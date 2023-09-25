@@ -7,10 +7,10 @@ export default function FooterInvitation() {
   return (
     <Link
       href={"https://app.weddingnesia.id"}
-      className="mt-12 mb-24 w-6/12 mx-auto flex flex-col justify-center items-center"
+      className="mt-12  mb-24 lg:w-6/12 mx-auto flex flex-col justify-center items-center"
     >
-      <Logo className={"w-2/12 opacity-70"} />
-      <p className="text-xs text-black/50">
+      <Logo className={"lg:w-2/12 w-36 opacity-70"} />
+      <p className="text-xs text-black/50 text-center">
         Website Undangan Pernikahan Online
       </p>
     </Link>
