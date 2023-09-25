@@ -1,10 +1,11 @@
 import { Text } from "@/components";
 import { textStyle } from "@/utils/enum";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaInstagramSquare } from "react-icons/fa";
 import { RiInstagramLine } from "react-icons/ri";
-
+import AOS from "aos";
+import "aos/dist/aos.css";
 export default function BrideProfile({
   src,
   nickName,
@@ -12,8 +13,15 @@ export default function BrideProfile({
   info,
   instagram,
 }) {
+  useEffect(() => {
+    AOS.init();
+  }, []);
   return (
-    <div className="md:w-fit w-full flex flex-col items-center">
+    <div
+      data-aos="fade-up"
+      data-aos-duration="1000"
+      className="md:w-fit w-full flex flex-col items-center"
+    >
       <img
         src={src}
         width={1080}
