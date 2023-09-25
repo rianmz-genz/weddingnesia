@@ -13,9 +13,13 @@ export default function LocationItem({
   src,
   date,
   timezone,
+  ...props
 }) {
   return (
-    <div className="w-full shadow-xl border mt-6 rounded-md p-6 flex flex-col items-center">
+    <div
+      {...props}
+      className="w-full mt-6 rounded-md p-6 flex flex-col items-center"
+    >
       <Text style={textStyle.descriptionAllura}>{title}</Text>
       <ImageText2
         title={formatDate(date)}
