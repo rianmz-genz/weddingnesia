@@ -14,11 +14,7 @@ export default function HeroBlackJavanese() {
       className={`w-full min-h-screen bg-cover bg-center`}
       style={{ backgroundImage: `url(${primary_cover})` }}
     >
-      <AudioPlayer
-        audioLink={
-          "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/269943960&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
-        }
-      />
+      <AudioPlayer audioLink={audio} />
       <div className="w-full min-h-screen bg-black/60 flex justify-center items-center">
         <div className="flex flex-col items-center gap-1 text-white w-11/12">
           <Image
