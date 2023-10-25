@@ -104,7 +104,7 @@ export default function CoverButton({
             <input
               onChange={(e) => onChange(e.target.files[0])}
               type="file"
-              accept=".png"
+              accept="image/png, image/jpg, image/jpeg"
               hidden
             />
           </label>

@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import TemplateCreate from "./TemplateCreate";
 import TitleBorder from "../globals/TitleBorder";
 import { HiOutlineDocumentPlus } from "react-icons/hi2";
-import Image from "next/image";
 import Button from "../globals/Button";
 import { buttonStyle } from "@/utils/enum";
 import { FiSave, FiTrash } from "react-icons/fi";
 import handleUploadApi from "@/api/integrations/upload";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Skeleton from "../globals/Skeleton";
 
 export default function ChoseAlbums({ albums, setValue, onNext }) {
@@ -70,7 +68,7 @@ export default function ChoseAlbums({ albums, setValue, onNext }) {
             <input
               type="file"
               hidden
-              accept=".png"
+              accept="image/png, image/jpg, image/jpeg"
               onChange={(e) => onChange(e.target.files[0])}
             />
           </label>
