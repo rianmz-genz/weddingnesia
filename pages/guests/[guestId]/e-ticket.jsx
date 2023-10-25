@@ -22,7 +22,7 @@ function GuestETicket() {
     if (guestId) {
       setIsLoading(true);
       GuestGetById({ guestId }).then((res) => {
-        console.log(res);
+        //console.log(res);
         if (res) {
           const data = {
             name: res.name,

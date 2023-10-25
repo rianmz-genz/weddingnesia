@@ -11,7 +11,7 @@ export function variant(base, variants) {
     variantEntries.forEach(([name, value]) => {
       variantClasses.push(variants[name][value]);
     });
-    // console.log(...variantClasses, base)
+    // //console.log(...variantClasses, base)
     return cn(base, ...variantClasses);
   };
 }

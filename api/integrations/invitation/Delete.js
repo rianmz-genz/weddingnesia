@@ -5,7 +5,7 @@ import axios from "axios";
 
 const DeleteInvitationApi = async ({ id }) => {
   const baseURL = `${InvitationRoute}/destroy/${id}`;
-  console.log(baseURL);
+  //console.log(baseURL);
   try {
     const res = await axios({
       baseURL,

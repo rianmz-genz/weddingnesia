@@ -48,13 +48,13 @@ export default function CoverButton({
     setIsHit(true);
     handleUploadApi({ file })
       .then((res) => {
-        console.log(key);
+        //console.log(key);
         setValue({ [key]: res });
         setIsHit(false);
         setHitted(true);
       })
       .catch((err) => {
-        console.log(err);
+        //console.log(err);
         setIsHit(false);
       });
   };

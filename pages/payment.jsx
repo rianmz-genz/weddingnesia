@@ -3,19 +3,21 @@ import GetMidtransUrl from "@/api/utils/GetMidtransUrl";
 import { useState } from "react";
 
 export function ShowSnap(snapToken) {
+  const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
   const script = document.createElement("script");
   script.src = GetMidtransUrl();
   script.async = true;
+  script.setAttribute("data-client-key", clientKey);
 
   script.onload = () => {
     snap.pay(snapToken, {
       onSuccess: function (result) {
         // Handle successful payment
-        console.log(result);
+        //console.log(result);
       },
       onError: function (result) {
         // Handle payment failure
-        console.error(result);
+        // console.error(result);
       },
     });
   };
@@ -32,6 +34,7 @@ function PaymentPage() {
 
   const handlePayment = async (orderId) => {
     CheckoutApi({ orderId }).then((response) => {
+      console.log(response);
       const token = response.data.snap_token;
       setSnapToken(token);
     });

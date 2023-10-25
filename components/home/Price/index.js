@@ -11,7 +11,7 @@ import { BiRefresh } from "react-icons/bi";
 
 export default function PriceSection({ packages }) {
   const { pricing } = initialValue.home;
-  console.log(packages);
+  //console.log(packages);
   return (
     <section
       id="price"

@@ -171,14 +171,14 @@ export default function PreviewDataInvitation({ pageProps }) {
     init.title = "Welcome to Our Wedding";
     CreateInvitationApi({ data: init }).then((res) => {
       setTrigger(true);
-      console.log("response", res);
+      //console.log("response", res);
       if (res) {
         const data = {
           design_id: designs[0].id,
           invitation_id: res.id,
         };
         SelectTemplateApi({ data }).then((resTemplate) => {
-          console.log("select", data);
+          //console.log("select", data);
           if (resTemplate) {
             setStatusApi(true);
             setMessage("Berhasil membuat data undangan");

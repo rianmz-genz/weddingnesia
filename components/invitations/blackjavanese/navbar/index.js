@@ -4,11 +4,26 @@ import React from "react";
 import { GiBigDiamondRing } from "react-icons/gi";
 export default function NavbarBlackJavanese() {
   return (
-    <nav className="w-full py-6 bg-black/50 backdrop-blur-md fixed bottom-0 left-0 z-50">
-      <ul className="flex justify-around items-center w-full text-white text-xl">
+    <nav className="w-fit px-8 py-6 bg-black/50 backdrop-blur-md fixed rounded-full bottom-3 left-1/2 -translate-x-1/2 z-50">
+      <ul className="flex justify-around items-center gap-6 w-full text-white text-xl">
         {NavbarInvitation.map(({ icon, href }, i) => (
           <li key={i}>
-            <Link href={href} scroll={true}>
+            <Link
+              onClick={(e) => {
+                e.preventDefault();
+                if (document && window) {
+                  const targetElement = document.querySelector(href);
+                  if (targetElement) {
+                    window.scrollTo({
+                      top: targetElement.offsetTop,
+                      behavior: "smooth",
+                    });
+                  }
+                }
+              }}
+              href={href}
+              scroll={true}
+            >
               {icon}
             </Link>
           </li>

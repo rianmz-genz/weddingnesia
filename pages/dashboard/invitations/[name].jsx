@@ -2,30 +2,24 @@ import { Button, DashboardUser, Input, Text } from "@/components";
 import BreadCumbers from "@/components/globals/BreadCumbers";
 import DetailInvitationAction from "@/components/globals/DetailInvitationAction";
 import TopBottomText from "@/components/globals/TopBottomText";
-import { GetPackage, formatDate, formatHour } from "@/utils";
+import { formatDate, formatHour } from "@/utils";
 import { alertStyle, buttonStyle, textStyle } from "@/utils/enum";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import QRCode from "react-qr-code";
-import { getServerSideProps } from "..";
 import Modals from "@/components/globals/Modals";
 import GetGuestsByInvitationId from "@/api/integrations/invitation/guest/GetGuestsByInvitationId";
 import GuestDeleteById from "@/api/integrations/guest/GuestDeleteById";
 import GuestCheckin from "@/api/integrations/guest/GuestCheckin";
 import GuestUpdate from "@/api/integrations/guest/GuestUpdate";
-import { BiUser } from "react-icons/bi";
 import GuestSendEmailInvitation from "@/api/integrations/guest/GuestSendEmailInvitation";
 import InvitationBySlugApi from "@/api/integrations/invitation/BySlug";
-import Image from "next/image";
 import Skeleton from "@/components/globals/Skeleton";
 import { FiHome, FiPlus } from "react-icons/fi";
 import GuestCreate from "@/api/integrations/guest/GuestCreate";
 import { InputLeftWithTitle, InputTitle } from "@/components/globals/Input";
 import Alert from "@/components/globals/Alert";
-import { redirect } from "next/dist/server/api-utils";
 import CheckoutApi from "@/api/integrations/payment/CheckoutApi";
 import { ShowSnap } from "@/pages/payment";
 import GetBadgeInvitation from "@/components/globals/GetBadge";
@@ -53,6 +47,8 @@ export default function InvitationsDetail() {
   const [statusApi, setStatusApi] = useState(false);
   const [trigger, setTrigger] = useState(false);
   const items = [<FiHome key={1} />, router.query.name];
+  const linknya = `https://app.weddingnesia.id/theme?sl=blackjavanese&i=
+          ${router.query.name}`;
   const details = [
     {
       top: "Undangan Milik",
@@ -69,8 +65,7 @@ export default function InvitationsDetail() {
           href={`/theme?sl=blackjavanese&i=${router.query.name}`}
           className="italic underline"
         >
-          https://app.weddingnesia.id/theme?sl=blackjavanese&i=
-          {router.query.name}
+          {linknya}
         </Link>
       ),
     },
@@ -158,16 +153,17 @@ export default function InvitationsDetail() {
   const getInvitation = () => {
     setIsLoading(true);
     InvitationBySlugApi({ slug: router.query.name }).then((resInvitation) => {
-      console.log(resInvitation);
+      // console.log(resInvitation);
       if (resInvitation) {
         setInvitation(resInvitation);
         getGuests(resInvitation?.id);
       }
     });
   };
+
   const getGuests = (id) => {
     GetGuestsByInvitationId(id).then((guests) => {
-      console.log(guests.data.guests);
+      //console.log(guests.data.guests);
       setGuests(guests.data.guests);
       setIsLoading(false);
     });
@@ -207,7 +203,7 @@ export default function InvitationsDetail() {
         getInvitation();
       }
       if (res.status === false) {
-        console.log("error checkin");
+        //console.log("error checkin");
       }
     });
   };
@@ -215,17 +211,17 @@ export default function InvitationsDetail() {
   const handleSendEmailInvitation = (paramGuestId) => {
     GuestSendEmailInvitation(paramGuestId).then((res) => {
       if (res.status === true) {
-        console.log("success send email invitation");
+        //console.log("success send email invitation");
       }
       if (res.status === false) {
-        console.log("error send email invitation");
+        //console.log("error send email invitation");
       }
     });
   };
 
   const openEdit = (paramGuestId) => {
     const guest = guests.filter((guest) => guest.id === paramGuestId)[0];
-    console.log(guest);
+    //console.log(guest);
     setGuestName(guest.name);
     setGuestEmail(guest.email);
     setGuestPhone(guest.phone);
@@ -291,11 +287,11 @@ export default function InvitationsDetail() {
   };
   const handleDelInv = (e) => {
     e.preventDefault();
-    // console.log(invitation.id);
+    // //console.log(invitation.id);
     // setIsLoading(true);
     DeleteInvitationApi({ id: invitation.id }).then((res) => {
       setIsOpenDelInv(false);
-      console.log(res);
+      //console.log(res);
       if (res) {
         getInvitation();
         setStatusApi(true);
@@ -314,16 +310,16 @@ export default function InvitationsDetail() {
     });
   };
   const handleCO = async (orderId) => {
-    // console.log(orderId);
     setIsLoading(true);
     CheckoutApi({ orderId }).then((response) => {
+      // //console.log(orderId);
+      // console.log(response);
       if (!response.data?.snap_token) {
         setTrigger(true);
         setStatusApi(false);
         setMessage(response.message);
       }
       const token = response.data?.snap_token;
-      console.log(token);
       setSnapToken(token);
       setIsLoading(false);
     });
@@ -490,15 +486,45 @@ export default function InvitationsDetail() {
                   {details.map(({ top, bottom }, idx) => (
                     <TopBottomText key={idx} top={top} bottom={bottom} />
                   ))}
-                  <Button
-                    className={"w-full"}
-                    onClick={() =>
-                      handleCO(invitation.order[invitation.order.length - 1].id)
-                    }
-                    style={buttonStyle.greensmall}
-                  >
-                    Checkout
-                  </Button>
+                  <div className="my-3">
+                    <Text className={"font-bold"}>
+                      Berikut Template text untuk membagikan undangan milik
+                      Anda.
+                    </Text>
+                    <Text>
+                      Hi teman-teman, <br /> <br /> Kami dengan senang hati
+                      ingin berbagi momen istimewa dalam hidup kami dengan Anda.
+                      Kami akan menikah dan kami ingin Anda hadir untuk
+                      merayakan bersama kami. <br /> <br />
+                      Tgl Pernikahan:{" "}
+                      {invitation.reception_date &&
+                        formatDate(invitation.reception_date)}
+                      <br /> <br /> Waktu:{" "}
+                      {`${invitation.reception_time_start} ${invitation.timezone}`}{" "}
+                      <br /> <br /> Tempat: {invitation.reception_address}{" "}
+                      <br /> <br /> Anda dapat menemukan detail lengkap undangan
+                      pernikahan kami di link berikut: <br />
+                      {linknya} <br /> <br /> Kami berharap dapat melihat Anda
+                      di acara kami dan berbagi kebahagiaan bersama. Terima
+                      kasih atas perhatian dan doa terbaik Anda.
+                      <br /> <br />
+                      Salam, <br />
+                      {`${invitation.groom_name} & ${invitation.bride_name}`}
+                    </Text>
+                  </div>
+                  {invitation.status != "PAID" && (
+                    <Button
+                      className={"w-full"}
+                      onClick={() =>
+                        handleCO(
+                          invitation.order[invitation.order.length - 1].id
+                        )
+                      }
+                      style={buttonStyle.greensmall}
+                    >
+                      Checkout
+                    </Button>
+                  )}
                   {snapToken && ShowSnap(snapToken)}
                   <Button
                     className={"w-full"}

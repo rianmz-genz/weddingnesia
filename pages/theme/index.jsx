@@ -7,25 +7,35 @@ import React, { useEffect, useState } from "react";
 export default function DemoInvitation() {
   const router = useRouter();
   const { sl, i } = router.query;
-  const currentInvitation = DemoInvitationData.find((item) => item.slug == sl);
+
   const [invitation, setInvitation] = useState({});
+  const [currentInvitation, setIsCurrentInvitation] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     getInvitation();
-  }, [router.isReady]);
+    if (sl) {
+      const current = DemoInvitationData.find((item) => item.slug == sl);
+      setIsCurrentInvitation(current);
+    }
+  }, [router.isReady, sl]);
+
   const getInvitation = () => {
     InvitationBySlugApi({ slug: i }).then((resInvitation) => {
-      if (resInvitation.order.length == 0) {
-        return <NotFoundMessage />;
+      if (resInvitation) {
+        setInvitation(resInvitation);
+        setIsLoading(false);
       }
-      setInvitation(resInvitation);
-      console.log(resInvitation);
     });
   };
-  if (!currentInvitation) {
-    // Jika currentInvitation adalah undefined, kembalikan halaman 404.
-    return <NotFoundMessage />; // Ganti ini dengan komponen 404 yang sesuai
+  if (isLoading) return <div className="bg-white h-screen w-full"></div>;
+  if (!sl || (!i && !isLoading)) return <NotFoundMessage />;
+  if (invitation == undefined) return <NotFoundMessage />;
+  if (invitation == false) return <NotFoundMessage />;
+  if (invitation?.order) {
+    if (invitation?.order[0].status != "PAID") {
+      return <NotFoundMessage />;
+    }
   }
-
   return (
     <InvitationContext.Provider value={invitation}>
       {currentInvitation.component}
@@ -36,7 +46,7 @@ export default function DemoInvitation() {
 function NotFoundMessage() {
   return (
     <div className="w-full h-screen bg-black text-white flex justify-center items-center">
-      404 - Invitation Not Found
+      undangan belum dibayar atau diaktifkan
     </div>
   );
 }

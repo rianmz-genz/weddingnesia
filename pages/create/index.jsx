@@ -96,7 +96,7 @@ export default function Create({ pageProps }) {
         setIsLoading(false);
       }, 500);
     } catch (e) {
-      console.log(e);
+      //console.log(e);
     }
   };
   const saveData = () => {
@@ -210,7 +210,7 @@ export async function getServerSideProps({ req }) {
     }
     const init = req.cookies.dataInvitation;
     if (!init) {
-      console.log("undefined");
+      //console.log("undefined");
       return {
         props: {
           init: null,
@@ -220,7 +220,7 @@ export async function getServerSideProps({ req }) {
     }
     // Misalnya, jika Anda ingin mengurutkan berdasarkan urutan: Freemium, Premium, Eksklusif, Pro, Elegant
     if (init) {
-      console.log("iya masuk");
+      //console.log("iya masuk");
       return {
         props: {
           init: JSON.parse(init),
