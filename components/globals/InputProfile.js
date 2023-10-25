@@ -1,5 +1,4 @@
 import { initialValue } from "@/store";
-import Image from "next/image";
 import React, { useState } from "react";
 import { FiCheckCircle, FiEye, FiFolder, FiTrash } from "react-icons/fi";
 import Button from "./Button";
