@@ -53,6 +53,7 @@ const LoginView = () => {
   const [loginUrl, setLoginUrl] = useState(null);
   const [facebookUrl, setFacebookUrl] = useState(null);
   const [isHitApi, setIsHitApi] = useState(false);
+  const [serverError, setServerError] = useState(null);
 
   function formValidator() {
     let result = true;
@@ -109,7 +110,10 @@ const LoginView = () => {
         }
         throw new Error("Something went wrong!");
       })
-      .then((data) => setLoginUrl(data.url));
+      .then((data) => setLoginUrl(data.url))
+      .catch(error => {
+        setServerError(error)
+      });
   }, []);
 
   useEffect(() => {
@@ -125,7 +129,10 @@ const LoginView = () => {
         }
         throw new Error("Something went wrong!");
       })
-      .then((data) => setFacebookUrl(data.url));
+      .then((data) => setFacebookUrl(data.url))
+      .catch(error => {
+        setServerError(error)
+      });
   }, []);
 
   const providers = [
@@ -187,7 +194,7 @@ const LoginView = () => {
           </Link>
         </Text>
         <div className="flex flex-col justify-center gap-4 mt-4">
-          {providers.map((provider) => ProviderButton(provider))}
+          {serverError !== null ? <span></span> : providers.map((provider) => ProviderButton(provider)) }
         </div>
       </div>
     </AuthPage>
