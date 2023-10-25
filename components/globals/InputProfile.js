@@ -1,5 +1,4 @@
 import { initialValue } from "@/store";
-import Image from "next/image";
 import React, { useState } from "react";
 import { FiCheckCircle, FiEye, FiFolder, FiTrash } from "react-icons/fi";
 import Button from "./Button";
@@ -112,7 +111,7 @@ export default function InputProfile({
             <input
               onChange={(e) => onPick(e.target.files[0])}
               type="file"
-              accept=".png"
+              accept="image/png, image/jpg, image/jpeg"
               className="hidden"
               name={isMan ? "Pria" : "Wanita"}
             />
