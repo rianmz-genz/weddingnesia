@@ -20,9 +20,11 @@ export default function QuotesBlackJavanese() {
         <div
           data-aos="fade-up"
           data-aos-duration="1000"
-          className="mx-auto w-6/12 flex flex-col justify-center items-center"
+          className="mx-auto w-11/12 lg:w-6/12 flex flex-col justify-center items-center"
         >
-          <Text style={textStyle.title}>{quotes}</Text>
+          <Text style={textStyle.title} className={"text-center mb-1"}>
+            &quot;{quotes}&quot;
+          </Text>
           <Text style={textStyle.descriptionAllura}>-{source_quotes}-</Text>
         </div>
       </div>
