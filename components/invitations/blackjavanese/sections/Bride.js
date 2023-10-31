@@ -49,7 +49,7 @@ export default function BrideBlackJavanese() {
         <Text
           data-aos-duration="1000"
           data-aos="fade-up"
-          className={"w-6/12 mx-auto"}
+          className={"lg:w-6/12 mx-auto"}
         >
           {opening_remarks}
         </Text>
