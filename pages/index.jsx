@@ -80,7 +80,6 @@ export async function getServerSideProps() {
   try {
     const hit = await GetAllPackage();
     // Misalnya, jika Anda ingin mengurutkan berdasarkan urutan: Freemium, Premium, Eksklusif, Pro, Elegant
-    MyLog("hit", hit);
     if (!hit)
       return {
         props: {
