@@ -1,4 +1,5 @@
 import AudioPlayer from "@/components/globals/AudioPlayer";
+import NewAudioPlayer from "@/components/globals/AudioPlayer/new";
 import Text from "@/components/globals/Text";
 import { InvitationContext } from "@/context/invitation";
 import { formatDate } from "@/utils";
@@ -14,7 +15,8 @@ export default function HeroBlackJavanese() {
       className={`w-full min-h-screen bg-cover bg-center`}
       style={{ backgroundImage: `url(${primary_cover})` }}
     >
-      <AudioPlayer audioLink={audio} />
+      {/* <AudioPlayer audioLink={audio} /> */}
+      <NewAudioPlayer audioUrl={audio} />
       <div className="w-full min-h-screen bg-black/60 flex justify-center items-center">
         <div className="flex flex-col items-center gap-1 text-white w-11/12">
           <Image
