@@ -25,6 +25,8 @@ export default function DemoInvitation() {
       if (resInvitation) {
         setInvitation(resInvitation);
         setIsLoading(false);
+      } else {
+        return <Err />;
       }
     });
   };
@@ -62,6 +64,14 @@ function NotFoundMessage() {
   return (
     <div className="w-full h-screen bg-black text-white flex justify-center items-center">
       undangan belum dibayar atau diaktifkan
+    </div>
+  );
+}
+
+function Err() {
+  return (
+    <div className="w-full h-screen bg-black text-white flex justify-center items-center">
+      Gagal mendapatkan data undangan
     </div>
   );
 }

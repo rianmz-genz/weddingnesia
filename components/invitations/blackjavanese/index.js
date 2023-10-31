@@ -11,10 +11,12 @@ import { InvitationContext } from "@/context/invitation";
 import QuotesBlackJavanese from "./sections/Quotes";
 import FooterInvitation from "@/components/globals/FooterInvitation";
 import ScrollToTopButton from "@/components/globals/ScrollToTopButton";
+import CoverBlackJavanese from "./sections/Cover";
 
 export default function BlackJavanese() {
   return (
     <div className="mb-12">
+      <CoverBlackJavanese />
       <NavbarBlackJavanese />
       <HeroBlackJavanese />
       <BrideBlackJavanese />

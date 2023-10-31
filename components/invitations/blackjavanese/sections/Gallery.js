@@ -30,7 +30,7 @@ export default function GalleryBlackJavanese() {
               data-aos-delay={`${i * 150}`}
               src={item}
               width={1080}
-              className="w-28 lg:w-36 h-28 lg:h-36 object-cover"
+              className="w-32 lg:w-64 h-32 lg:h-64 object-cover"
               height={1080}
               alt={`Gallery ${i}`}
             />
