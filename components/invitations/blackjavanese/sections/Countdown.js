@@ -60,7 +60,7 @@ export default function CountdownBlackJavanese() {
     },
   ];
   return (
-    <div className="w-full py-12">
+    <div className="w-full py-12 bg-gray-100">
       <Text style={textStyle.smallTitleAllura} className={"text-center"}>
         Menghitung Hari
       </Text>
@@ -75,7 +75,7 @@ export default function CountdownBlackJavanese() {
 }
 function CountdownCard({ label, value }) {
   return (
-    <li className="flex flex-col items-center rounded-full shadow w-full p-8">
+    <li className="flex flex-col items-center shadow w-full p-8">
       <Text style={textStyle.smallTitleAllura}>{value}</Text>
       <Text>{label}</Text>
     </li>
