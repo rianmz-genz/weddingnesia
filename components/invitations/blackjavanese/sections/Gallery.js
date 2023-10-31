@@ -20,7 +20,7 @@ export default function GalleryBlackJavanese() {
       >
         Gallery
       </Text>
-      <ul className="w-1/2 mx-auto justify-center flex gap-2 flex-wrap mt-8">
+      <ul className="lg:w-1/2 mx-auto justify-center flex gap-2 flex-wrap mt-8">
         {albums != undefined &&
           JSON.parse(albums)?.map((item, i) => (
             <img
