@@ -2,6 +2,7 @@ import InvitationBySlugApi from "@/api/integrations/invitation/BySlug";
 import { InvitationContext } from "@/context/invitation";
 import { initialValue } from "@/store";
 import DemoInvitationData from "@/store/demo";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 export default function DemoInvitation() {
@@ -27,7 +28,21 @@ export default function DemoInvitation() {
       }
     });
   };
-  if (isLoading) return <div className="bg-white h-screen w-full"></div>;
+
+  if (isLoading) {
+    return (
+      <div className="bg-white h-screen w-full flex justify-center items-center flex-col">
+        <Image
+          src={"/images/search.svg"}
+          alt="search illustration"
+          width={1080}
+          height={1080}
+          className="w-4/12"
+        />
+        <p className="mt-3">Mencari Undangan..</p>
+      </div>
+    );
+  }
   if (!sl || (!i && !isLoading)) return <NotFoundMessage />;
   if (invitation == undefined) return <NotFoundMessage />;
   if (invitation == false) return <NotFoundMessage />;
