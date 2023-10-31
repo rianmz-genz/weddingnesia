@@ -10,6 +10,7 @@ import CountdownBlackJavanese from "./sections/Countdown";
 import { InvitationContext } from "@/context/invitation";
 import QuotesBlackJavanese from "./sections/Quotes";
 import FooterInvitation from "@/components/globals/FooterInvitation";
+import ScrollToTopButton from "@/components/globals/ScrollToTopButton";
 
 export default function BlackJavanese() {
   return (
@@ -17,11 +18,12 @@ export default function BlackJavanese() {
       <NavbarBlackJavanese />
       <HeroBlackJavanese />
       <BrideBlackJavanese />
+      <CountdownBlackJavanese />
       <LocationBlackJavanese />
-      {/* <CountdownBlackJavanese /> */}
       <GalleryBlackJavanese />
       <QuotesBlackJavanese />
       <FooterInvitation />
+      <ScrollToTopButton />
     </div>
   );
 }
