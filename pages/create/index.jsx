@@ -70,7 +70,7 @@ const data = {
 };
 export default function Create({ pageProps }) {
   const [currentMenu, setCurrentMenu] = useState({});
-  const [isLoading, setIsLoading] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   const [isHitApi, setIsHitApi] = useState(false);
   const [message, setMessage] = useState(false);
   const [statusApi, setStatusApi] = useState(false);
@@ -87,14 +87,10 @@ export default function Create({ pageProps }) {
     setIsLoading(false);
   };
   const handleClickMenu = (idx) => {
-    setIsLoading(true);
     try {
       const selectedMenu = cucumbersItem.find((item, i) => i == idx);
       setCurrentMenu(selectedMenu);
       Cookies.set("currentMenu", JSON.stringify(selectedMenu));
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
     } catch (e) {
       //console.log(e);
     }
@@ -105,17 +101,12 @@ export default function Create({ pageProps }) {
   };
   const onNext = async () => {
     if (currentMenu.value != "Domain") {
-      saveData();
       const index = cucumbersItem.findIndex(
         (item, i) => item.value == currentMenu.value
       );
       handleClickMenu(index + 1);
     }
     if (currentMenu.value == "Domain") {
-      saveData();
-      setIsHitApi(true);
-      setIsLoading(true);
-      router.push("/create/preview");
     }
   };
   function GetComponentView() {
@@ -124,9 +115,8 @@ export default function Create({ pageProps }) {
         return (
           <BrideAndGroomInformation
             onNext={onNext}
-            {...initialData}
-            setValue={setValue}
-            saveData={saveData}
+            setIsLoading={setIsLoading}
+            isLoading={isLoading}
           />
         );
       case "Lokasi":

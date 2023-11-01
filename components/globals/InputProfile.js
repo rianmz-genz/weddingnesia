@@ -12,7 +12,6 @@ export default function InputProfile({
   setValue,
   bride_avatar,
   groom_avatar,
-  saveData,
 }) {
   const { man, woman } = initialValue;
   const [src, setSrc] = useState(
@@ -54,10 +53,11 @@ export default function InputProfile({
         setHitted(true);
       })
       .catch((err) => {
-        //console.log(err);
+        console.log(err);
         setIsHit(false);
       });
   };
+  // console.log(groom_avatar, "iya");
   return (
     <div className="w-full flex gap-5 items-center ">
       {preview != null && <ViewImage onClose={closePreview} src={preview} />}
