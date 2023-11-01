@@ -11,7 +11,7 @@ const makeApiRequest = async ({
     const response = await axios({
       baseURL: baseUrl,
       method: method,
-      timeout: 20000,
+      timeout: 9000,
       timeoutErrorMessage: "Timeout Please Try Again",
       data: data,
       headers: {

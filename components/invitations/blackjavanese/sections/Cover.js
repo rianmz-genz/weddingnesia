@@ -24,7 +24,6 @@ export default function CoverBlackJavanese() {
       }`}
       style={{ backgroundImage: `url(${primary_cover})` }}
     >
-      {/* <AudioPlayer audioLink={audio} /> */}
       <NewAudioPlayer audioUrl={audio} audioRef={audioRef} isOpen={isOpen} />
       <div className="w-full min-h-screen bg-black/60 flex justify-center items-center">
         <div className="flex flex-col items-center gap-1 text-white w-11/12">
