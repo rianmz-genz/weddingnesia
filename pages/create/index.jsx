@@ -121,11 +121,7 @@ export default function Create({ pageProps }) {
         );
       case "Lokasi":
         return (
-          <LocationInformation
-            onNext={onNext}
-            {...initialData}
-            setValue={setValue}
-          />
+          <LocationInformation onNext={onNext} setIsLoading={setIsLoading} />
         );
       case "Data":
         return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TemplateCreate from "./TemplateCreate";
 import TitleLocation from "./TitleLocation";
 import { InputTitle } from "../globals/Input";
@@ -9,46 +9,93 @@ import Text from "../globals/Text";
 import Modals from "../globals/Modals";
 import { FaQuestionCircle } from "react-icons/fa";
 import { textStyle } from "@/utils/enum";
+import tempService from "@/api/integrations/temp";
+import Cookies from "js-cookie";
+import axios from "axios";
 
-export default function LocationInformation({
-  wedding_date,
-  timezone,
-  wedding_time_start,
-  wedding_time_end,
-  wedding_address,
-  wedding_map,
-  reception_date,
-  reception_time_start,
-  reception_time_end,
-  reception_address,
-  reception_map,
-  onNext,
-  setValue,
-}) {
+export default function LocationInformation({ onNext, setIsLoading }) {
+  const tempId = Cookies.get("tempId");
+  const [isOpenFaqMap, setIsOpenFaqMap] = useState(false);
+  const [err, setErr] = useState("");
+  const [formData, setFormData] = useState({
+    reception_maps: "",
+    reception_location_name: "",
+    reception_date: "",
+    reception_time_zone: "",
+    reception_start: "",
+    reception_end: "",
+    wedding_maps: "",
+    wedding_location_name: "",
+    wedding_date: "",
+    wedding_time_zone: "",
+    wedding_start: "",
+    wedding_end: "",
+  });
   const getSrcValue = (iframeString) => {
     const startIndex = iframeString.indexOf('src="') + 5;
     const endIndex = iframeString.indexOf('"', startIndex);
     if (startIndex === -1 && endIndex === -1 && endIndex < startIndex) return;
     return iframeString.slice(startIndex, endIndex);
   };
+  const setValue = (fields) => {
+    setFormData((prev) => {
+      return {
+        ...prev,
+        ...fields,
+      };
+    });
+  };
   const copyData = (e) => {
     if (e) {
-      setValue({ wedding_map: reception_map });
-      setValue({ wedding_address: reception_address });
-      setValue({ wedding_date: reception_date });
-      setValue({ wedding_time_start: reception_time_start });
-      setValue({ wedding_time_end: reception_time_end });
+      setValue({ wedding_maps: formData.reception_maps });
+      setValue({ wedding_location_name: formData.reception_location_name });
+      setValue({ wedding_date: formData.reception_date });
+      setValue({ wedding_start: formData.reception_start });
+      setValue({ wedding_end: formData.reception_end });
+      setValue({ wedding_time_zone: formData.reception_time_zone });
     } else {
-      setValue({ wedding_map: "" });
-      setValue({ wedding_address: "" });
+      setValue({ wedding_maps: "" });
+      setValue({ wedding_location_name: "" });
       setValue({ wedding_date: "" });
-      setValue({ wedding_time_start: "" });
-      setValue({ wedding_time_end: "" });
+      setValue({ wedding_start: "" });
+      setValue({ wedding_end: "" });
+      setValue({ wedding_time_zone: "" });
     }
   };
-  const [isOpenFaqMap, setIsOpenFaqMap] = useState(false);
+  const onSubmit = async () => {
+    try {
+      const res = await tempService.createLocation(tempId, formData);
+      if (res.status) {
+        onNext();
+      }
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
+  };
+  const [hasLoaded, setHasLoaded] = useState(false);
+  const getLocationData = async () => {
+    try {
+      const res = await tempService.getLocation(tempId);
+      if (res.status) {
+        console.log(res);
+        setFormData(res.data.bride);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setErr(error?.response?.data?.message);
+      }
+    } finally {
+      setIsLoading(false);
+      setHasLoaded(true);
+    }
+  };
+  useEffect(() => {
+    if (!hasLoaded) {
+      getLocationData();
+    }
+  }, [hasLoaded]);
   return (
-    <TemplateCreate onNext={onNext}>
+    <TemplateCreate onNext={onSubmit}>
       <Modals onClose={() => setIsOpenFaqMap(false)} trigger={isOpenFaqMap}>
         <Text style={textStyle.description} className={"font-bold"}>
           Apa yang disebut Embed Google Maps?
@@ -71,9 +118,9 @@ export default function LocationInformation({
         type="text"
         label={"Embed Google Maps*"}
         placeholder="Embed google maps"
-        value={reception_map}
+        value={formData.reception_maps}
         onChange={(e) =>
-          setValue({ reception_map: getSrcValue(e.target.value) })
+          setValue({ reception_maps: getSrcValue(e.target.value) })
         }
         icon={
           <FaQuestionCircle
@@ -84,8 +131,8 @@ export default function LocationInformation({
       />
       <InputTitle
         required
-        value={reception_address}
-        onChange={(e) => setValue({ reception_address: e.target.value })}
+        value={formData.reception_location_name}
+        onChange={(e) => setValue({ reception_location_name: e.target.value })}
         className={"my-3"}
         label={"Nama Lokasi*"}
         placeholder="Rumah/Gedung.."
@@ -93,7 +140,7 @@ export default function LocationInformation({
       <div className="flex items-start gap-3 my-3 md:flex-row flex-col">
         <InputTitle
           required
-          value={reception_date}
+          value={formData.reception_date}
           onChange={(e) => setValue({ reception_date: e.target.value })}
           type="date"
           min={dateNow()}
@@ -101,8 +148,8 @@ export default function LocationInformation({
         />
         <InputTitle
           required
-          value={timezone}
-          onChange={(e) => setValue({ timezone: e.target.value })}
+          value={formData.reception_time_zone}
+          onChange={(e) => setValue({ reception_time_zone: e.target.value })}
           placeholder="WIB"
           label={"Tampilan Zona Waktu*"}
         />
@@ -110,15 +157,15 @@ export default function LocationInformation({
       <div className="flex items-start gap-3 my-3 md:flex-row flex-col">
         <InputTitle
           required
-          value={reception_time_start}
-          onChange={(e) => setValue({ reception_time_start: e.target.value })}
+          value={formData.reception_start}
+          onChange={(e) => setValue({ reception_start: e.target.value })}
           type="time"
           label={"Jam Mulai Acara*"}
         />
         <InputTitle
           required
-          value={reception_time_end}
-          onChange={(e) => setValue({ reception_time_end: e.target.value })}
+          value={formData.reception_end}
+          onChange={(e) => setValue({ reception_end: e.target.value })}
           type="time"
           label={"Jam Selesai Acara*"}
         />
@@ -129,22 +176,24 @@ export default function LocationInformation({
         <Text>Sama Dengan Resepsi</Text>
       </label>
       <InputTitle
-        value={wedding_map}
-        onChange={(e) => setValue({ wedding_map: getSrcValue(e.target.value) })}
+        value={formData.wedding_maps}
+        onChange={(e) =>
+          setValue({ wedding_maps: getSrcValue(e.target.value) })
+        }
         className={"my-3"}
         label={"Embed Google Maps"}
         placeholder="Embed google maps"
       />
       <InputTitle
-        value={wedding_address}
-        onChange={(e) => setValue({ wedding_address: e.target.value })}
+        value={formData.wedding_location_name}
+        onChange={(e) => setValue({ wedding_location_name: e.target.value })}
         className={"my-3"}
         label={"Nama Lokasi"}
         placeholder="Rumah/Gedung.."
       />
       <div className="flex items-start gap-3 my-3 md:flex-row flex-col">
         <InputTitle
-          value={wedding_date}
+          value={formData.wedding_date}
           onChange={(e) => setValue({ wedding_date: e.target.value })}
           type="date"
           min={dateNow()}
@@ -153,14 +202,14 @@ export default function LocationInformation({
       </div>
       <div className="flex items-start gap-3 my-3 md:flex-row flex-col">
         <InputTitle
-          value={wedding_time_start}
-          onChange={(e) => setValue({ wedding_time_start: e.target.value })}
+          value={formData.wedding_start}
+          onChange={(e) => setValue({ wedding_start: e.target.value })}
           type="time"
           label={"Jam Mulai Acara"}
         />
         <InputTitle
-          value={wedding_time_end}
-          onChange={(e) => setValue({ wedding_time_end: e.target.value })}
+          value={formData.wedding_end}
+          onChange={(e) => setValue({ wedding_end: e.target.value })}
           type="time"
           label={"Jam Selesai Acara"}
         />

@@ -1,5 +1,5 @@
 import { initialValue } from "@/store";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiCheckCircle, FiEye, FiFolder, FiTrash } from "react-icons/fi";
 import Button from "./Button";
 import { buttonStyle } from "@/utils/enum";
@@ -14,19 +14,22 @@ export default function InputProfile({
   groom_avatar,
 }) {
   const { man, woman } = initialValue;
-  const [src, setSrc] = useState(
-    isMan && groom_avatar != ""
-      ? groom_avatar
-      : !isMan && bride_avatar != ""
-      ? bride_avatar
-      : isMan
-      ? man
-      : woman
-  );
+  const [src, setSrc] = useState("");
   const [imgFile, setImgFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [hitted, setHitted] = useState(null);
   const [isHit, setIsHit] = useState(false);
+  useEffect(() => {
+    const srcnya =
+      isMan && groom_avatar != ""
+        ? groom_avatar
+        : !isMan && bride_avatar != ""
+        ? bride_avatar
+        : isMan
+        ? man
+        : woman;
+    setSrc(srcnya);
+  }, [bride_avatar, groom_avatar]);
   const onPick = (file) => {
     setImgFile(file);
     setSrc(URL.createObjectURL(file));
