@@ -40,19 +40,17 @@ export default function LocationBlackJavanese() {
           timezone={timezone}
           title={"Resepsi"}
         />
-        {reception_map != wedding_map && wedding_map != "" && (
-          <LocationItem
-            data-aos="fade-up"
-            data-aos-duration="1000"
-            date={wedding_date ?? Date.now()}
-            address={wedding_address}
-            start_time={wedding_time_start}
-            end_time={wedding_time_end}
-            src={wedding_map}
-            timezone={timezone}
-            title={"Akad"}
-          />
-        )}
+        <LocationItem
+          data-aos="fade-up"
+          data-aos-duration="1000"
+          date={wedding_date ?? Date.now()}
+          address={wedding_address}
+          start_time={wedding_time_start}
+          end_time={wedding_time_end}
+          src={wedding_map}
+          timezone={timezone}
+          title={"Akad"}
+        />
       </div>
     </div>
   );
