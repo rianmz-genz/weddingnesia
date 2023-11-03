@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import TemplateCreate from "./TemplateCreate";
 import Text from "../globals/Text";
 import { textStyle } from "@/utils/enum";
@@ -9,6 +9,11 @@ import DropDown from "../globals/Dropdown";
 import TitleBorder from "../globals/TitleBorder";
 import { FaQuestionCircle } from "react-icons/fa";
 import Modals from "../globals/Modals";
+import Cookies from "js-cookie";
+import axios from "axios";
+import tempService from "@/api/integrations/temp";
+import UploadAudio from "./UploadAudio";
+import Alert from "../globals/Alert";
 const covers = [
   "/images/cover1.jpg",
   "/images/cover2.jpg",
@@ -17,30 +22,69 @@ const covers = [
   "/images/cover5.jpg",
   "/images/cover6.jpg",
 ];
-export default function OtherData({
-  primary_cover,
-  secondary_cover,
-  title,
-  is_groom_first,
-  greeting,
-  opening_remarks,
-  quotes,
-  source_quotes,
-  audio,
-  setValue,
-  onNext,
-}) {
-  const queueOptions = ["Pria - Wanita", "Wanita - Pria"];
-  const getSrcValue = (iframeString) => {
-    const startIndex = iframeString.indexOf('src="') + 5;
-    const endIndex = iframeString.indexOf('"', startIndex);
-    if (startIndex === -1 && endIndex === -1 && endIndex < startIndex) return;
-    return iframeString.slice(startIndex, endIndex);
+export default function OtherData({ setIsLoading, onNext }) {
+  const tempId = Cookies.get("tempId");
+  const [hasLoaded, setHasLoaded] = useState(false);
+  const [err, setErr] = useState("");
+  const [formData, setFormData] = useState({
+    primary_cover: "",
+    secondary_cover: "",
+    audio: "",
+    greeting: "",
+    opening_remarks: "",
+    quotes: "",
+    source_quotes: "",
+    is_groom_first: false,
+  });
+  const getDesignData = async () => {
+    try {
+      setErr("");
+      const res = await tempService.getDesign(tempId);
+      if (res.status) {
+        setFormData(res.data.design);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setErr(error?.response?.data?.message);
+      }
+    } finally {
+      setIsLoading(false);
+      setHasLoaded(true);
+    }
   };
+  useEffect(() => {
+    if (!hasLoaded) {
+      getDesignData();
+    }
+  }, [hasLoaded]);
+  const queueOptions = ["Pria - Wanita", "Wanita - Pria"];
   const [isOpenBgm, setIsOpenBgm] = useState(false);
   const [isOpenUcapan, setIsOpenUcapan] = useState(false);
+  const setValue = (fields) => {
+    setFormData((prev) => {
+      return {
+        ...prev,
+        ...fields,
+      };
+    });
+  };
+  const onSubmit = async () => {
+    // return console.log(formData);
+    try {
+      setErr("");
+      const res = await tempService.createDesign(tempId, formData);
+      if (res.status) {
+        onNext();
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setErr(error?.response?.data?.message);
+      }
+    }
+  };
   return (
-    <TemplateCreate onNext={onNext}>
+    <TemplateCreate onNext={onSubmit}>
+      <Alert message={err} trigger={err !== ""} style={"error"} />
       <Modals onClose={() => setIsOpenBgm(false)} trigger={isOpenBgm}>
         <Text style={textStyle.description} className={"font-bold"}>
           Apa yang disebut Link Background Music?
@@ -89,14 +133,16 @@ export default function OtherData({
             height={1080}
             loading="lazy"
             className={`w-full rounded-lg hover:ring-1 cursor-pointer ${
-              item == primary_cover ? "ring-2 ring-black" : " opacity-80"
+              item == formData?.primary_cover
+                ? "ring-2 ring-black"
+                : " opacity-80"
             } transition-all duration-500`}
           />
         ))}
       </ul>
       <Text className={"text-center my-3"}>Atau Upload</Text>
       <CoverButton
-        primary_cover={primary_cover}
+        primary_cover={formData?.primary_cover}
         setValue={setValue}
         title={"Primary Cover"}
         isPrimary={true}
@@ -106,7 +152,7 @@ export default function OtherData({
         className={"mt-6"}
         title={"Secondary Cover"}
         isPrimary={false}
-        secondary_cover={secondary_cover}
+        secondary_cover={formData?.secondary_cover}
         setValue={setValue}
         description={"Digunakan untuk bacgkround cover undangan bagian bawah"}
       />
@@ -127,7 +173,7 @@ export default function OtherData({
           onChange={(e) => setValue({ title: e.target.value })}
         />
       </div> */}
-      <InputTitle
+      {/* <InputTitle
         required
         label={"Link Background Music"}
         placeholder="Link Background Music"
@@ -139,12 +185,12 @@ export default function OtherData({
             onClick={() => setIsOpenBgm(true)}
           />
         }
-      />
+      /> */}
       <DropDown
         title={"Urutan Mempelai"}
         options={queueOptions}
         className={"w-full mt-3"}
-        is_groom_first={is_groom_first}
+        is_groom_first={formData.is_groom_first}
         setValue={setValue}
       />
       <InputTitle
@@ -152,13 +198,13 @@ export default function OtherData({
         className={"my-3"}
         label={"Salam Pembuka"}
         placeholder="Salam Pembuka"
-        value={greeting}
+        value={formData.greeting}
         onChange={(e) => setValue({ greeting: e.target.value })}
       />
       <TextareaTitle
         label={"Ucapan Pembuka"}
         placeholder="Ucapan Pembuka"
-        value={opening_remarks}
+        value={formData.opening_remarks}
         onChange={(e) => setValue({ opening_remarks: e.target.value })}
         icon={
           <FaQuestionCircle
@@ -170,16 +216,17 @@ export default function OtherData({
       <TextareaTitle
         label={"Quotes"}
         placeholder="Mengarungi Ombak Bersama"
-        value={quotes}
+        value={formData.quotes}
         onChange={(e) => setValue({ quotes: e.target.value })}
       />
       <InputTitle
         required
         label={"Sumber Quotes"}
         placeholder="Sutan Syahrir"
-        value={source_quotes}
+        value={formData.source_quotes}
         onChange={(e) => setValue({ source_quotes: e.target.value })}
       />
+      <UploadAudio audio={formData.audio} setValue={setValue} />
     </TemplateCreate>
   );
 }
