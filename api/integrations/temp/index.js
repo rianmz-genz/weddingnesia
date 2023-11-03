@@ -10,7 +10,6 @@ const create = async () => {
       Accept: "application/json",
     },
   });
-  console.log(data);
   return data;
 };
 
@@ -33,7 +32,6 @@ const createCouple = async (id, reqBody) => {
       Accept: "application/json",
     },
   });
-  console.log(data);
   return data;
 };
 
@@ -56,7 +54,79 @@ const createLocation = async (id, reqBody) => {
       Accept: "application/json",
     },
   });
-  console.log(data);
+  return data;
+};
+const getDesign = async (id) => {
+  const { data } = await axios.get(tempRoute.design(id), {
+    timeout: 9000,
+    headers: {
+      Authorization: GetToken(),
+      Accept: "application/json",
+    },
+  });
+  return data;
+};
+
+const createDesign = async (id, reqBody) => {
+  const { data } = await axios.post(tempRoute.design(id), reqBody, {
+    timeout: 9000,
+    headers: {
+      Authorization: GetToken(),
+      Accept: "application/json",
+    },
+  });
+  return data;
+};
+const getAlbum = async (id) => {
+  const { data } = await axios.get(tempRoute.album(id), {
+    timeout: 9000,
+    headers: {
+      Authorization: GetToken(),
+      Accept: "application/json",
+    },
+  });
+  return data;
+};
+
+const createAlbum = async (id, reqBody) => {
+  const { data } = await axios.post(tempRoute.album(id), reqBody, {
+    timeout: 9000,
+    headers: {
+      Authorization: GetToken(),
+      Accept: "application/json",
+    },
+  });
+  return data;
+};
+const getDomain = async (id) => {
+  const { data } = await axios.get(tempRoute.domain(id), {
+    timeout: 9000,
+    headers: {
+      Authorization: GetToken(),
+      Accept: "application/json",
+    },
+  });
+  return data;
+};
+
+const createDomain = async (id, reqBody) => {
+  const { data } = await axios.post(tempRoute.domain(id), reqBody, {
+    timeout: 9000,
+    headers: {
+      Authorization: GetToken(),
+      Accept: "application/json",
+    },
+  });
+  return data;
+};
+const deleteTemp = async (id) => {
+  const { data } = await axios.delete(tempRoute.base + "/" + id, {
+    timeout: 9000,
+    headers: {
+      Authorization: GetToken(),
+      Accept: "application/json",
+    },
+  });
   return data;
 };
 const tempService = {
@@ -65,5 +135,12 @@ const tempService = {
   createCouple,
   createLocation,
   getLocation,
+  createDesign,
+  getDesign,
+  getAlbum,
+  createAlbum,
+  getDomain,
+  createDomain,
+  deleteTemp,
 };
 export default tempService;
