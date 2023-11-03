@@ -12,6 +12,7 @@ import { textStyle } from "@/utils/enum";
 import tempService from "@/api/integrations/temp";
 import Cookies from "js-cookie";
 import axios from "axios";
+import Alert from "../globals/Alert";
 
 export default function LocationInformation({ onNext, setIsLoading }) {
   const tempId = Cookies.get("tempId");
@@ -64,21 +65,25 @@ export default function LocationInformation({ onNext, setIsLoading }) {
   };
   const onSubmit = async () => {
     try {
+      setErr("");
       const res = await tempService.createLocation(tempId, formData);
       if (res.status) {
         onNext();
       }
     } catch (error) {
-      throw new Error(`${error}`);
+      if (axios.isAxiosError(error)) {
+        setErr(error?.response?.data?.message);
+      }
     }
   };
   const [hasLoaded, setHasLoaded] = useState(false);
   const getLocationData = async () => {
     try {
+      setErr("");
       const res = await tempService.getLocation(tempId);
       if (res.status) {
-        console.log(res);
-        setFormData(res.data.bride);
+        // console.log(res);
+        setFormData(res.data.location);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -96,6 +101,8 @@ export default function LocationInformation({ onNext, setIsLoading }) {
   }, [hasLoaded]);
   return (
     <TemplateCreate onNext={onSubmit}>
+      <Alert message={err} trigger={err !== ""} style={"error"} />
+
       <Modals onClose={() => setIsOpenFaqMap(false)} trigger={isOpenFaqMap}>
         <Text style={textStyle.description} className={"font-bold"}>
           Apa yang disebut Embed Google Maps?
@@ -118,7 +125,7 @@ export default function LocationInformation({ onNext, setIsLoading }) {
         type="text"
         label={"Embed Google Maps*"}
         placeholder="Embed google maps"
-        value={formData.reception_maps}
+        value={formData?.reception_maps}
         onChange={(e) =>
           setValue({ reception_maps: getSrcValue(e.target.value) })
         }
@@ -131,7 +138,7 @@ export default function LocationInformation({ onNext, setIsLoading }) {
       />
       <InputTitle
         required
-        value={formData.reception_location_name}
+        value={formData?.reception_location_name}
         onChange={(e) => setValue({ reception_location_name: e.target.value })}
         className={"my-3"}
         label={"Nama Lokasi*"}
@@ -140,7 +147,7 @@ export default function LocationInformation({ onNext, setIsLoading }) {
       <div className="flex items-start gap-3 my-3 md:flex-row flex-col">
         <InputTitle
           required
-          value={formData.reception_date}
+          value={formData?.reception_date}
           onChange={(e) => setValue({ reception_date: e.target.value })}
           type="date"
           min={dateNow()}
@@ -148,7 +155,7 @@ export default function LocationInformation({ onNext, setIsLoading }) {
         />
         <InputTitle
           required
-          value={formData.reception_time_zone}
+          value={formData?.reception_time_zone}
           onChange={(e) => setValue({ reception_time_zone: e.target.value })}
           placeholder="WIB"
           label={"Tampilan Zona Waktu*"}
@@ -157,14 +164,14 @@ export default function LocationInformation({ onNext, setIsLoading }) {
       <div className="flex items-start gap-3 my-3 md:flex-row flex-col">
         <InputTitle
           required
-          value={formData.reception_start}
+          value={formData?.reception_start}
           onChange={(e) => setValue({ reception_start: e.target.value })}
           type="time"
           label={"Jam Mulai Acara*"}
         />
         <InputTitle
           required
-          value={formData.reception_end}
+          value={formData?.reception_end}
           onChange={(e) => setValue({ reception_end: e.target.value })}
           type="time"
           label={"Jam Selesai Acara*"}
@@ -176,7 +183,7 @@ export default function LocationInformation({ onNext, setIsLoading }) {
         <Text>Sama Dengan Resepsi</Text>
       </label>
       <InputTitle
-        value={formData.wedding_maps}
+        value={formData?.wedding_maps}
         onChange={(e) =>
           setValue({ wedding_maps: getSrcValue(e.target.value) })
         }
@@ -185,7 +192,7 @@ export default function LocationInformation({ onNext, setIsLoading }) {
         placeholder="Embed google maps"
       />
       <InputTitle
-        value={formData.wedding_location_name}
+        value={formData?.wedding_location_name}
         onChange={(e) => setValue({ wedding_location_name: e.target.value })}
         className={"my-3"}
         label={"Nama Lokasi"}
@@ -193,7 +200,7 @@ export default function LocationInformation({ onNext, setIsLoading }) {
       />
       <div className="flex items-start gap-3 my-3 md:flex-row flex-col">
         <InputTitle
-          value={formData.wedding_date}
+          value={formData?.wedding_date}
           onChange={(e) => setValue({ wedding_date: e.target.value })}
           type="date"
           min={dateNow()}
@@ -202,13 +209,13 @@ export default function LocationInformation({ onNext, setIsLoading }) {
       </div>
       <div className="flex items-start gap-3 my-3 md:flex-row flex-col">
         <InputTitle
-          value={formData.wedding_start}
+          value={formData?.wedding_start}
           onChange={(e) => setValue({ wedding_start: e.target.value })}
           type="time"
           label={"Jam Mulai Acara"}
         />
         <InputTitle
-          value={formData.wedding_end}
+          value={formData?.wedding_end}
           onChange={(e) => setValue({ wedding_end: e.target.value })}
           type="time"
           label={"Jam Selesai Acara"}
