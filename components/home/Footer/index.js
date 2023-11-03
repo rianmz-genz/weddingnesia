@@ -58,7 +58,25 @@ const Footer = () => {
       },
     ],
   };
-  const backLink = [{ data: main }, { data: product }, { data: member }];
+  const contact = {
+    title: "Contact",
+    childs: [
+      {
+        label: "+6281952319603",
+        href: "wa.me/+6281952319603",
+      },
+      {
+        label: "weddingnesia.id@gmail.com",
+        href: "weddingnesia.id@gmail.com",
+      },
+    ],
+  };
+  const backLink = [
+    { data: main },
+    { data: product },
+    { data: member },
+    { data: contact },
+  ];
   return (
     <footer className="w-full bg-black py-24">
       <div className="px-7 sm:max-w-lg lg:max-w-7xl  mx-auto">
