@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TemplateCreate from "./TemplateCreate";
 import TitleBorder from "../globals/TitleBorder";
 import { HiOutlineDocumentPlus } from "react-icons/hi2";
@@ -7,12 +7,16 @@ import { buttonStyle } from "@/utils/enum";
 import { FiSave, FiTrash } from "react-icons/fi";
 import handleUploadApi from "@/api/integrations/upload";
 import Skeleton from "../globals/Skeleton";
+import tempService from "@/api/integrations/temp";
+import Cookies from "js-cookie";
+import axios from "axios";
+import Alert from "../globals/Alert";
 
-export default function ChoseAlbums({ albums, setValue, onNext }) {
+export default function ChoseAlbums({ onNext }) {
+  const tempId = Cookies.get("tempId");
   const [files, setFiles] = useState([]);
-  const [filesSrc, setFilesSrc] = useState(albums);
+  const [filesSrc, setFilesSrc] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSaved, setIsSaved] = useState(albums.length > 0);
   const onChange = (file) => {
     setIsLoading(true);
     setFiles([...files, file]);
@@ -27,20 +31,48 @@ export default function ChoseAlbums({ albums, setValue, onNext }) {
     setFiles(filteredFiles);
     setFilesSrc(filteredFileSrc);
   };
-  const uploadAlbums = async () => {
-    if (files.length >= 3) {
-      changeValue();
-      setIsSaved(true);
+  const onUploadAlbums = async () => {
+    try {
+      setErr("");
+      const res = await tempService.createAlbum(tempId, { album: filesSrc });
+      if (res.status) {
+        onNext();
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setErr(error?.response?.data?.message);
+      }
     }
   };
-
-  const changeValue = () => {
-    setValue({ albums: filesSrc });
+  const [hasLoaded, setHasLoaded] = useState(false);
+  const [err, setErr] = useState("");
+  const getAlbumData = async () => {
+    try {
+      setErr("");
+      const res = await tempService.getAlbum(tempId);
+      if (res.status) {
+        // console.log(res);
+        setFilesSrc(res.data.album);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setErr(error?.response?.data?.message);
+      }
+    } finally {
+      setIsLoading(false);
+      setHasLoaded(true);
+    }
   };
+  useEffect(() => {
+    if (!hasLoaded) {
+      getAlbumData();
+    }
+  }, [hasLoaded]);
   return (
-    <TemplateCreate isNoSave={true} onNext={onNext}>
+    <TemplateCreate onNext={onUploadAlbums}>
+      <Alert message={err} trigger={err !== ""} style={"error"} />
       <TitleBorder>Upload Album</TitleBorder>
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end">
         <Button
           onClick={uploadAlbums}
           type="button"
@@ -48,7 +80,7 @@ export default function ChoseAlbums({ albums, setValue, onNext }) {
         >
           <FiSave />
         </Button>
-      </div>
+      </div> */}
       <ul className="w-full lg:justify-start justify-center my-6 flex flex-wrap gap-3">
         {filesSrc.length > 0 &&
           filesSrc?.map((item, idx) => {
@@ -62,7 +94,9 @@ export default function ChoseAlbums({ albums, setValue, onNext }) {
               </li>
             );
           })}
-        {filesSrc.length < 15 && (
+        {filesSrc.length < 15 && isLoading ? (
+          <Skeleton className="w-32 h-32 bg-slate-200 rounded-lg" />
+        ) : (
           <label className="w-32 h-32 rounded-md cursor-pointer bg-slate-500/10 flex justify-center items-center">
             <HiOutlineDocumentPlus className="text-slate-500 text-xl" />
             <input
@@ -74,7 +108,7 @@ export default function ChoseAlbums({ albums, setValue, onNext }) {
           </label>
         )}
       </ul>
-      {isSaved && (
+      {/* {isSaved && (
         <>
           <Button
             type="submit"
@@ -87,7 +121,7 @@ export default function ChoseAlbums({ albums, setValue, onNext }) {
             Batalkan
           </Button>
         </>
-      )}
+      )} */}
     </TemplateCreate>
   );
 }
