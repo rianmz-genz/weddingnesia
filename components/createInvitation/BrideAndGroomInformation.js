@@ -8,6 +8,7 @@ import TitleBorder from "../globals/TitleBorder";
 import tempService from "@/api/integrations/temp";
 import Cookies from "js-cookie";
 import axios from "axios";
+import Alert from "../globals/Alert";
 export default function BrideAndGroomInformation({
   onNext,
   setIsLoading,
@@ -34,6 +35,7 @@ export default function BrideAndGroomInformation({
   const [hasLoaded, setHasLoaded] = useState(false);
   const getCoupleData = async () => {
     try {
+      setErr("");
       const res = await tempService.getCouple(tempId);
       if (res.status) {
         console.log(res);
@@ -55,11 +57,16 @@ export default function BrideAndGroomInformation({
   }, [hasLoaded]);
   const onSubmit = async () => {
     try {
+      setErr("");
       const res = await tempService.createCouple(tempId, coupleData);
       if (res.status) {
         onNext();
       }
-    } catch (error) {}
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setErr(error?.response?.data?.message);
+      }
+    }
   };
   const setValue = (fields) => {
     setCoupleData((prev) => {
@@ -71,6 +78,8 @@ export default function BrideAndGroomInformation({
   };
   return (
     <TemplateCreate onNext={onSubmit}>
+      <Alert message={err} trigger={err !== ""} style={"error"} />
+
       <div className="flex justify-center gap-6 flex-col">
         <ContainerPart>
           <TitleBorder>Mempelai Pria</TitleBorder>
