@@ -25,7 +25,8 @@ const covers = [
 export default function OtherData({ setIsLoading, onNext }) {
   const tempId = Cookies.get("tempId");
   const [hasLoaded, setHasLoaded] = useState(false);
-  const [err, setErr] = useState("");
+  const [message, setMessage] = useState("");
+  const [isErr, setIsErr] = useState(false);
   const [formData, setFormData] = useState({
     primary_cover: "",
     secondary_cover: "",
@@ -38,14 +39,16 @@ export default function OtherData({ setIsLoading, onNext }) {
   });
   const getDesignData = async () => {
     try {
-      setErr("");
+      setMessage("");
       const res = await tempService.getDesign(tempId);
       if (res.status) {
         setFormData(res.data.design);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setErr(error?.response?.data?.message);
+        if (error.response.status !== 404) {
+          setMessage(error?.response?.data?.message);
+        }
       }
     } finally {
       setIsLoading(false);
@@ -71,20 +74,31 @@ export default function OtherData({ setIsLoading, onNext }) {
   const onSubmit = async () => {
     // return console.log(formData);
     try {
-      setErr("");
+      setMessage("");
+      setIsErr(false);
+
       const res = await tempService.createDesign(tempId, formData);
       if (res.status) {
-        onNext();
+        setMessage(res.message);
+        setTimeout(() => {
+          onNext();
+          setMessage("");
+        }, 2250);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setErr(error?.response?.data?.message);
+        setIsErr(true);
+        setMessage(error?.response?.data?.message);
       }
     }
   };
   return (
     <TemplateCreate onNext={onSubmit}>
-      <Alert message={err} trigger={err !== ""} style={"error"} />
+      <Alert
+        message={message}
+        trigger={message != ""}
+        style={!isErr ? "success" : "error"}
+      />
       <Modals onClose={() => setIsOpenBgm(false)} trigger={isOpenBgm}>
         <Text style={textStyle.description} className={"font-bold"}>
           Apa yang disebut Link Background Music?
