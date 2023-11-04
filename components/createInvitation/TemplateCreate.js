@@ -13,6 +13,9 @@ import Image from "next/image";
 import Text from "../globals/Text";
 import { FaQuestion } from "react-icons/fa";
 import Link from "next/link";
+import Modals from "../globals/Modals";
+import tempService from "@/api/integrations/temp";
+import axios from "axios";
 
 export default function TemplateCreate({
   className,
@@ -26,19 +29,31 @@ export default function TemplateCreate({
     return;
   }
   const [isCanceling, setIsCanceling] = useState(false);
+  const [isOpenCancel, setIsOpenCancel] = useState(false);
   const [isLoading, setisLoading] = useState(false);
+  const [err, setErr] = useState("");
   const router = useRouter();
-  const onCancel = () => {
+  const onCancel = async () => {
     try {
+      setErr("");
       setIsCanceling(true);
-      removeCookie("currentMenu");
-      router.push("/dashboard");
-    } catch (err) {
-      //console.log(err);
+      const res = await tempService.deleteTemp(Cookies.get("tempId"));
+      if (res.status) {
+        removeCookie("currentMenu");
+        removeCookie("tempId");
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setErr(error?.response?.data?.message);
+      }
+    } finally {
+      setIsCanceling(false);
     }
   };
   const onSubmit = (e) => {
     e.preventDefault();
+    setisLoading(true);
     onNext().then((res) => setisLoading((prev) => false));
   };
   const context = useContext(CreateInvitationContext);
@@ -48,6 +63,28 @@ export default function TemplateCreate({
       onSubmit={onSubmit}
       className={`${className} bg-white w-full rounded-md p-4 md:p-8 relative`}
     >
+      <Alert message={err} trigger={err !== ""} style={"error"} />
+      <Modals onClose={() => setIsOpenCancel(false)} trigger={isOpenCancel}>
+        <Text style={textStyle.description} className={"font-bold"}>
+          Membatlkan Pembuatan Undangan
+        </Text>
+        <Text>
+          Apakah Anda yakin akan membatalkan membuat undangan ini? data yang
+          dibatalkan akan dihapus seluruhnya.
+        </Text>
+        <Button
+          onClick={() => onCancel()}
+          style={buttonStyle.dangerlarge}
+          className={"w-full mt-3"}
+          type="button"
+        >
+          {isCanceling ? (
+            <AiOutlineLoading3Quarters className="text-red-500 mx-auto text-lg animate-spin" />
+          ) : (
+            "Batalkan"
+          )}
+        </Button>
+      </Modals>
       <div className="absolute top-3 right-3 peer/faq">
         <button
           type="button"
@@ -82,22 +119,19 @@ export default function TemplateCreate({
           >
             {isHitApi ? (
               <AiOutlineLoading3Quarters className="text-red-500 mx-auto text-lg animate-spin" />
-            ) : isLast ? (
+            ) : isLoading ? (
               "Simpan Data"
             ) : (
               "Simpan & Lanjutkan"
             )}
           </Button>
           <Button
-            onClick={onCancel}
+            onClick={() => setIsOpenCancel(true)}
             style={buttonStyle.dangerlarge}
             className={"w-full mt-3"}
+            type="button"
           >
-            {isCanceling ? (
-              <AiOutlineLoading3Quarters className="text-red-500 mx-auto text-lg animate-spin" />
-            ) : (
-              "Batalkan"
-            )}
+            Batalkan
           </Button>
         </>
       )}

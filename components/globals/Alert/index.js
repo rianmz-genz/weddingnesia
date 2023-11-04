@@ -10,7 +10,7 @@ export default function Alert({ style, trigger, message }) {
     setIsOpened(trigger);
   }, [trigger]);
   const alertVariants = variant(
-    `border-l-4 p-4 flex justify-between items-center gap-3 fixed top-6 transition-all duration-500 ${
+    `border-l-4 p-4 flex justify-between items-center gap-3 fixed top-6 transition-all duration-500 max-w-lg ${
       isOpened ? "right-6" : "-right-full"
     }`,
     {

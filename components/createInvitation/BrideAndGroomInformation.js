@@ -5,90 +5,115 @@ import InputProfile from "../globals/InputProfile";
 import ContainerPart from "./ContainerPart";
 import { VscMention } from "react-icons/vsc";
 import TitleBorder from "../globals/TitleBorder";
+import tempService from "@/api/integrations/temp";
+import Cookies from "js-cookie";
+import axios from "axios";
+import Alert from "../globals/Alert";
 export default function BrideAndGroomInformation({
-  groom_name,
-  groom_avatar,
-  groom_fullname,
-  groom_instagram,
-  bride_avatar,
-  bride_name,
-  bride_fullname,
-  bride_instagram,
-  bride_info,
-  groom_info,
-  setValue,
   onNext,
-  saveData,
+  setIsLoading,
+  isLoading,
 }) {
-  const [fatherGroom, setFatherGroom] = useState("");
-  const [motherGroom, setMotherGroom] = useState("");
-  const [fatherBride, setFatherBride] = useState("");
-  const [motherBride, setMotherBride] = useState("");
-  const [orderGroom, setOrderGroom] = useState("");
-  const [orderBride, setOrderBride] = useState("");
-  useEffect(() => {
-    if (groom_info) {
-      partOfInfo(groom_info).then((res) => {
-        setOrderGroom(res[0]);
-        setFatherGroom(res[1]);
-        setMotherGroom(res[2]);
-      });
+  const [message, setMessage] = useState("");
+  const [isErr, setIsErr] = useState(false);
+  const [coupleData, setCoupleData] = useState({
+    bride_avatar: "",
+    bride_name: "",
+    bride_fullname: "",
+    bride_father: "",
+    bride_mother: "",
+    bride_instagram: "",
+    bride_sequence: "",
+    groom_avatar: "",
+    groom_name: "",
+    groom_fullname: "",
+    groom_father: "",
+    groom_mother: "",
+    groom_instagram: "",
+    groom_sequence: "",
+  });
+  const tempId = Cookies.get("tempId");
+  const [hasLoaded, setHasLoaded] = useState(false);
+  const getCoupleData = async () => {
+    try {
+      setMessage("");
+      const res = await tempService.getCouple(tempId);
+      if (res.status) {
+        // console.log(res);
+        setCoupleData(res.data.bride);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response.status !== 404) {
+          setMessage(error?.response?.data?.message);
+          setIsErr(true);
+        }
+      }
+    } finally {
+      setIsLoading(false);
+      setHasLoaded(true);
     }
-    if (bride_info) {
-      partOfInfo(bride_info).then((res) => {
-        setOrderBride(res[0]);
-        setFatherBride(res[1]);
-        setMotherBride(res[2]);
-      });
+  };
+  useEffect(() => {
+    if (!hasLoaded) {
+      getCoupleData();
     }
-  }, []);
-  useEffect(() => {
-    setValue({
-      groom_info: `${orderGroom} dari pasangan Bapak ${fatherGroom} & Ibu ${motherGroom}`,
+  }, [hasLoaded]);
+  const onSubmit = async () => {
+    try {
+      setMessage("");
+      setIsErr(false);
+
+      const res = await tempService.createCouple(tempId, coupleData);
+      if (res.status) {
+        // console.log(res);
+        setMessage(res.message);
+        setTimeout(() => {
+          onNext();
+          setMessage("");
+        }, 2250);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setMessage(error?.response?.data?.message);
+        setIsErr(true);
+      }
+    }
+  };
+  const setValue = (fields) => {
+    setCoupleData((prev) => {
+      return {
+        ...prev,
+        ...fields,
+      };
     });
-  }, [fatherGroom, motherGroom, orderGroom]);
-  useEffect(() => {
-    setValue({
-      bride_info: `${orderBride} dari pasangan Bapak ${fatherBride} & Ibu ${motherBride}`,
-    });
-  }, [fatherBride, motherBride, orderBride]);
-  async function partOfInfo(info) {
-    const res = [];
-    // Split the input by "dari"
-    const parts = info.split("dari");
-    res.push(parts[0].trim()); // Push the first part
-    // Find "Bapak" and "dan" indexes
-    const startIndex = info.indexOf("Bapak") + "Bapak".length;
-    const endIndex = info.indexOf("&");
-    // Extract the part between "Bapak" and "dan"
-    const bapak = info.substring(startIndex, endIndex).trim();
-    res.push(bapak);
-    // Split the input by "Ibu" and get the second part
-    res.push(parts[1].split("Ibu")[1].trim());
-    return res;
-  }
+  };
   return (
-    <TemplateCreate onNext={onNext}>
+    <TemplateCreate onNext={onSubmit}>
+      <Alert
+        message={message}
+        trigger={message != ""}
+        style={!isErr ? "success" : "error"}
+      />
       <div className="flex justify-center gap-6 flex-col">
         <ContainerPart>
           <TitleBorder>Mempelai Pria</TitleBorder>
           <InputProfile
-            saveData={saveData}
-            groom_avatar={groom_avatar}
+            groom_avatar={coupleData.groom_avatar}
             setValue={setValue}
             isMan
           />
           <div className="flex flex-col space-y-3 my-1 md:my-3 py-3 md:py-6 border-b border-black/10">
             <InputTitle
               required
-              value={groom_fullname}
+              value={coupleData.groom_fullname}
               onChange={(e) => setValue({ groom_fullname: e.target.value })}
               label="Nama Lengkap Pria*"
               placeholder="Nama Lengkap Pria"
             />
             <InputTitle
               required
-              value={groom_name}
+              value={coupleData.groom_name}
               onChange={(e) => setValue({ groom_name: e.target.value })}
               label="Nama Panggilan Pria*"
               placeholder="Nama Panggilan Pria"
@@ -97,15 +122,15 @@ export default function BrideAndGroomInformation({
           <div className="flex flex-col space-y-3 my-1 md:my-3 pb-3 md:pb-6 pt-3 border-b border-black/10">
             <InputTitle
               required
-              value={fatherGroom}
-              onChange={(e) => setFatherGroom(e.target.value)}
+              value={coupleData.groom_father}
+              onChange={(e) => setValue({ groom_father: e.target.value })}
               label="Nama Ayah Pria*"
               placeholder="Nama Ayah Pria"
             />
             <InputTitle
               required
-              value={motherGroom}
-              onChange={(e) => setMotherGroom(e.target.value)}
+              value={coupleData.groom_mother}
+              onChange={(e) => setValue({ groom_mother: e.target.value })}
               label="Nama Ibu Pria*"
               placeholder="Nama Ibu Pria"
             />
@@ -114,8 +139,8 @@ export default function BrideAndGroomInformation({
           <div className="md:pb-6 pb-3 mb-3 pt-3 md:mb-6 border-b border-black/10">
             <InputTitle
               required
-              value={orderGroom}
-              onChange={(e) => setOrderGroom(e.target.value)}
+              value={coupleData.groom_sequence}
+              onChange={(e) => setValue({ groom_sequence: e.target.value })}
               label="Urutan Anak Pria*"
               placeholder="Anak bungsu"
             />
@@ -124,16 +149,14 @@ export default function BrideAndGroomInformation({
             left={<VscMention className="text-xl" />}
             label={"Instagram Pria"}
             placeholder="Instagram Pria"
-            value={groom_instagram}
+            value={coupleData.groom_instagram}
             onChange={(e) => setValue({ groom_instagram: e.target.value })}
           />
         </ContainerPart>
         <ContainerPart className={"mt-6"}>
           <TitleBorder>Mempelai Wanita</TitleBorder>
-
           <InputProfile
-            saveData={saveData}
-            bride_avatar={bride_avatar}
+            bride_avatar={coupleData.bride_avatar}
             setValue={setValue}
           />
           <div className="flex flex-col space-y-3 my-1 md:my-3 py-3 md:py-6 border-b border-black/10">
@@ -141,14 +164,14 @@ export default function BrideAndGroomInformation({
               required
               label="Nama Lengkap Wanita*"
               placeholder="Nama Lengkap Wanita"
-              value={bride_fullname}
+              value={coupleData.bride_fullname}
               onChange={(e) => setValue({ bride_fullname: e.target.value })}
             />
             <InputTitle
               required
               label="Nama Panggilan Wanita*"
               placeholder="Nama Panggilan Wanita"
-              value={bride_name}
+              value={coupleData.bride_name}
               onChange={(e) => setValue({ bride_name: e.target.value })}
             />
           </div>
@@ -157,15 +180,15 @@ export default function BrideAndGroomInformation({
               required
               label="Nama Ayah Wanita*"
               placeholder="Nama Ayah Wanita"
-              value={fatherBride}
-              onChange={(e) => setFatherBride(e.target.value)}
+              value={coupleData.bride_father}
+              onChange={(e) => setValue({ bride_father: e.target.value })}
             />
             <InputTitle
               required
               label="Nama Ibu Wanita*"
               placeholder="Nama Ibu Wanita"
-              value={motherBride}
-              onChange={(e) => setMotherBride(e.target.value)}
+              value={coupleData.bride_mother}
+              onChange={(e) => setValue({ bride_mother: e.target.value })}
             />
           </div>
 
@@ -174,15 +197,15 @@ export default function BrideAndGroomInformation({
               required
               label="Urutan Anak Wanita*"
               placeholder="Anak pertama"
-              value={orderBride}
-              onChange={(e) => setOrderBride(e.target.value)}
+              value={coupleData.bride_sequence}
+              onChange={(e) => setValue({ bride_sequence: e.target.value })}
             />
           </div>
           <InputLeftWithTitle
             left={<VscMention className="text-xl" />}
             label={"Instagram Wanita"}
             placeholder="Instagram Wanita"
-            value={bride_instagram}
+            value={coupleData.bride_instagram}
             onChange={(e) => setValue({ bride_instagram: e.target.value })}
           />
         </ContainerPart>

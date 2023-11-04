@@ -28,16 +28,20 @@ export function GetPackage(value = "bronze") {
 }
 
 export function formatDate(props) {
-  const inputDate = new Date(props);
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
+  try {
+    const inputDate = new Date(props);
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
 
-  const formatter = new Intl.DateTimeFormat("id-ID", options);
-  return formatter.format(inputDate);
+    const formatter = new Intl.DateTimeFormat("id-ID", options);
+    return formatter.format(inputDate);
+  } catch (error) {
+    return false;
+  }
 }
 
 export function formatHour(props) {
