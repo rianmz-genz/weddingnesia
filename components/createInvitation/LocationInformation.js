@@ -17,7 +17,8 @@ import Alert from "../globals/Alert";
 export default function LocationInformation({ onNext, setIsLoading }) {
   const tempId = Cookies.get("tempId");
   const [isOpenFaqMap, setIsOpenFaqMap] = useState(false);
-  const [err, setErr] = useState("");
+  const [message, setMessage] = useState("");
+  const [isErr, setIsErr] = useState(false);
   const [formData, setFormData] = useState({
     reception_maps: "",
     reception_location_name: "",
@@ -65,21 +66,28 @@ export default function LocationInformation({ onNext, setIsLoading }) {
   };
   const onSubmit = async () => {
     try {
-      setErr("");
+      setMessage("");
+      setIsErr(false);
+
       const res = await tempService.createLocation(tempId, formData);
       if (res.status) {
-        onNext();
+        setMessage(res.message);
+        setTimeout(() => {
+          onNext();
+          setMessage("");
+        }, 2250);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setErr(error?.response?.data?.message);
+        setMessage(error?.response?.data?.message);
+        setIsErr(true);
       }
     }
   };
   const [hasLoaded, setHasLoaded] = useState(false);
   const getLocationData = async () => {
     try {
-      setErr("");
+      setMessage("");
       const res = await tempService.getLocation(tempId);
       if (res.status) {
         // console.log(res);
@@ -87,7 +95,10 @@ export default function LocationInformation({ onNext, setIsLoading }) {
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setErr(error?.response?.data?.message);
+        if (error.response.status !== 404) {
+          setMessage(error?.response?.data?.message);
+          setIsErr(true);
+        }
       }
     } finally {
       setIsLoading(false);
@@ -101,7 +112,11 @@ export default function LocationInformation({ onNext, setIsLoading }) {
   }, [hasLoaded]);
   return (
     <TemplateCreate onNext={onSubmit}>
-      <Alert message={err} trigger={err !== ""} style={"error"} />
+      <Alert
+        message={message}
+        trigger={message != ""}
+        style={!isErr ? "success" : "error"}
+      />
 
       <Modals onClose={() => setIsOpenFaqMap(false)} trigger={isOpenFaqMap}>
         <Text style={textStyle.description} className={"font-bold"}>
