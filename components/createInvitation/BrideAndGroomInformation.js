@@ -14,7 +14,8 @@ export default function BrideAndGroomInformation({
   setIsLoading,
   isLoading,
 }) {
-  const [err, setErr] = useState("");
+  const [message, setMessage] = useState("");
+  const [isErr, setIsErr] = useState(false);
   const [coupleData, setCoupleData] = useState({
     bride_avatar: "",
     bride_name: "",
@@ -35,15 +36,18 @@ export default function BrideAndGroomInformation({
   const [hasLoaded, setHasLoaded] = useState(false);
   const getCoupleData = async () => {
     try {
-      setErr("");
+      setMessage("");
       const res = await tempService.getCouple(tempId);
       if (res.status) {
-        console.log(res);
+        // console.log(res);
         setCoupleData(res.data.bride);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setErr(error?.response?.data?.message);
+        if (error.response.status !== 404) {
+          setMessage(error?.response?.data?.message);
+          setIsErr(true);
+        }
       }
     } finally {
       setIsLoading(false);
@@ -57,14 +61,22 @@ export default function BrideAndGroomInformation({
   }, [hasLoaded]);
   const onSubmit = async () => {
     try {
-      setErr("");
+      setMessage("");
+      setIsErr(false);
+
       const res = await tempService.createCouple(tempId, coupleData);
       if (res.status) {
-        onNext();
+        // console.log(res);
+        setMessage(res.message);
+        setTimeout(() => {
+          onNext();
+          setMessage("");
+        }, 2250);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setErr(error?.response?.data?.message);
+        setMessage(error?.response?.data?.message);
+        setIsErr(true);
       }
     }
   };
@@ -78,8 +90,11 @@ export default function BrideAndGroomInformation({
   };
   return (
     <TemplateCreate onNext={onSubmit}>
-      <Alert message={err} trigger={err !== ""} style={"error"} />
-
+      <Alert
+        message={message}
+        trigger={message != ""}
+        style={!isErr ? "success" : "error"}
+      />
       <div className="flex justify-center gap-6 flex-col">
         <ContainerPart>
           <TitleBorder>Mempelai Pria</TitleBorder>
