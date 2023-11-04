@@ -129,6 +129,26 @@ const deleteTemp = async (id) => {
   });
   return data;
 };
+const get = async (id) => {
+  const { data } = await axios.get(tempRoute.base + "/" + id, {
+    timeout: 9000,
+    headers: {
+      Authorization: GetToken(),
+      Accept: "application/json",
+    },
+  });
+  return data;
+};
+const save = async (id) => {
+  const { data } = await axios.post(tempRoute.base + "/" + id, null, {
+    timeout: 9000,
+    headers: {
+      Authorization: GetToken(),
+      Accept: "application/json",
+    },
+  });
+  return data;
+};
 const tempService = {
   create,
   getCouple,
@@ -142,5 +162,7 @@ const tempService = {
   getDomain,
   createDomain,
   deleteTemp,
+  get,
+  save,
 };
 export default tempService;
