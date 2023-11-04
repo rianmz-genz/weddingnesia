@@ -17,6 +17,8 @@ export default function ChoseAlbums({ onNext }) {
   const [files, setFiles] = useState([]);
   const [filesSrc, setFilesSrc] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isErr, setIsErr] = useState(false);
   const onChange = (file) => {
     setIsLoading(true);
     setFiles([...files, file]);
@@ -33,30 +35,37 @@ export default function ChoseAlbums({ onNext }) {
   };
   const onUploadAlbums = async () => {
     try {
-      setErr("");
+      setMessage("");
+      setIsErr(false);
+
       const res = await tempService.createAlbum(tempId, { album: filesSrc });
       if (res.status) {
-        onNext();
+        setMessage(res.message);
+        setTimeout(() => {
+          onNext();
+          setMessage("");
+        }, 2250);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setErr(error?.response?.data?.message);
+        setMessage(error?.response?.data?.message);
+        setIsErr(true);
       }
     }
   };
   const [hasLoaded, setHasLoaded] = useState(false);
-  const [err, setErr] = useState("");
   const getAlbumData = async () => {
     try {
-      setErr("");
+      setMessage("");
       const res = await tempService.getAlbum(tempId);
       if (res.status) {
-        // console.log(res);
-        setFilesSrc(res.data.album);
+        setFilesSrc(res.data.album ?? []);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setErr(error?.response?.data?.message);
+        if (error.response.status !== 404) {
+          setMessage(error?.response?.data?.message);
+        }
       }
     } finally {
       setIsLoading(false);
@@ -70,7 +79,11 @@ export default function ChoseAlbums({ onNext }) {
   }, [hasLoaded]);
   return (
     <TemplateCreate onNext={onUploadAlbums}>
-      <Alert message={err} trigger={err !== ""} style={"error"} />
+      <Alert
+        message={message}
+        trigger={message != ""}
+        style={!isErr ? "success" : "error"}
+      />
       <TitleBorder>Upload Album</TitleBorder>
       {/* <div className="flex justify-end">
         <Button
@@ -83,7 +96,7 @@ export default function ChoseAlbums({ onNext }) {
       </div> */}
       <ul className="w-full lg:justify-start justify-center my-6 flex flex-wrap gap-3">
         {filesSrc.length > 0 &&
-          filesSrc?.map((item, idx) => {
+          filesSrc.map((item, idx) => {
             return (
               <li key={idx}>
                 {isLoading ? (
@@ -94,7 +107,7 @@ export default function ChoseAlbums({ onNext }) {
               </li>
             );
           })}
-        {filesSrc.length < 15 && isLoading ? (
+        {filesSrc?.length < 15 && isLoading ? (
           <Skeleton className="w-32 h-32 bg-slate-200 rounded-lg" />
         ) : (
           <label className="w-32 h-32 rounded-md cursor-pointer bg-slate-500/10 flex justify-center items-center">
