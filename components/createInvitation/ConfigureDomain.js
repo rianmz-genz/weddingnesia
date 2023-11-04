@@ -8,6 +8,7 @@ import { AiOutlineInfo } from "react-icons/ai";
 import axios from "axios";
 import Cookies from "js-cookie";
 import tempService from "@/api/integrations/temp";
+import { useRouter } from "next/router";
 
 export default function ConfigureDomain({ onNext, setIsLoading }) {
   const [slug, setSlug] = useState("");
@@ -20,17 +21,21 @@ export default function ConfigureDomain({ onNext, setIsLoading }) {
   };
   const tempId = Cookies.get("tempId");
   const [hasLoaded, setHasLoaded] = useState(false);
-  const [err, setErr] = useState("");
+  const [message, setMessage] = useState("");
+  const [isErr, setIsErr] = useState(false);
+  const router = useRouter();
   const getDomainData = async () => {
     try {
-      setErr("");
+      setMessage("");
       const res = await tempService.getDomain(tempId);
       if (res.status) {
         setSlug(res.data.domain);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setErr(error?.response?.data?.message);
+        if (error.response.status !== 404) {
+          setMessage(error?.response?.data?.message);
+        }
       }
     } finally {
       setIsLoading(false);
@@ -44,19 +49,31 @@ export default function ConfigureDomain({ onNext, setIsLoading }) {
   }, [hasLoaded]);
   const onSaveDomain = async () => {
     try {
-      setErr("");
+      setMessage("");
+      setIsErr(true);
+
       const res = await tempService.createDomain(tempId, { domain: slug });
       if (res.status) {
+        setMessage(res.message);
+        setTimeout(() => {
+          setMessage("");
+          router.push("/create/preview");
+        }, 2250);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setErr(error?.response?.data?.message);
+        setMessage(error?.response?.data?.message);
+        setIsErr(true);
       }
     }
   };
   return (
     <TemplateCreate isLast onNext={onSaveDomain}>
-      <Alert message={err} trigger={err !== ""} style={"error"} />
+      <Alert
+        message={message}
+        trigger={message != ""}
+        style={!isErr ? "success" : "error"}
+      />
       <div className="flex items-center gap-3 mb-6">
         <div className="p-1 rounded-full bg-blue-500/10 text-blue-500 ">
           <AiOutlineInfo />
