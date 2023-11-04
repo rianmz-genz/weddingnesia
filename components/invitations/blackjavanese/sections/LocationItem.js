@@ -27,12 +27,12 @@ export default function LocationItem({
         description={`${start_time} - ${end_time} ${timezone}`}
       />
       <ImageText2 title={address} src={"/images/location.svg"} />
-      <iframe
+        {src && <iframe
         src={src}
         width="600"
         height="450"
         className="w-full mt-8"
-      ></iframe>
+      ></iframe>}
     </div>
   );
 }
