@@ -14,6 +14,7 @@ import Cookies from "js-cookie";
 import { urlAuthFacebook, urlAuthGoogle } from "@ApiRoutes/auth";
 import Loader from "@/components/globals/Loader";
 import MyLog from "@/utils/MyLog";
+import Alert from "@/components/globals/Alert";
 
 function ProviderButton(provider) {
   let icon;
@@ -48,53 +49,31 @@ const LoginView = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorEmail, setErrorEmail] = useState("");
-  const [errorAuthenticate, setErrorAuthenticate] = useState("");
+  const [message, setMessage] = useState("");
   const [loginUrl, setLoginUrl] = useState(null);
   const [facebookUrl, setFacebookUrl] = useState(null);
   const [isHitApi, setIsHitApi] = useState(false);
-  const [serverError, setServerError] = useState(null);
-
-  function formValidator() {
-    let result = true;
-    setErrorEmail(null);
-    setErrorAuthenticate(null);
-    if (email.length < 1) {
-      setErrorEmail("The email field is required");
-      result = false;
-    }
-    return result;
-  }
+  const [isErr, setIsErr] = useState(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsHitApi(true);
-    const validation = formValidator();
+    setIsErr(false);
+    setMessage("");
 
-    if (validation) {
-      LoginApi({ email, password }).then((res) => {
-        if (res.status === false) {
-          if (res.code === 404) {
-            setErrorEmail(res.message);
-          }
-          if (res.code === 422) {
-            setErrorEmail(res.data.errors.email ?? "");
-          }
-          if (res.code === 401) {
-            setErrorAuthenticate(res.message);
-          }
-          if (res.code === 400) {
-            setErrorAuthenticate(res.message);
-          }
-        }
-        setIsHitApi(false);
-        MyLog(res);
-        if (res.code === 200) {
-          Cookies.set("token", res.data.access_token, { expires: 2 });
+    LoginApi({ email, password }).then((res) => {
+      setMessage(res.message);
+      if (res.status === false) {
+        setIsErr(true);
+      }
+      setIsHitApi(false);
+      if (res.code === 200) {
+        Cookies.set("token", res.data.access_token, { expires: 2 });
+        setTimeout(() => {
           router.push("/dashboard");
-        }
-      });
-    }
+        }, 2000);
+      }
+    });
   };
 
   useEffect(() => {
@@ -110,10 +89,7 @@ const LoginView = () => {
         }
         throw new Error("Something went wrong!");
       })
-      .then((data) => setLoginUrl(data.url))
-      .catch(error => {
-        setServerError(error)
-      });
+      .then((data) => setLoginUrl(data.url));
   }, []);
 
   useEffect(() => {
@@ -130,8 +106,8 @@ const LoginView = () => {
         throw new Error("Something went wrong!");
       })
       .then((data) => setFacebookUrl(data.url))
-      .catch(error => {
-        setServerError(error)
+      .catch((error) => {
+        setServerError(error);
       });
   }, []);
 
@@ -148,12 +124,12 @@ const LoginView = () => {
 
   return (
     <AuthPage onSubmit={handleLogin}>
+      <Alert
+        message={message}
+        trigger={message != ""}
+        style={!isErr ? "success" : "error"}
+      />
       <Logo className={"w-8/12"} />
-      {errorAuthenticate ? (
-        <div className="text-sm text-red-500">{errorAuthenticate}</div>
-      ) : (
-        ""
-      )}
       <div className="w-full mt-6">
         <Text className={"mb-1"} style={textStyle.titleQuestion}>
           Email
@@ -166,11 +142,6 @@ const LoginView = () => {
           icon={<BiUser className="text-black mr-2" />}
           onChange={(e) => setEmail(e.target.value)}
         />
-        {errorEmail ? (
-          <div className="text-sm text-red-500">{errorEmail}</div>
-        ) : (
-          ""
-        )}
         <Text className={"mb-1 mt-3"} style={textStyle.titleQuestion}>
           Password
         </Text>
@@ -193,9 +164,6 @@ const LoginView = () => {
             Daftar
           </Link>
         </Text>
-        <div className="flex flex-col justify-center gap-4 mt-4">
-          {serverError !== null ? <span></span> : providers.map((provider) => ProviderButton(provider)) }
-        </div>
       </div>
     </AuthPage>
   );
