@@ -12,7 +12,9 @@ import { FiEdit, FiEye, FiPlus } from "react-icons/fi";
 
 const DashboardInvitations = () => {
   const [invitations, setInvitations] = useState([]);
+  const [filtered, setFiltered] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [keyword, setKeyword] = useState("");
   useEffect(() => {
     getInvitations();
   }, []);
@@ -20,9 +22,18 @@ const DashboardInvitations = () => {
     setIsLoading(true);
     InvitationByUserApi().then((res) => {
       // //console.log(res);
+      setFiltered(res);
       setInvitations(res);
       setIsLoading(false);
     });
+  };
+  const onChangeSearch = (keyword) => {
+    setKeyword(keyword);
+    if (keyword == 0) {
+      setFiltered(invitations);
+    }
+    const filter = invitations.filter((item) => item.slug.includes(keyword));
+    setFiltered(filter);
   };
   return (
     <DashboardUser>
@@ -36,7 +47,10 @@ const DashboardInvitations = () => {
             >
               <FiPlus />
             </Link>
-            <InputSearch />
+            <InputSearch
+              value={keyword}
+              onChange={(e) => onChangeSearch(e.target.value)}
+            />
           </div>
         </div>
         <ul className="mt-6 flex flex-col gap-3 justify-start items-start">
@@ -51,10 +65,9 @@ const DashboardInvitations = () => {
               <Skeleton className="w-full h-24 bg-slate-200" />
             </>
           ) : (
-            invitations?.map((invitation, i) => (
+            filtered?.map((invitation, i) => (
               <InvitationItem
-                bride_name={invitation.bride_name}
-                groom_name={invitation.groom_name}
+                id={invitation.id}
                 slug={invitation.slug}
                 status={
                   invitation.order && invitation?.order[0]?.status == "PAID"
