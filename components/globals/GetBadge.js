@@ -12,7 +12,9 @@ export default function GetBadgeInvitation({ status }) {
       );
     case true:
       return (
-        <span className={`bg-green-500/10 text-green-500 px-4 py-2 rounded-md`}>
+        <span
+          className={`bg-green-500/10 text-green-500 px-4 py-2 text-xs rounded-md`}
+        >
           Aktif
         </span>
       );
