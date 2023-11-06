@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Text from "../globals/Text";
 import { buttonStyle, textStyle } from "@/utils/enum";
-import Button from "../globals/Button";
 import { FiX } from "react-icons/fi";
 import { HiOutlineBars3BottomRight } from "react-icons/hi2";
-
+import Link from "next/link";
+import { GoHome } from "react-icons/go";
 export default function BreadCumbersCreate({
   onClick,
   items,
@@ -28,13 +28,20 @@ export default function BreadCumbersCreate({
       >
         <div className="w-full mx-auto sm:max-w-lg flex flex-col gap-6 mt-12 px-7">
           <Text style={textStyle.smalltitle}>Buat Undangan</Text>
+          <Link
+            href={"/dashboard"}
+            className="flex items-center gap-2 hover:text-yellow-600 transition-all duration-300"
+          >
+            <GoHome className="text-xl" />
+            Beranda
+          </Link>
           {items.map(({ label }, idx) => {
             return (
               <div
                 key={idx}
                 className={`${
                   idx <= currentIndex && "text-yellow-600 font-semibold"
-                } flex `}
+                } flex hover:text-yellow-600 transition-all duration-300`}
               >
                 <li
                   onClick={() => {
