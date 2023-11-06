@@ -41,6 +41,7 @@ export default function TemplateCreate({
       if (res.status) {
         removeCookie("currentMenu");
         removeCookie("tempId");
+        removeCookie("tempCreate");
         router.push("/dashboard");
       }
     } catch (error) {
@@ -58,6 +59,7 @@ export default function TemplateCreate({
   };
   const context = useContext(CreateInvitationContext);
   const { isHitApi, message, statusApi, trigger } = context;
+  const isBack = Cookies.get("isBack") || false;
   return (
     <form
       onSubmit={onSubmit}
@@ -119,20 +121,34 @@ export default function TemplateCreate({
           >
             {isHitApi ? (
               <AiOutlineLoading3Quarters className="text-red-500 mx-auto text-lg animate-spin" />
-            ) : isLoading ? (
-              "Simpan Data"
             ) : (
-              "Simpan & Lanjutkan"
+              "Simpan"
             )}
           </Button>
-          <Button
-            onClick={() => setIsOpenCancel(true)}
-            style={buttonStyle.dangerlarge}
-            className={"w-full mt-3"}
-            type="button"
-          >
-            Batalkan
-          </Button>
+          {isBack ? (
+            <Button
+              onClick={() => {
+                Cookies.remove("isBack");
+                removeCookie("tempId");
+
+                router.replace("/dashboard/invitations");
+              }}
+              style={buttonStyle.outlineprimarylarge}
+              className={"w-full mt-3"}
+              type="button"
+            >
+              Kembali
+            </Button>
+          ) : (
+            <Button
+              onClick={() => setIsOpenCancel(true)}
+              style={buttonStyle.dangerlarge}
+              className={"w-full mt-3"}
+              type="button"
+            >
+              Batalkan
+            </Button>
+          )}
         </>
       )}
       <ScrollToTopButton />
