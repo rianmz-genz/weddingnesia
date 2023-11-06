@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export async function getServerSideProps(context) {
   const token = context.req.cookies.token;
@@ -26,16 +26,22 @@ export async function getServerSideProps(context) {
 }
 
 const DashboardUserView = () => {
+  const [tempId, setTempId] = useState(false);
   const { src, bold, caption, description, greeting, title } =
     initialValue.dashboard.user;
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const handleCreate = async () => {
+    if (tempId) {
+      Cookies.set("tempId", tempId);
+      return router.push("/create");
+    }
     setIsLoading(true);
     try {
       const res = await tempService.create();
       if (res.code == 201) {
         Cookies.set("tempId", res?.data?.temp.id);
+        Cookies.set("tempCreate", res?.data?.temp.id);
         router.push("/create");
         setIsLoading(false);
       }
@@ -43,6 +49,10 @@ const DashboardUserView = () => {
       throw new Error(`${error}`);
     }
   };
+  useEffect(() => {
+    const tempCookie = Cookies.get("tempCreate") || false;
+    setTempId(tempCookie);
+  }, []);
   return (
     <DashboardUser>
       <div className="flex w-full h-5/6 items-center justify-center flex-col mt-12">
@@ -75,7 +85,8 @@ const DashboardUserView = () => {
           style={buttonStyle.blackLarge}
           className={"mt-6"}
         >
-          {isLoading ? <Loader /> : "Buat Undangan"}
+          {isLoading && <Loader />}
+          {tempId && !isLoading ? "Lanjutkan Pembuatan" : "Buat Undangan"}
         </Button>
       </div>
     </DashboardUser>
