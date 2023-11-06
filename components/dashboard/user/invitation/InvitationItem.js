@@ -9,6 +9,7 @@ export default function InvitationItem({ slug, status, id }) {
   const router = useRouter();
   const onClickEdit = () => {
     Cookies.set("tempId", id);
+    Cookies.set("isBack", true);
     router.push("/create");
   };
   return (
