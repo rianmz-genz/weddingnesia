@@ -197,13 +197,14 @@ export default function PreviewDataInvitation({ pageProps }) {
 
   const handleSubmit = async () => {
     setTriggerModal(false);
-    Cookies.remove("tempId");
-    Cookies.remove("currentMenu");
     try {
       setIsHitApi(true);
       const res = await tempService.save(tempId);
       if (res.status) {
         setStatusApi(true);
+        Cookies.remove("tempId");
+        Cookies.remove("tempCreate");
+        Cookies.remove("currentMenu");
         router.push("/dashboard/invitations");
       }
       setMessage(res.message);
