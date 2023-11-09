@@ -95,8 +95,12 @@ export default function LocationInformation({ onNext, setIsLoading }) {
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        if (error.response.status !== 404) {
+        if (error?.response?.status !== 404) {
           setMessage(error?.response?.data?.message);
+          setIsErr(true);
+        } else if (error?.response?.status !== 404) {
+        } else {
+          setMessage(error?.message);
           setIsErr(true);
         }
       }
