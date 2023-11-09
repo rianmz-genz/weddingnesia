@@ -4,7 +4,7 @@ import axios from "axios";
 
 const create = async () => {
   const { data } = await axios.post(tempRoute.base, null, {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
@@ -15,7 +15,7 @@ const create = async () => {
 
 const getCouple = async (id) => {
   const { data } = await axios.get(tempRoute.couple(id), {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
@@ -26,7 +26,7 @@ const getCouple = async (id) => {
 
 const createCouple = async (id, reqBody) => {
   const { data } = await axios.post(tempRoute.couple(id), reqBody, {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
@@ -37,7 +37,7 @@ const createCouple = async (id, reqBody) => {
 
 const getLocation = async (id) => {
   const { data } = await axios.get(tempRoute.location(id), {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
@@ -48,7 +48,7 @@ const getLocation = async (id) => {
 
 const createLocation = async (id, reqBody) => {
   const { data } = await axios.post(tempRoute.location(id), reqBody, {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
@@ -58,7 +58,7 @@ const createLocation = async (id, reqBody) => {
 };
 const getDesign = async (id) => {
   const { data } = await axios.get(tempRoute.design(id), {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
@@ -69,7 +69,7 @@ const getDesign = async (id) => {
 
 const createDesign = async (id, reqBody) => {
   const { data } = await axios.post(tempRoute.design(id), reqBody, {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
@@ -79,7 +79,7 @@ const createDesign = async (id, reqBody) => {
 };
 const getAlbum = async (id) => {
   const { data } = await axios.get(tempRoute.album(id), {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
@@ -90,7 +90,7 @@ const getAlbum = async (id) => {
 
 const createAlbum = async (id, reqBody) => {
   const { data } = await axios.post(tempRoute.album(id), reqBody, {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
@@ -100,7 +100,7 @@ const createAlbum = async (id, reqBody) => {
 };
 const getDomain = async (id) => {
   const { data } = await axios.get(tempRoute.domain(id), {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
@@ -111,7 +111,7 @@ const getDomain = async (id) => {
 
 const createDomain = async (id, reqBody) => {
   const { data } = await axios.post(tempRoute.domain(id), reqBody, {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
@@ -121,7 +121,7 @@ const createDomain = async (id, reqBody) => {
 };
 const deleteTemp = async (id) => {
   const { data } = await axios.delete(tempRoute.base + "/" + id, {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
@@ -131,7 +131,7 @@ const deleteTemp = async (id) => {
 };
 const get = async (id) => {
   const { data } = await axios.get(tempRoute.base + "/" + id, {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
@@ -141,7 +141,7 @@ const get = async (id) => {
 };
 const save = async (id) => {
   const { data } = await axios.post(tempRoute.base + "/" + id, null, {
-    timeout: 9000,
+    timeout: 20000,
     headers: {
       Authorization: GetToken(),
       Accept: "application/json",
