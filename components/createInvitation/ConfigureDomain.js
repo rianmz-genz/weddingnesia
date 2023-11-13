@@ -50,7 +50,7 @@ export default function ConfigureDomain({ onNext, setIsLoading }) {
   const onSaveDomain = async () => {
     try {
       setMessage("");
-      setIsErr(true);
+      setIsErr(false);
 
       const res = await tempService.createDomain(tempId, { domain: slug });
       if (res.status) {
