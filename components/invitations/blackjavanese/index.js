@@ -24,6 +24,7 @@ export default function BlackJavanese() {
       <LocationBlackJavanese />
       <GalleryBlackJavanese />
       <QuotesBlackJavanese />
+      <GuestBookBlackJavanese />
       <FooterInvitation />
       <ScrollToTopButton />
     </div>

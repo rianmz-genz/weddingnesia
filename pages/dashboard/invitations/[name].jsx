@@ -24,7 +24,44 @@ import CheckoutApi from "@/api/integrations/payment/CheckoutApi";
 import { ShowSnap } from "@/pages/payment";
 import GetBadgeInvitation from "@/components/globals/GetBadge";
 import DeleteInvitationApi from "@/api/integrations/invitation/Delete";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import DataTable from "react-data-table-component";
 
+const customStyles = {
+  headRow: {
+    style: {
+      background: "#F9FAFB",
+      borderRadius: "14px 14px 0px 0px",
+      border: "1px solid #E5E7EB !important",
+    },
+  },
+  rows: {
+    style: {
+      borderRight: "1px solid #E5E7EB !important",
+      borderLeft: "1px solid #E5E7EB !important",
+      borderBottom: "none !important",
+    },
+  },
+  pagination: {
+    style: {
+      border: "1px solid #E5E7EB !important",
+      background: "white",
+      borderRadius: "0px 0px 14px 14px",
+    },
+  },
+};
+const conditionalRowStyles = [
+  {
+    when: (row) => row.index % 2 == 0,
+    style: {
+      backgroundColor: "#F9FAFB",
+      color: "black",
+      "&:hover": {
+        cursor: "pointer",
+      },
+    },
+  },
+];
 export default function InvitationsDetail() {
   const [guestId, setGuestId] = useState("");
   const [guests, setGuests] = useState([]);
@@ -476,7 +513,7 @@ export default function InvitationsDetail() {
             ) : (
               <>
                 <img
-                  className="md:w-6/12 w-full lg:h-64 sm:h-48 object-cover rounded-md my-2"
+                  className="md:w-6/12 w-full lg:h-64 sm:h-48 object-cover rounded-md my-2 sticky top-4"
                   src={invitation?.primary_cover}
                   alt="Gambar Cover"
                   width={1080}
@@ -512,19 +549,20 @@ export default function InvitationsDetail() {
                       {`${invitation.groom_name} & ${invitation.bride_name}`}
                     </Text>
                   </div>
-                  {invitation.status != "PAID" && (
-                    <Button
-                      className={"w-full"}
-                      onClick={() =>
-                        handleCO(
-                          invitation.order[invitation.order.length - 1].id
-                        )
-                      }
-                      style={buttonStyle.greensmall}
-                    >
-                      Checkout
-                    </Button>
-                  )}
+                  {invitation.order &&
+                    invitation?.order[0]?.status !== "PAID" && (
+                      <Button
+                        className={"w-full"}
+                        onClick={() =>
+                          handleCO(
+                            invitation.order[invitation.order.length - 1].id
+                          )
+                        }
+                        style={buttonStyle.greensmall}
+                      >
+                        Checkout
+                      </Button>
+                    )}
                   {snapToken && ShowSnap(snapToken)}
                   <Button
                     className={"w-full"}
@@ -546,13 +584,12 @@ export default function InvitationsDetail() {
               <div className="flex gap-3 ">
                 <div>
                   <Text className={"mb-2"}>Checkout</Text>
-                  
                 </div>
               </div>
             )}
           </div>
         </div> */}
-        {/* <div className="md:px-4 px-2 my-12">
+        <div className="md:px-4 px-2 my-12">
           {isLoading ? (
             <Skeleton className="bg-slate-200 w-full h-96" />
           ) : (
@@ -575,9 +612,10 @@ export default function InvitationsDetail() {
               columns={columns}
               data={guests.map((guest) => convertToGuestRowTable(guest))}
               fixedHeader
+              customStyles={customStyles}
             />
           )}
-        </div> */}
+        </div>
       </DashboardUser>
     </>
   );

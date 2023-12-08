@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import ToggleButton from "./ToggleButton";
 import { HiOutlineEnvelope, HiOutlineCalendar } from "react-icons/hi2";
 import { MdCloudUpload } from "react-icons/md";
+import { HiTicket } from "react-icons/hi";
 
 const NavbarGuest = () => {
   const router = useRouter();
@@ -12,12 +13,17 @@ const NavbarGuest = () => {
     {
       label: "E-Ticket",
       href: `/guests/${guestId}/e-ticket`,
-      icon: <HiOutlineEnvelope />,
+      icon: <HiTicket />,
     },
     {
       label: "Kehadiran",
       href: `/guests/${guestId}/rsvp`,
       icon: <HiOutlineCalendar />,
+    },
+    {
+      label: "Komentar",
+      href: `/guests/${guestId}/comment`,
+      icon: <HiOutlineEnvelope />,
     },
     {
       label: "Upload",
