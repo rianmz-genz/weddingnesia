@@ -5,26 +5,28 @@ import DemoInvitationData from "@/store/demo";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 export default function DemoInvitation() {
   const router = useRouter();
-  const { sl, i } = router.query;
-
+  const { slug, to } = router.query;
   const [invitation, setInvitation] = useState({});
   const [currentInvitation, setIsCurrentInvitation] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     getInvitation();
-    if (sl) {
-      const current = DemoInvitationData.find((item) => item.slug == sl);
-      setIsCurrentInvitation(current);
-    }
-  }, [router.isReady, sl]);
+  }, [router.isReady, slug]);
 
   const getInvitation = () => {
-    InvitationBySlugApi({ slug: i }).then((resInvitation) => {
+    InvitationBySlugApi({ slug }).then((resInvitation) => {
       if (resInvitation) {
         setInvitation(resInvitation);
         setIsLoading(false);
+        if (resInvitation?.theme) {
+          const current = DemoInvitationData.find(
+            (item) => item.slug == resInvitation?.theme?.name
+          );
+          setIsCurrentInvitation(current);
+        }
       } else {
         return <Err />;
       }
@@ -45,17 +47,18 @@ export default function DemoInvitation() {
       </div>
     );
   }
-  if (!sl || (!i && !isLoading)) return <NotFoundMessage />;
+  if (!slug) return <NotFoundMessage />;
   if (invitation == undefined) return <NotFoundMessage />;
   if (invitation == false) return <NotFoundMessage />;
-  if (invitation?.order) {
-    if (invitation?.order[0].status != "PAID") {
+  if (invitation?.guests.order) {
+    if (invitation?.guests.order[0].status != "PAID") {
       return <NotFoundMessage />;
     }
   }
+
   return (
-    <InvitationContext.Provider value={invitation}>
-      {currentInvitation.component}
+    <InvitationContext.Provider value={{ ...invitation.guests, to }}>
+      {!isLoading && currentInvitation?.component}
     </InvitationContext.Provider>
   );
 }

@@ -9,8 +9,15 @@ import Image from "next/image";
 import React, { useContext, useRef, useState } from "react";
 
 export default function CoverBlackJavanese() {
-  const { title, primary_cover, bride_name, groom_name, wedding_date, audio } =
-    useContext(InvitationContext);
+  const {
+    title,
+    primary_cover,
+    bride_name,
+    groom_name,
+    wedding_date,
+    audio,
+    to,
+  } = useContext(InvitationContext);
   const audioRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const onPlay = () => {
@@ -34,13 +41,17 @@ export default function CoverBlackJavanese() {
             height={1080}
             className="w-24 mb-3"
           />
-          <Text style={textStyle.description}>Welcome to Our Wedding</Text>
+          <Text style={textStyle.description}>
+            Welcome <strong>{to}</strong> to Our Wedding!
+          </Text>
+
           <Text style={textStyle.heroTitleAllura}>
             {groom_name} & {bride_name}
           </Text>
           <Text style={textStyle.description}>
             {wedding_date && formatDate(wedding_date)}
           </Text>
+
           <Button
             onClick={() => onPlay()}
             style={buttonStyle.whitelarge}

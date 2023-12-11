@@ -83,9 +83,9 @@ export default function InvitationsDetail() {
   const [message, setMessage] = useState(false);
   const [statusApi, setStatusApi] = useState(false);
   const [trigger, setTrigger] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const items = [<FiHome key={1} />, router.query.name];
-  const linknya = `https://app.weddingnesia.id/theme?sl=blackjavanese&i=
-          ${router.query.name}`;
+  const linknya = `https://app.weddingnesia.id/${router.query.name}`;
   const details = [
     {
       top: "Undangan Milik",
@@ -114,7 +114,9 @@ export default function InvitationsDetail() {
       top: "Status",
       bottom: (
         <GetBadgeInvitation
-          status={invitation.order && invitation?.order[0]?.status == "PAID"}
+          status={
+            invitation.order_paid && invitation?.order_paid?.status == "PAID"
+          }
         />
       ),
     },
@@ -192,8 +194,8 @@ export default function InvitationsDetail() {
     InvitationBySlugApi({ slug: router.query.name }).then((resInvitation) => {
       // console.log(resInvitation);
       if (resInvitation) {
-        setInvitation(resInvitation);
-        getGuests(resInvitation?.id);
+        setInvitation(resInvitation?.guests);
+        getGuests(resInvitation?.guests?.id);
       }
     });
   };
@@ -361,6 +363,36 @@ export default function InvitationsDetail() {
       setIsLoading(false);
     });
   };
+  const copyToClipboard = (text) => {
+    console.log("text", text);
+    var textField = document.createElement("textarea");
+    textField.innerText = text;
+    document.body.appendChild(textField);
+    textField.select();
+    document.execCommand("copy");
+    textField.remove();
+    setIsCopied(true);
+  };
+  const templateShare = `Hi teman-teman,
+\n
+Kami dengan senang hati ingin berbagi momen istimewa dalam hidup kami dengan Anda. Kami akan menikah dan kami ingin Anda hadir untuk merayakan bersama kami.
+\n
+Tanggal Pernikahan: ${
+    invitation.reception_date && formatDate(invitation.reception_date)
+  }
+\n
+Waktu: ${invitation.reception_time_start} ${invitation.timezone}
+\n
+Tempat: ${invitation.reception_address}
+\n
+Anda dapat menemukan detail lengkap undangan pernikahan kami di link berikut:
+${linknya}
+\n
+Kami berharap dapat melihat Anda di acara kami dan berbagi kebahagiaan bersama. Terima kasih atas perhatian dan doa terbaik Anda.
+\n
+Salam,
+${invitation.groom_name} & ${invitation.bride_name}`;
+
   return (
     <>
       <Alert
@@ -524,40 +556,27 @@ export default function InvitationsDetail() {
                     <TopBottomText key={idx} top={top} bottom={bottom} />
                   ))}
                   <div className="my-3">
-                    <Text className={"font-bold"}>
+                    <div className="flex justify-end mb-2">
+                      <Button
+                        onClick={() => copyToClipboard(templateShare)}
+                        style={buttonStyle.blackMedium}
+                      >
+                        {isCopied ? "Tersalin" : "Salin Text"}
+                      </Button>
+                    </div>
+                    <Text className={"font-bold mb-2"}>
                       Berikut Template text untuk membagikan undangan milik
                       Anda.
                     </Text>
-                    <Text>
-                      Hi teman-teman, <br /> <br /> Kami dengan senang hati
-                      ingin berbagi momen istimewa dalam hidup kami dengan Anda.
-                      Kami akan menikah dan kami ingin Anda hadir untuk
-                      merayakan bersama kami. <br /> <br />
-                      Tgl Pernikahan:{" "}
-                      {invitation.reception_date &&
-                        formatDate(invitation.reception_date)}
-                      <br /> <br /> Waktu:{" "}
-                      {`${invitation.reception_time_start} ${invitation.timezone}`}{" "}
-                      <br /> <br /> Tempat: {invitation.reception_address}{" "}
-                      <br /> <br /> Anda dapat menemukan detail lengkap undangan
-                      pernikahan kami di link berikut: <br />
-                      {linknya} <br /> <br /> Kami berharap dapat melihat Anda
-                      di acara kami dan berbagi kebahagiaan bersama. Terima
-                      kasih atas perhatian dan doa terbaik Anda.
-                      <br /> <br />
-                      Salam, <br />
-                      {`${invitation.groom_name} & ${invitation.bride_name}`}
+                    <Text className={"whitespace-pre-line"}>
+                      {templateShare}
                     </Text>
                   </div>
-                  {invitation.order &&
-                    invitation?.order[0]?.status !== "PAID" && (
+                  {invitation.order_paid &&
+                    invitation?.order_paid?.status !== "PAID" && (
                       <Button
                         className={"w-full"}
-                        onClick={() =>
-                          handleCO(
-                            invitation.order[invitation.order.length - 1].id
-                          )
-                        }
+                        onClick={() => handleCO(invitation.order_paid?.id)}
                         style={buttonStyle.greensmall}
                       >
                         Checkout

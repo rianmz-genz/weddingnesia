@@ -10,7 +10,7 @@ const InvitationBySlugApi = async ({ slug }) => {
       authorization: GetToken(),
     });
     if (!res || !res.guests) return false;
-    return res?.guests;
+    return res;
   } catch (error) {
     throw error;
   }
