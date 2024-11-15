@@ -11,7 +11,7 @@ const Text = ({ style, className, ...props }) => {
       description: "lg:text-lg text-md",
       smalldescription: "lg:text-md text-base",
       titleQuestion: "text-sm font-semibold",
-      base: "text-sm",
+      base: "",
       heroTitleAllura: "font-allura md:text-[5rem] text-5xl",
       smallTitleAllura: "font-allura text-3xl",
       descriptionAllura: "font-allura text-3xl",

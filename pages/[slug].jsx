@@ -1,11 +1,9 @@
 import InvitationBySlugApi from "@/api/integrations/invitation/BySlug";
 import { InvitationContext } from "@/context/invitation";
-import { initialValue } from "@/store";
 import DemoInvitationData from "@/store/demo";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 export default function DemoInvitation() {
   const router = useRouter();
   const { slug, to } = router.query;
